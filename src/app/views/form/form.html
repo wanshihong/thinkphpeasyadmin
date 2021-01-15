@@ -1,0 +1,39 @@
+{extend name="layout" /}
+{block name="title"}{$__page_name__}添加-编辑{/block}
+
+{block name="header_action"}
+{/block}
+
+{block name="filter"}
+{/block}
+
+
+{block name="body"}
+
+表单
+<form class="layui-form easy-form" lay-filter="easy_form" action="{:url('form_save')}" method="post">
+    {foreach name="forms" item="form"}
+    {if $form->isHidden()}
+    {$form}
+    {else/}
+    <div class="layui-form-item">
+        <label class="layui-form-label">{$form->getLabel()}</label>
+        <div class="layui-input-block">
+            {$form}
+        </div>
+    </div>
+    {/if}
+
+    {/foreach}
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            {$actions}
+        </div>
+    </div>
+
+</form>
+
+{/block}
+

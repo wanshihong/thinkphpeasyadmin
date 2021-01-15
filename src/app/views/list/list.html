@@ -1,0 +1,64 @@
+{extend name="layout" /}
+{block name="title"}{$__page_name__}列表{/block}
+{block name="style"}
+<style>
+</style>
+{/block}
+
+
+{block name="header_action"}
+<!-- 添加按钮 -->
+{$addAction}
+{/block}
+
+{block name="filter"}
+    {$table->getFilter()}
+{/block}
+
+
+{block name="body"}
+<table class="layui-table layui-form" lay-skin="nob">
+
+    <!-- 表头 -->
+    <thead>
+    <tr>
+        {foreach $table->getHeader() as $label }
+        <th>{$label}</th>
+        {/foreach}
+
+        <!-- 操作 -->
+        {if $table->getActions() }
+        <th>操作</th>
+        {/if}
+    </tr>
+    </thead>
+
+    <!-- 主体 -->
+    {foreach $table as $index=>$row }
+    <tbody>
+    <tr>
+        {foreach $row as $rowIndex=>$td }
+        <td class="align-middle text-sm text-gray-600">{$td}</td>
+        {/foreach}
+
+        <!-- 操作 -->
+        {if $row->getActions() }
+        <td>
+            {$row->getActions()}
+        </td>
+        {/if}
+    </tr>
+    </tbody>
+    {/foreach}
+</table>
+{/block}
+
+{block name="pagination"}
+<!-- 分页 -->
+{$table->getPage()}
+{/block}
+
+{block name="body_script"}
+<script>
+</script>
+{/block}

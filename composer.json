@@ -1,0 +1,28 @@
+{
+    "name": "wansh/thinkeasyadmin",
+    "description": "基于thinkphp的后台工具包",
+    "type": "library",
+    "keywords": [
+        "admin",
+        "thinkphp",
+        "ORM"
+    ],
+    "authors": [
+        {
+            "name": "wansh",
+            "email": "wsh255@qq.com"
+        }
+    ],
+    "homepage": "http://easyadmin.wansh.cc/",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.0",
+        "topthink/framework": "^6.0.0",
+        "topthink/think-template": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "easyadmin\\": "src"
+        }
+    }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        {block name="title"}{$__page_name__}{/block}
+    </title>
+    {block name="style"}{/block}
+
+    {foreach name="__css__" item="file"}
+    <link rel="stylesheet" href="{$file}">
+    {/foreach}
+    {block name="head_script"}{/block}
+</head>
+<body>
+
+<div class="layout">
+    <div class="layout-left layui-bg-black">
+        <i class="close-menu layui-icon layui-icon-close-fill"></i>
+        <h1 class="layui-bg-black site-title">网站标题</h1>
+        {block name="left"}
+        {$__menu__}
+        {/block}
+    </div>
+    <div class="layout-main">
+        <div class="layout-main-head">
+            {block name="header"}
+            <div class="layui-show-xs layui-hide-sm layui-hide-md layui-hide-lg">
+                <button type="button" class="layui-btn layui-btn-primary show-menu">
+                    <i class="layui-icon layui-icon-spread-left"></i>
+                </button>
+            </div>
+            <div class="layui-hide-xs">
+                {block name="page_name"}<h3 class="page-title">{$__page_name__}</h3>{/block}
+                {block name="header_nav"}
+                {$__breadcrumb__}
+                {/block}
+            </div>
+            <div>
+                {block name="header_action"}
+                添加/返回按钮
+                {/block}
+            </div>
+
+            {/block}
+        </div>
+
+
+        <div class="layout-main-body">
+            <div>
+                <!-- 过滤器 -->
+                {block name="filter"}{/block}
+            </div>
+            <div class="layout-main-body-main">
+                <!-- 主体-表格 -->
+                {block name="body"}body{/block}
+            </div>
+            <div>
+                <!-- 分页 -->
+                {block name="pagination"}{/block}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{foreach name="__js__" item="file"}
+<script src="{$file}"></script>
+{/foreach}
+{block name="body_script"}{/block}
+</body>
+</html>

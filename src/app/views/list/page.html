@@ -1,0 +1,33 @@
+{block name="main"}
+{if $pageTotal >1}
+<div class="layui-btn-group">
+
+    {if $page >1 }
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="?page={$page-1}&{$options}">上一页</a>
+    {/if}
+
+    {for start="$page-5" end="$page+5"}
+
+    {if $i>=1 && $i<=$pageTotal }
+    <a class="layui-btn layui-btn-sm {if $page==$i}{else/}layui-btn-primary{/if}" href="?page={$i}&{$options}">
+        {$i}
+    </a>
+    {/if}
+
+    {/for}
+
+    {if $page < $pageTotal }
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="?page={$page+1}&{$options}">下一页</a>
+    {/if}
+
+</div>
+{/if}
+
+{/block}
+
+{block name="style"}{/block}
+{block name="js"}{/block}
+
+
+
+

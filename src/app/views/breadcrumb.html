@@ -1,0 +1,20 @@
+{block name="main"}
+    <h3 class="page-title"></h3>
+    <div class="layui-breadcrumb" lay-separator="\">
+        {foreach name="lists" item="item" key="index"}
+        <a href="{if count($lists)-1==$index }javascript:{else}{$item.url}{/if}">
+            {if $item.icon }
+            <i class="layui-icon {$item.icon}"></i>
+            {/if}
+            {if count($lists)-1==$index }
+            <cite>{$item.name}</cite>
+            {else}
+            {$item.name}
+            {/if}
+        </a>
+        {/foreach}
+    </div>
+{/block}
+
+{block name="style"}{/block}
+{block name="js"}{/block}
