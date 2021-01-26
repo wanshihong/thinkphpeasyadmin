@@ -212,6 +212,7 @@ trait CrudRoutersTrait
     public function delete(Request $request)
     {
         try {
+            $this->request = $request;
             $id = $request->get('id');
             if (empty($id)) throw new ExceptionAlias('缺少参数');
 

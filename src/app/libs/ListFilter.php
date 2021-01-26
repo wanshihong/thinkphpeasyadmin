@@ -114,11 +114,15 @@ class ListFilter
 
             // _query_ 表示全部的字段查询, 相当于一个输入框, 搜索全部的字段
             if ($column->getField() === '_query_') {
+                $whereOrMap = [];
                 //like 查询 全部的字段
-                foreach ($fields as $field) {
-                    $field = explode('as', $field);
-                    $query->whereOr(trim($field[0]), 'like', "%{$val}%");
-                }
+                $query->whereOr(function ($query) use ($fields,$val){
+                    foreach ($fields as $field) {
+                        $field = explode('as', $field);
+                        if(empty($val)) continue;
+                        $query->whereOr(trim($field[0]), 'like', "%{$val}%");
+                    }
+                });
             } else {
                 //查询当前的一个字段
                 $column->filterQuery($query, $alias);

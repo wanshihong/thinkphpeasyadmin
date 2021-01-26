@@ -228,7 +228,7 @@ class ListQuery
     public function softDelete($field, $beforeVal)
     {
         if (empty($field)) return;
-        $this->query->where($field, $beforeVal);
+        $this->query->where($this->getAlias() . '.' . $field, '=', $beforeVal);
     }
 
 
