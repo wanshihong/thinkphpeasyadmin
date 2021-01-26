@@ -54,7 +54,7 @@ class Btn
     /**
      * 按钮类型
      * a:  a   素 a 标签
-     * a:  layui-button  a 标签 添加了 layui-button 样式
+     * btn:  layui-button  a 标签 添加了 layui-button 样式
      * button:  button-button  button标签 type button
      * submit:  button-submit  button标签 type submit
      * @var string

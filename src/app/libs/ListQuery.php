@@ -132,8 +132,8 @@ class ListQuery
         $table->setTotal($total);
 
         //查询分页
-        $p = $this->request->get('page', 1);
         $page = $table->getPage(); //获取分页类
+        $p = $this->request->get('page', $page->getCurrentPage());
         $page->setCurrentPage($p); //设置当前分页的页码
         $result = $searchQuery->page($p, $page->getPageSize())->select();
 

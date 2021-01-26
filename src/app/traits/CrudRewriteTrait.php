@@ -101,7 +101,7 @@ trait CrudRewriteTrait
      */
     protected function configFilter(ListFilter $filter)
     {
-        $filter->addFilter('_query_', '请输入', FormText::class);
+        $filter->addFilter('_query_', ' ', FormText::class);
     }
 
     /**

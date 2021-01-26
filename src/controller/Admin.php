@@ -67,7 +67,7 @@ class Admin
             $this->tableName = $this->request->controller();
         }
 
-        return $this->tableName;
+        return strtolower($this->tableName);
     }
 
     /**

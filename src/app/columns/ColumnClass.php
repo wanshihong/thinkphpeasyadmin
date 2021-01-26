@@ -259,6 +259,7 @@ class ColumnClass
         //替换value 中 包含  filter 的内容高亮
         /** @var BaseForm $filter */
         foreach ($this->filters as $filter) {
+            if (!is_string($filter->getValue())) continue;
             if (!$filter->getOption('highlight')) continue;
 //            if ($filter->getSelectAlias() != $this->getSelectAlias()) continue;
 
