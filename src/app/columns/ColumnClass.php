@@ -260,14 +260,25 @@ class ColumnClass
         /** @var BaseForm $filter */
         foreach ($this->filters as $filter) {
             if (!is_string($filter->getValue())) continue;
-            if (!$filter->getOption('highlight')) continue;
-//            if ($filter->getSelectAlias() != $this->getSelectAlias()) continue;
+            $highlight = $filter->getOption('highlight');
+            if (!$highlight) continue;
 
-            $value = str_replace(
-                $filter->getValue(),
-                '<em class="layui-bg-orange">' . $filter->getValue() . '</em>',
-                $value
-            );
+            //限定本字段高亮, 还是所有字段高亮
+            if ($filter->getOption('highlight_self')) {
+                if ($filter->getSelectAlias() != $this->getSelectAlias()) continue;
+            }
+
+            if (is_callable($highlight)) {
+                $hValue = call_user_func($highlight, $filter->getValue());
+            } else if (is_string($highlight)) {
+                //自定义颜色
+                $hValue = '<em style="color: ' . $highlight . '">' . $filter->getValue() . '</em>';
+            } else {
+                // 默认, 黄色背景白色字体
+                $hValue = '<em class="layui-bg-orange">' . $filter->getValue() . '</em>';
+            }
+
+            $value = str_replace($filter->getValue(), $hValue, $value);
 
         }
         return $value;
