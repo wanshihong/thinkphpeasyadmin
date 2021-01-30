@@ -13,12 +13,14 @@ use think\facade\Db;
 class FormAutocomplete extends BaseForm
 {
 
+    protected $jsFiles = ['/easy_admin_static/js/autocomplete.js'];
+
     protected $options = [
         'table' => '',// 选择的查询表名
         'pk' => 'id',//使用查询,的主键
         'property' => 'text',//查询显示字段,
         //资源文件
-        'jsFiles' => ['/easy_admin_static/js/autocomplete.js'],
+        'jsFiles' => [],
     ];
     /**
      * 字段的模板路径

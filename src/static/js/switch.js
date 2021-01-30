@@ -2,8 +2,8 @@ layui.use(['form','layer'], function () {
     let form = layui.form,layer = layui.layer;
     //启用,禁用;
     form.on('switch(list_switch)', function (data) {
-        let value = data.elem.checked ? 1 : 0;
         let dataset = data.elem.dataset;
+        let value = data.elem.checked ? dataset.on : dataset.off;
 
         $.post(dataset.url, {
             value: value,

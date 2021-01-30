@@ -9,10 +9,12 @@ use think\db\Query;
 class FormDateTimeRange extends FormDateTime
 {
 
+    protected $jsFiles = ['/easy_admin_static/js/laydate.js'];
+
     protected $options = [
         'format' => 'Y-m-d H:i:s',
         'in_format' => '',//strtotime , 或者传入一个匿名函数
-        'jsFiles' => ['/easy_admin_static/js/laydate.js'],
+        'jsFiles' => [],
         // layui-date 文档 https://www.layui.com/doc/modules/laydate.html#use
         // options 使用官方参数
         'options' => [

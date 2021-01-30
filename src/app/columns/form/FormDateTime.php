@@ -8,8 +8,10 @@ use think\Exception;
 class FormDateTime extends BaseForm
 {
 
+    protected $jsFiles = ['/easy_admin_static/js/laydate.js'];
+
     protected $options = [
-        'jsFiles' => ['/easy_admin_static/js/laydate.js'],
+        'jsFiles' => [],
         // layui-date 文档 https://www.layui.com/doc/modules/laydate.html#use
         // options 使用官方参数
         'options' => [

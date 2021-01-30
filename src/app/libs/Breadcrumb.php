@@ -4,6 +4,8 @@
 namespace easyadmin\app\libs;
 
 
+use think\Exception;
+
 class Breadcrumb
 {
     /**
@@ -73,7 +75,7 @@ class Breadcrumb
     /**
      * 渲染页面
      * @return string
-     * @throws \think\Exception
+     * @throws Exception
      */
     public function __toString(): string
     {

@@ -102,33 +102,32 @@ class ListFilter
     public function setFilterQuery(Request $request, Query $query, array $fields, string $alias): ListFilter
     {
 
-        $this->filters = array_map(function ($column) use ($request, $query, $fields, $alias) {
-            /** @var BaseForm $column */
+        $this->filters = array_map(function ($filter) use ($request, $query, $fields, $alias) {
+            /** @var BaseForm $filter */
 
             //接收用户传参
-            $column->requestValue();
-            $val = $column->getValue();
+            $filter->requestValue();
+            $val = $filter->getValue();
             if ($val === null) {
-                return $column;
+                return $filter;
             }
-
+            
             // _query_ 表示全部的字段查询, 相当于一个输入框, 搜索全部的字段
-            if ($column->getField() === '_query_') {
-                $whereOrMap = [];
+            if ($filter->getField() === '_query_') {
                 //like 查询 全部的字段
-                $query->whereOr(function ($query) use ($fields,$val){
+                $query->whereOr(function ($query) use ($fields, $val) {
                     foreach ($fields as $field) {
                         $field = explode('as', $field);
-                        if(empty($val)) continue;
+                        if (empty($val)) continue;
                         $query->whereOr(trim($field[0]), 'like', "%{$val}%");
                     }
                 });
             } else {
                 //查询当前的一个字段
-                $column->filterQuery($query, $alias);
+                $filter->filterQuery($query, $alias);
             }
 
-            return $column;
+            return $filter;
 
         }, $this->filters);
 

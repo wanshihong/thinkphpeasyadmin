@@ -81,6 +81,7 @@ trait CrudRoutersTrait
     public function enable(Request $request): JsonAlias
     {
         try {
+            $this->request = $request;
             $id = $request->get('id');
             $field = $request->get('field');
             $value = $request->post('value', 0);

@@ -10,6 +10,10 @@ use easyadmin\app\libs\Resource;
 
 class ColumnClass
 {
+
+    protected $jsFiles = [];//默认的JS 资源文件
+    protected $cssFiles = [];//默认的 css 资源文件
+
     /**
      * 列的字段
      * @var string
@@ -163,7 +167,7 @@ class ColumnClass
      * @return false|mixed
      * @noinspection PhpMissingReturnTypeInspection
      */
-    public function getOption($name = '', $default = false)
+    public function getOption($name = '', $default = null)
     {
         if ($this->options && is_array($this->options) && array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -316,13 +320,28 @@ class ColumnClass
     public function addStatic()
     {
         $resource = Resource::getInstance();
-        foreach ($this->getOption('cssFiles', []) as $css) {
-            $resource->appendJsFile($css);
+
+        //默认的 js
+        foreach ($this->jsFiles as $js) {
+            $resource->appendJsFile($js);
         }
 
+        //默认的 css
+        foreach ($this->cssFiles as $css) {
+            $resource->appendCssFile($css);
+        }
+
+        //用户添加的 js
         foreach ($this->getOption('jsFiles', []) as $js) {
             $resource->appendJsFile($js);
         }
+
+        //用户添加的 css
+        foreach ($this->getOption('cssFiles', []) as $css) {
+            $resource->appendCssFile($css);
+        }
+
+
     }
 
 }
