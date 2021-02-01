@@ -59,7 +59,7 @@ trait CrudRewriteTrait
      * 定义列表字段
      * @param ListField $list
      */
-    protected function configField(ListField $list)
+    protected function configListField(ListField $list)
     {
         //默认查询数据库的字段添加上去
         /** @noinspection PhpUndefinedMethodInspection */
@@ -99,7 +99,7 @@ trait CrudRewriteTrait
      * 定义列表过滤器
      * @param ListFilter $filter
      */
-    protected function configFilter(ListFilter $filter)
+    protected function configListFilter(ListFilter $filter)
     {
         $filter->addFilter('_query_', ' ', FormText::class);
     }

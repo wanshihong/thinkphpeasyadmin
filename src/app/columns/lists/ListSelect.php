@@ -37,20 +37,22 @@ class ListSelect extends BaseList
     {
 
         foreach ($this->getOption('options') as $option) {
+            //值匹配上了
             if ($option['key'] == $data['value']) {
                 $color = isset($option['color']) ? $option['color'] : '';
                 $data['text'] = $option['text'];
+
+                //如果有颜色
                 if (empty($color)) break;
-
-                if (in_array($color, ['gray', 'black', 'blue', 'cyan', 'green', 'orange', 'red'])) {
-                    $color = $color == 'red' ? '' : $color;
-                    $data['class'] .= ' layui-bg-' . $color;
-                } else {
-                    $data['style'] = 'background-color:' . $color;
-                }
-
+                $data['attr'] .= " style=background-color:{$color}";
                 break;
             }
+        }
+
+        //未找到匹配的值
+        if (!isset($data['text'])) {
+            $data['text'] = '-';
+            $data['class'] .= ' layui-bg-gray';
         }
 
         return $data;

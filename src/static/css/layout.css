@@ -161,3 +161,28 @@
     box-sizing: border-box;
 }
 /* end 重写 FormAutocomplete 样式  */
+
+
+
+/* start 文件上传 */
+.upload-img-box{
+    box-sizing: border-box;
+    border: 1px dashed #e0e2e4 ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #cccccc;
+    font-size: 12px;
+}
+.upload-img-box .layui-icon{
+    font-size: 35px;
+    color: #cccccc;
+}
+
+.upload-img-box:hover,.upload-img-box:hover .layui-icon{
+    font-weight: bold;
+    color: #00b0e8;
+}
+/* end 文件上传 */

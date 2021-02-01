@@ -45,8 +45,8 @@ trait CrudRoutersTrait
 
         //配置字段
         $this->configList($page);
-        $this->configField($page->getField());
-        $this->configFilter($page->getFilter());
+        $this->configListField($page->getField());
+        $this->configListFilter($page->getFilter());
 
         //创建查询
         $listQuery->createQuery($page);
