@@ -12,9 +12,10 @@ class FormUpload extends BaseForm
 
     public $options = [
         'highlight' => false, //包含搜索的值是否高亮
-        'width' => 80,
-        'height' => 80,
-        'ratio' => 1.0,
+        'width' => 80, //宽
+        'height' => 80,//高
+        'ratio' => 1.0,//比例
+        'cropper' => true,//裁剪
     ];
 
 
@@ -31,6 +32,7 @@ class FormUpload extends BaseForm
 
         $ratio = $this->getOption('ratio');
 
+        $data['cropper'] = $this->getOption('cropper') ? 1 : 0;
         $data['width'] = $this->getOption('width');
         $data['height'] = $this->getOption('height') * $ratio;
         $data['ratio'] = $ratio;
