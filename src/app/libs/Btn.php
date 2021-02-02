@@ -45,6 +45,14 @@ class Btn
     private $template = 'btn';
 
     /**
+     * 是否启用 调整
+     *
+     * 按钮执行完成以后 跳转到上一页
+     * @var bool
+     */
+    private $referer = false;
+
+    /**
      * 点击按钮是否需要确认
      * 文字为真, 需要确认,并且提示相关的文字
      * @var string
@@ -192,17 +200,26 @@ class Btn
         //模板路径
         $path = $this->getTemplate();
 
-        //渲染
-        $template = new TemplateAlias();
-        $template->fetch($path, [
+
+        $data = [
             'url' => $url,
             'class' => implode(' ', $this->getClass()),
             'icon' => $this->getIcon(),
             'label' => $this->getLabel(),
             'confirmText' => $confirmText,
             'href' => $href,
-            'btnType' => $this->getBtnType()
-        ]);
+            'btnType' => $this->getBtnType(),
+        ];
+
+        if ($this->isReferer()) {
+            $data['referer'] = request()->server('HTTP_REFERER');
+        }else{
+            $data['referer'] = '';
+        }
+
+        //渲染
+        $template = new TemplateAlias();
+        $template->fetch($path,$data);
         return '';
     }
 
@@ -237,12 +254,28 @@ class Btn
      */
     public function setBtnType(string $btnType): Btn
     {
-        $types = ['a', 'btn', 'submit','button'];
+        $types = ['a', 'btn', 'submit', 'button'];
         if (!in_array($btnType, $types)) {
             throw new Exception('按钮类型错误');
         }
         $this->btnType = $btnType;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReferer(): bool
+    {
+        return $this->referer;
+    }
+
+    /**
+     * @param bool $referer
+     */
+    public function setReferer(bool $referer): void
+    {
+        $this->referer = $referer;
     }
 
 

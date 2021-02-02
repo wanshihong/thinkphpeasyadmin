@@ -11,7 +11,11 @@ function btnConfirm(btn) {
         if (!dataset.href) return;
         $.get(dataset.href, res => {
             if (res.code) {
-                layer.msg('操作成功', {icon: 1});
+                layer.msg('操作成功', {icon: 1}, function () {
+                    if (dataset.referer) {
+                        window.location.href = dataset.referer;
+                    }
+                });
                 $(btn).closest('tr').remove();
             } else {
                 layer.msg(res.msg, {icon: 2});

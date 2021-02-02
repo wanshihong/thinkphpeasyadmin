@@ -62,6 +62,7 @@ class Actions
         $template = array_key_exists('template', $options) ? $options['template'] : 'btn';
         $confirmText = array_key_exists('confirm', $options) ? $options['confirm'] : '';
         $btnType = array_key_exists('btn_type', $options) ? $options['btn_type'] : 'btn';
+        $referer = array_key_exists('referer', $options) ? $options['referer'] : false;
 
         $btn = new Btn();
         $btn->setClass($class);
@@ -72,6 +73,7 @@ class Actions
         $btn->setIsConfirm($confirmText);
         $btn->setUrl($url);
         $btn->setBtnType($btnType);
+        $btn->setReferer($referer);
 
         array_push($this->actions, $btn);
         return $this;

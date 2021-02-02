@@ -230,19 +230,20 @@ trait CrudRewriteTrait
 
         $params = [];
         if ($id) {
-            $params = [$this->pk => $id];
+            $params[$this->pk] = $id;
         }
 
         $action
             ->addAction('取消', 'window.history.back();', [
                 'icon' => 'layui-icon-return',
                 'class' => ['layui-btn-primary'],
-                'params' => $params
+                'params' => $params,
             ])
             ->addAction($id ? '更新' : '添加', 'javascript:', [
                 'icon' => 'layui-icon-ok',
                 'params' => $params,
                 'btn_type' => 'submit',
+                'referer' => true
             ]);
 
         if ($id) {
@@ -250,7 +251,8 @@ trait CrudRewriteTrait
                 'icon' => 'layui-icon-delete',
                 'class' => ['layui-btn-danger'],
                 'confirm' => '确定要删除数据吗?',
-                'params' => $params
+                'params' => $params,
+                'referer' => true
             ]);
         }
 

@@ -227,7 +227,9 @@ trait CrudRoutersTrait
                 //直接删除
                 $query->delete();
             }
-            return $this->success([]);
+            return $this->success([
+                'url' => url('lists')
+            ]);
         } catch (ExceptionAlias $e) {
             return $this->error($e->getMessage());
         }
