@@ -25,8 +25,6 @@ use think\response\Json as JsonAlias;
  */
 trait CrudRoutersTrait
 {
-    use CrudRewriteTrait;
-
 
     /**
      * @param RequestAlias $request

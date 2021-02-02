@@ -5,6 +5,7 @@ namespace easyadmin\controller;
 
 
 use easyadmin\app\libs\Menu;
+use easyadmin\app\traits\CrudRewriteTrait;
 use easyadmin\app\traits\CrudRoutersTrait;
 use Exception;
 use stdClass as stdClassAlias;
@@ -15,7 +16,7 @@ use think\response\Json;
 class Admin
 {
     use CrudRoutersTrait;
-
+    use CrudRewriteTrait;
 
     //主键 字段名称
     protected $pk = 'id';
