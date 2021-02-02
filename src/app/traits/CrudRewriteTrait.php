@@ -220,7 +220,7 @@ trait CrudRewriteTrait
 
 
     /**
-     * 查看详情按钮配置
+     * 添加和更新页面的操作按钮
      * @param Actions $action
      * @throws ExceptionAlias
      */
@@ -233,16 +233,17 @@ trait CrudRewriteTrait
             $params = [$this->pk => $id];
         }
 
-        $action->addAction('取消', 'window.history.back();', [
-            'icon' => 'layui-icon-return',
-            'class' => ['layui-btn-primary'],
-            'params' => $params
-        ])->addAction($id ? '更新' : '添加', 'javascript:', [
-            'icon' => 'layui-icon-ok',
-            'params' => $params,
-            'btn_type' => 'submit',
-            'confirm' => '确认提交吗?'
-        ]);
+        $action
+            ->addAction('取消', 'window.history.back();', [
+                'icon' => 'layui-icon-return',
+                'class' => ['layui-btn-primary'],
+                'params' => $params
+            ])
+            ->addAction($id ? '更新' : '添加', 'javascript:', [
+                'icon' => 'layui-icon-ok',
+                'params' => $params,
+                'btn_type' => 'submit',
+            ]);
 
         if ($id) {
             $action->addAction('删除', 'delete', [
@@ -291,12 +292,12 @@ trait CrudRewriteTrait
     /**
      * 表单写入
      * @param $data
-     * @return int|string
+     * @return array
      */
-    protected function formInsert($data)
+    protected function formInsert($data): array
     {
-        $data = $this->insertBefore($data);
         $data = $this->verifyData($data);
+        $data = $this->insertBefore($data);
         /** @noinspection PhpDynamicAsStaticMethodCallInspection */
         $id = Db::name($this->getTableName())->insertGetId($data);
         $data[$this->pk] = $id;
@@ -315,8 +316,8 @@ trait CrudRewriteTrait
      */
     protected function formUpdate($data, $id)
     {
-        $data = $this->updateBefore($data);
         $data = $this->verifyData($data);
+        $data = $this->updateBefore($data);
         Db::name($this->getTableName())
             ->where($this->pk, $id)
             ->update($data);
@@ -325,43 +326,44 @@ trait CrudRewriteTrait
         return $data;
     }
 
-    //接收参数之后执行
-    protected function requestAfter($data)
+    //接收参数之后执行, post 接收到参数以后就调用
+    protected function requestAfter($data): array
     {
         return $data;
     }
 
-    //写入之前执行
-    protected function insertBefore($data)
+    //写入之前执行, 调用 insert 写入方法之前调用
+    protected function insertBefore($data): array
     {
         return $data;
     }
 
-    //写入之后执行
-    protected function insertAfter($data)
+    //写入之后执行,调用 insert 写入方法之后调用
+    protected function insertAfter($data): array
     {
         return $data;
     }
 
-    //更新之前执行
-    protected function updateBefore($data)
+    //更新之前执行, 调用 update 更新方法之前调用
+    protected function updateBefore($data): array
     {
         return $data;
     }
 
-    //更新之后执行
-    protected function updateAfter($data)
+    //更新之后执行, 调用 update 更新方法之后调用
+    protected function updateAfter($data): array
     {
         return $data;
     }
 
     //添加和更新 数据验证
-    protected function verifyData($data)
+    // 在 requestAfter 之后 insertBefore updateBefore 之前执行
+    protected function verifyData($data): array
     {
         return $data;
     }
 
-    //更新列表的查询语句
+    //更新页面的查询语句
     protected function formQuery(Query $query, $alias)
     {
 

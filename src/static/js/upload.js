@@ -27,10 +27,12 @@ let MyUpload = {
         return new File([u8arr], filename + hz, {type: mime});
     },
 
-    uploadImg: function ($self, id_prev, layer, formData, layerCropperIndex) {
+    uploadImg: function ($self, layer, formData, layerCropperIndex) {
         let loadIndex = layer.load();
+        let id_prev = $self.data('id');
+        let url = $self.data('url');
         $.ajax({
-            url: 'upload',
+            url: url,
             type: 'POST',
             cache: false,
             data: formData,
@@ -54,7 +56,10 @@ let MyUpload = {
         });
     },
 
-    cropper: function (file, $self, id_prev, layer, width, height) {
+    cropper: function (file, $self, layer) {
+        let id_prev = $self.data('id');
+        let width = $self.data('width');
+        let height = $self.data('height');
         let fread = new FileReader();
         let cropper;
         fread.onloadend = function () {
@@ -89,7 +94,7 @@ let MyUpload = {
                     //构建 formData 上传文件
                     let formData = new FormData();
                     formData.append('file', file);
-                    MyUpload.uploadImg($self, id_prev, layer, formData, layerCropperIndex);
+                    MyUpload.uploadImg($self, layer, formData, layerCropperIndex);
                 }
 
             });
@@ -106,38 +111,32 @@ layui.use(['jquery', 'layer'], function () {
     let $ = layui.jquery, layer = layui.layer;
 
 
-    $('.upload-img-box').each(function () {
+    $('.upload-img-box').click(function () {
         let $self = $(this);
-        let id_prev = $self.data('id');
-        let width = $self.data('width');
-        let height = $self.data('height');
         let isCropper = $self.data('cropper');
-        $self.click(function () {
+        let fileInput = $('.upload-img-file-input');
 
-            let fileInput = $('.upload-img-file-input');
+        if (!fileInput.length) {
+            $('body').append("<input type='file' class='upload-img-file-input' style='position: fixed;left: -5000px;' />");
+            fileInput = $('.upload-img-file-input');
+            fileInput.change(function () {
+                let file = $(this)[0].files[0];
+                if (!file) return;
 
-            if (!fileInput.length) {
-                $('body').append("<input type='file' class='upload-img-file-input' style='position: fixed;left: -5000px;' />");
-                fileInput = $('.upload-img-file-input');
-                fileInput.change(function () {
-                    let file = $(this)[0].files[0];
-                    if (!file) return;
+                //如果是图片类型 , 并且开启了裁剪
+                if (MyUpload.checkImage(file.type) && isCropper) {
+                    MyUpload.cropper(file, $self, layer)
+                } else {
+                    let formData = new FormData();
+                    formData.append('file', file);
+                    MyUpload.uploadImg($self, layer, formData, 0)
+                }
 
-                    //如果是图片类型 , 并且开启了裁剪
-                    if (MyUpload.checkImage(file.type) && isCropper) {
-                        MyUpload.cropper(file, $self, id_prev, layer, width, height)
-                    } else {
-                        let formData = new FormData();
-                        formData.append('file', file);
-                        MyUpload.uploadImg($self, id_prev, layer, formData, 0)
-                    }
+            });
+        }
 
-                });
-            }
+        fileInput.click();
 
-            fileInput.click();
-
-        });
     });
 
 

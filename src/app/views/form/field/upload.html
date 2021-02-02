@@ -4,8 +4,13 @@
      data-url="{$url}" data-width="{$width}" data-height="{$height}"
      data-cropper="{$cropper}"
 >
-    <i class="layui-icon layui-icon-upload-drag"></i>
-    <span>点击上传</span>
+    {if $value }
+         <img src="{$value}" alt="" style="width: 100%;height: 100%;">
+    {else/}
+        <i class="layui-icon layui-icon-upload-drag"></i>
+        <span>点击上传</span>
+    {/if}
+
 </div>
 
 <input type="hidden" {$attr} id="{$elem_id}_input" class="layui-input {$class}" name="{$field}" value="{$value}">

@@ -42,6 +42,7 @@ class FormSwitch extends BaseForm
         $onValue = $this->getOption('success', 1);
         $data['isChecked'] = $this->getValue() == $onValue ? 'checked' : '';
         $data['text'] = $this->getOption('text');
+        $data['success'] = $this->getOption('success');
 
         return $data;
     }
