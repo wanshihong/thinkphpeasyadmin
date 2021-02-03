@@ -178,7 +178,7 @@ class Btn
 
 
     /**
-     * 渲染列表的新增按钮
+     * 渲染页面的按钮
      * @return string
      * @throws ExceptionAlias
      */
@@ -191,35 +191,29 @@ class Btn
 
         $url = Lib::formatUrl($url, $params);
 
-        $href = $url;
-        $confirmText = $this->getIsConfirm();
-        if ($confirmText) {
-            $href = "javascript:";
-        }
-
         //模板路径
         $path = $this->getTemplate();
 
+        $class = is_array($this->getClass()) ? implode(' ', $this->getClass()) : $this->getClass();
 
         $data = [
             'url' => $url,
-            'class' => implode(' ', $this->getClass()),
+            'class' => $class,
             'icon' => $this->getIcon(),
             'label' => $this->getLabel(),
-            'confirmText' => $confirmText,
-            'href' => $href,
+            'confirmText' => $this->getIsConfirm(),
             'btnType' => $this->getBtnType(),
         ];
 
         if ($this->isReferer()) {
             $data['referer'] = request()->server('HTTP_REFERER');
-        }else{
+        } else {
             $data['referer'] = '';
         }
 
         //渲染
         $template = new TemplateAlias();
-        $template->fetch($path,$data);
+        $template->fetch($path, $data);
         return '';
     }
 

@@ -24,6 +24,9 @@ class Actions
      */
     private $template = 'actions';
 
+
+    private $options = [];
+
     /**
      * 设置模板路径
      * 设置列表的模板路径
@@ -56,26 +59,31 @@ class Actions
      */
     public function addAction($label = '', $url = '', $options = []): Actions
     {
-        $class = array_key_exists('class', $options) ? $options['class'] : [];
-        $icon = array_key_exists('icon', $options) ? $options['icon'] : '';
-        $params = array_key_exists('params', $options) ? $options['params'] : [];
-        $template = array_key_exists('template', $options) ? $options['template'] : 'btn';
-        $confirmText = array_key_exists('confirm', $options) ? $options['confirm'] : '';
-        $btnType = array_key_exists('btn_type', $options) ? $options['btn_type'] : 'btn';
-        $referer = array_key_exists('referer', $options) ? $options['referer'] : false;
+        $this->setOptions($options);
 
         $btn = new Btn();
-        $btn->setClass($class);
-        $btn->setIcon($icon);
         $btn->setLabel($label);
-        $btn->setParams($params);
-        $btn->setTemplate($template);
-        $btn->setIsConfirm($confirmText);
         $btn->setUrl($url);
-        $btn->setBtnType($btnType);
-        $btn->setReferer($referer);
+        $btn->setClass($this->getOption('class', ''));
+        $btn->setIcon($this->getOption('icon', ''));
+        $btn->setParams($this->getOption('params', []));
+        $btn->setTemplate($this->getOption('template', 'btn'));
+        $btn->setIsConfirm($this->getOption('confirm', ''));
+        $btn->setBtnType($this->getOption('btn_type', 'btn'));
+        $btn->setReferer($this->getOption('referer', false));
 
         array_push($this->actions, $btn);
+
+
+        $resource = Resource::getInstance();
+        foreach ($this->getOption('jsFiles',[]) as $js) {
+            $resource->appendJsFile($js);
+        }
+        foreach ($this->getOption('cssFiles',[]) as $css) {
+            $resource->appendCssFile($css);
+        }
+
+
         return $this;
     }
 
@@ -102,5 +110,37 @@ class Actions
             'actions' => $this->getActions(),
         ]);
         return '';
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * 获取一个选项
+     * @param string $name
+     * @param false $default
+     * @return false|mixed
+     * @noinspection PhpMissingReturnTypeInspection
+     */
+    public function getOption($name = '', $default = null)
+    {
+        if ($this->options && is_array($this->options) && array_key_exists($name, $this->options)) {
+            return $this->options[$name];
+        }
+
+        return $default;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions(array $options): void
+    {
+        $this->options = $options;
     }
 }
