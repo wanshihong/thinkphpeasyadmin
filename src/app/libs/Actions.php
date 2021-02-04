@@ -61,10 +61,15 @@ class Actions
     {
         $this->setOptions($options);
 
+        $class = $this->getOption('class', []);
+        if(!is_array($class)){
+            $class = explode(' ',$class);
+        }
+
         $btn = new Btn();
         $btn->setLabel($label);
         $btn->setUrl($url);
-        $btn->setClass($this->getOption('class', ''));
+        $btn->setClass($class);
         $btn->setIcon($this->getOption('icon', ''));
         $btn->setParams($this->getOption('params', []));
         $btn->setTemplate($this->getOption('template', 'btn'));

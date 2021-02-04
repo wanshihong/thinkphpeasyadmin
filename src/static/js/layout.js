@@ -30,7 +30,11 @@ function clickBtn(btn) {
     if (dataset.confirm) {
         btnConfirm(btn);
     } else if (dataset.href) {
-        window.location.href = dataset.href;
+        if(dataset.referer){
+            window.location.href = dataset.referer;
+        }else{
+            window.location.href = dataset.href;
+        }
         return false;
     }
 

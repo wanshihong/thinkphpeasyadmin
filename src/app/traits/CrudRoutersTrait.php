@@ -188,7 +188,6 @@ trait CrudRoutersTrait
             return redirect(url('lists'));
         }
         $show = new PageShow($this->getTableName(), $this->getPageName(), $this->pk);
-        $this->configShow($show);
         $show->createQuery($id);
         $this->configShowQuery($show->getQuery(), $show->getAlias());
         $this->configShow($show);

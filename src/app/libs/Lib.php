@@ -19,4 +19,16 @@ class Lib
         }
         return $url;
     }
+
+
+    public function getArrayValue(array $arr, string $field, $default = null)
+    {
+        if (array_key_exists($field, $arr)) {
+            return $arr[$field];
+        } else {
+            return $default;
+        }
+
+    }
+
 }

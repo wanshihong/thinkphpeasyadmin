@@ -181,4 +181,18 @@ class PageShow extends Page
         return $this;
     }
 
+    /**
+     * 添加一个列表 字段
+     * @param string $field 数据表的字段
+     * @param string $label
+     * @param string $fieldClass 字段的class引用
+     * @param array $options 字段的其他属性
+     * @return PageShow
+     */
+    public function addField(string $field, string $label, string $fieldClass, $options = []): PageShow
+    {
+        $this->getField()->addField($field, $label, $fieldClass, $options);
+        return $this;
+    }
+
 }

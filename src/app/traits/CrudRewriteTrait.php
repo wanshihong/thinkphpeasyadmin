@@ -31,7 +31,7 @@ trait CrudRewriteTrait
 {
 
     /**
-     * 定义列表字段
+     * 定义列表的默认按钮
      * @param PageList $page
      */
     protected function configList(PageList $page)
@@ -126,9 +126,9 @@ trait CrudRewriteTrait
 
     /**
      * 查看详情配置
-     * @param PageShow $show
+     * @param PageShow $page
      */
-    protected function configShow(PageShow $show)
+    protected function configShow(PageShow $page)
     {
     }
 
@@ -169,20 +169,24 @@ trait CrudRewriteTrait
             $this->pk => $id
         ];
 
-        $action->addAction('返回', 'window.history.back();', [
-            'icon' => 'layui-icon-return',
-            'class' => ['layui-btn-primary'],
-            'params' => $params
-        ])->addAction('编辑', 'edit', [
-            'icon' => 'layui-icon-edit',
-            'class' => [''],
-            'params' => $params
-        ])->addAction('删除', 'delete', [
-            'icon' => 'layui-icon-delete',
-            'class' => ['layui-btn-danger'],
-            'confirm' => '确定要删除数据吗?',
-            'params' => $params
-        ]);
+        $action
+            ->addAction('返回', 'javascript:', [
+                'icon' => 'layui-icon-return',
+                'class' => ['layui-btn-primary'],
+                'params' => $params,
+                'referer' => true,
+            ])
+            ->addAction('编辑', 'edit', [
+                'icon' => 'layui-icon-edit',
+                'class' => [''],
+                'params' => $params
+            ])
+            ->addAction('删除', 'delete', [
+                'icon' => 'layui-icon-delete',
+                'class' => ['layui-btn-danger'],
+                'confirm' => '确定要删除数据吗?',
+                'params' => $params
+            ]);
     }
 
 
@@ -208,7 +212,6 @@ trait CrudRewriteTrait
 
         foreach ($res as $item) {
             $field = $item['Field'];
-//            $label = $item['Comment'];
             $class = FormText::class;
             if ($field == $this->pk) {
                 $class = FormHidden::class;
@@ -236,7 +239,7 @@ trait CrudRewriteTrait
         $action
             ->addAction('取消', 'window.history.back();', [
                 'icon' => 'layui-icon-return',
-                'class' => ['layui-btn-primary'],
+                'class' => 'layui-btn-primary',
                 'params' => $params,
             ])
             ->addAction($id ? '更新' : '添加', 'javascript:', [

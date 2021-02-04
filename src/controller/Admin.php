@@ -4,7 +4,10 @@
 namespace easyadmin\controller;
 
 
+use easyadmin\app\libs\Lib;
 use easyadmin\app\libs\Menu;
+use easyadmin\app\libs\Resource;
+use easyadmin\app\libs\Template;
 use easyadmin\app\traits\CrudRewriteTrait;
 use easyadmin\app\traits\CrudRoutersTrait;
 use Exception;
@@ -96,6 +99,33 @@ class Admin
             'msg' => $msg,
             'data' => new stdClassAlias()
         ]);
+    }
+
+    /**
+     * 渲染模板
+     * @param $path
+     * @param array $data
+     * @return string
+     * @throws \think\Exception
+     */
+    protected function fetch($path, $data = []): string
+    {
+        $lib = new Lib();
+        $data['__page_name__'] = $lib->getArrayValue($data, '__page_name__', $this->getPageName());
+
+        //资源文件
+        $resource = Resource::getInstance();
+        $data['__css__'] = $resource->getCssFiles();
+        $data['__js__'] = $resource->getJsFiles();
+
+        //导航
+        $data['__menu__'] = Menu::getInstance();
+        $data['__breadcrumb__'] = $lib->getArrayValue($data, '__breadcrumb__', '');
+
+
+        $template = new Template();
+        $template->fetch($path, $data);
+        return '';
     }
 
 

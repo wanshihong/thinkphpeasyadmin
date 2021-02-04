@@ -8,15 +8,20 @@
 
 {block name="header_action"}
 <!-- 添加按钮 -->
+{if isset($addAction)}
 {$addAction}
+{/if}
 {/block}
 
 {block name="filter"}
-    {$table->getFilter()}
+{if isset($table)}
+{$table->getFilter()}
+{/if}
 {/block}
 
 
 {block name="body"}
+{if isset($table)}
 <table class="layui-table layui-form" lay-skin="nob">
 
     <!-- 表头 -->
@@ -51,14 +56,16 @@
     </tbody>
     {/foreach}
 </table>
+{/if}
 {/block}
 
 {block name="pagination"}
 <!-- 分页 -->
+{if isset($table)}
 {$table->getPage()}
+{/if}
 {/block}
 
+
 {block name="body_script"}
-<script>
-</script>
 {/block}

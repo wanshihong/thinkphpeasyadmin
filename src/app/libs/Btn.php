@@ -132,9 +132,9 @@ class Btn
     }
 
     /**
-     * @param array $class
+     * @param $class
      */
-    public function setClass(array $class)
+    public function setClass($class)
     {
         $this->class = $class;
     }
