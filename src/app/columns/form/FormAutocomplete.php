@@ -34,7 +34,7 @@ class FormAutocomplete extends BaseForm
         $data['pk'] = $this->getOption('pk');
         $data['table'] = $this->getOption('table');
         $data['property'] = $this->getOption('property');
-        $data['url'] = url("autocomplete_select");
+        $data['url'] = $this->getOption('url',url("autocomplete_select"));
         return $data;
     }
 

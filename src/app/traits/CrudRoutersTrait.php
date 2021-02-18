@@ -4,6 +4,8 @@
 namespace easyadmin\app\traits;
 
 
+use easyadmin\app\columns\form\BaseForm;
+use easyadmin\app\columns\form\FormAutocomplete;
 use easyadmin\app\libs\ListQuery;
 use easyadmin\app\libs\PageForm;
 use easyadmin\app\libs\PageList;
@@ -163,7 +165,6 @@ trait CrudRoutersTrait
             $id = $request->post($this->pk);
 
             $form = $this->formRequestParam($page->getFields());
-
             $data = $this->formSave($form, $id);
 
             return $this->success($data);
@@ -245,23 +246,49 @@ trait CrudRoutersTrait
      */
     public function autocomplete_select(Request $request)
     {
+        $this->request = $request;
         $pk = $request->get('pk');
         $table = $request->get('table');
         $property = $request->get('property');
         $search = $request->get('search');
         $default = $request->get('default');
+        $fieldName = $request->get('field');
 
         if (empty($pk) || empty($table) || empty($property)) {
             return $this->error('缺少参数');
         }
 
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $query = Db::table($table)->field("`{$pk}`,`{$property}`")->limit(30);
-        if ($search) {
-            $query->where($property, 'like', "%{$search}%");
+        $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
+        $this->configFormField($page);
+
+
+        // 获取自定义查询
+        $query = false;
+        /** @var BaseForm $field */
+        foreach ($page->getFields() as $field) {
+            if ($field->getField() != $fieldName) continue;
+            $queryFun = $field->getOption('query');
+            if (!is_callable($queryFun)) continue;
+            if ($field instanceof FormAutocomplete) {
+                $query = call_user_func($queryFun, $table, $pk, $property, $search, $default);
+            }
         }
-        if ($default) {
-            $query->where($pk, $default);
+
+        //默认的查询
+        if (empty($query)) {
+            /** @noinspection PhpDynamicAsStaticMethodCallInspection */
+            $query = Db::table($table)->field("`{$pk}`,`{$property}`")->limit(30);
+
+            //处理搜索
+            if ($search) {
+                $query->where($property, 'like', "%{$search}%");
+            }
+
+            //处理默认值
+            if ($default) {
+                $query->where($pk, $default);
+            }
+
         }
 
         $res = $query->select();

@@ -26,17 +26,6 @@ class FormCheckbox extends BaseForm
      */
     protected $templatePath = 'form:field:checkbox';
 
-    /**
-     * 格式化数据
-     * 格式化后存入数据库,或者操作数据库
-     * @param $val
-     * @return mixed
-     */
-    public function inFormat($val)
-    {
-        $ret = $val == 'on' ? $this->getOption('success', 1) : $this->getOption('error', 0);
-        return parent::inFormat($ret);
-    }
 
     /**
      * @param $data
@@ -46,8 +35,34 @@ class FormCheckbox extends BaseForm
     {
         $onValue = $this->getOption('success', 1);
         $data['isChecked'] = $this->getValue() == $onValue ? 'checked' : '';
-        $data['text'] = $this->getOption('text');
+        $data['title'] = $this->getOption('title','');
+        $data['success'] = $this->getOption('success',1);
 
         return $data;
     }
+
+
+    /**
+     * 接收用户输入的值
+     * @param array $data 外部接收数据得数组
+     * @return array|false|int|mixed
+     */
+    public function requestValue(&$data = [])
+    {
+        $request = request();
+        $fieldName = $this->getSelectAlias();
+
+        //接收用户参数
+        $value = $request->post($fieldName, $request->get($fieldName, $this->getOption('default')));
+
+        if ($value === null) {
+            $value = $this->getOption('error',0);
+        }
+        $value = $this->inFormat($value);
+        $data[$fieldName] = $value;
+
+        $this->setValue($value);
+        return $data;
+    }
+
 }

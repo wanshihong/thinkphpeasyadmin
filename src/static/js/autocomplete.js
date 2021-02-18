@@ -1,5 +1,6 @@
 function renderSelect2($, select, xmSelect) {
     let dataset = select.data();
+    console.log(dataset);
     let id = select.attr('id');
     let selectInput = xmSelect.render({
         el: `#${id}`,
@@ -24,6 +25,7 @@ function renderSelect2($, select, xmSelect) {
                 pk: dataset.pk,
                 table: dataset.table,
                 property: dataset.property,
+                field: dataset.name,
             }, data => {
                 if (!data.code) {
                     layer.msg(data.msg, {icon: 2});
@@ -36,6 +38,7 @@ function renderSelect2($, select, xmSelect) {
 
     if (dataset.value) {
         $.get(dataset.url, {
+            field: dataset.name,
             pk: dataset.pk,
             table: dataset.table,
             property: dataset.property,

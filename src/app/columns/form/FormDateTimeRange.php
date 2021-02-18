@@ -4,6 +4,7 @@
 namespace easyadmin\app\columns\form;
 
 use easyadmin\app\columns\ColumnClass;
+use easyadmin\app\libs\Lib;
 use think\db\Query;
 
 class FormDateTimeRange extends FormDateTime
@@ -14,14 +15,16 @@ class FormDateTimeRange extends FormDateTime
     protected $options = [
         'format' => 'Y-m-d H:i:s',
         'in_format' => '',//strtotime , 或者传入一个匿名函数
+        'end_field' => '', // 第二字段
         'jsFiles' => [],
         // layui-date 文档 https://www.layui.com/doc/modules/laydate.html#use
         // options 使用官方参数
         'options' => [
-            'range' => '-',
-            'type' => 'datetime'
+            'range' => '|',
+            'type' => 'date',
         ]
     ];
+
 
     /**
      * 获取分隔符
@@ -29,12 +32,10 @@ class FormDateTimeRange extends FormDateTime
      */
     protected function getSeparator(): string
     {
-        $separator = '-';
-        $options = $this->getOption('options');
-        if ($options && array_key_exists('range', $options)) {
-            $separator = $options['range'];
-        }
-        return $separator;
+        $lib = new Lib();
+        $options = $this->getOption('options', []);
+        return $lib->getArrayValue($options, 'range', '|');
+
     }
 
     public function getValue(): array
@@ -100,12 +101,15 @@ class FormDateTimeRange extends FormDateTime
 
                 if (is_callable($format) || function_exists($format)) {
                     $value = call_user_func($format, $value);
+                } elseif (is_string($format)) {
+                    $value = date($format, $value);
                 }
 
                 return $value;
             }, $arr);
 
             $val = implode(" {$separator} ", $arr);
+
             if ($val === " {$separator} ") return '';
             return $val;
         }
@@ -136,7 +140,6 @@ class FormDateTimeRange extends FormDateTime
         $ret = array_map(function ($item) {
             return $this->inFormat($item);
         }, $arr);
-
 
         //如果第二字段参数接收
         $endField = $this->getOption('end_field');
@@ -189,6 +192,30 @@ class FormDateTimeRange extends FormDateTime
         }
 
         return $fieldName;
+    }
+
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function formatData($data)
+    {
+        $options = $this->getOption('options', []);
+
+        $lib = new Lib();
+
+        $options['range'] = $this->getSeparator();
+        $options['type'] = $lib->getArrayValue($options, 'type', 'date');
+        if ($options['type'] === 'date') {
+            unset($options['type']);
+        }
+
+        $data['options'] = json_encode($options);
+        $render_class = 'lay-date' . time() . mt_rand(10000, 99999);
+        $data['class'] .= " lay-date {$render_class}";
+        $data['render_class'] = $render_class;
+        return $data;
     }
 
 
