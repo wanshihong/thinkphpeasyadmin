@@ -4,9 +4,11 @@
 namespace easyadmin\app\columns\form;
 
 
+use think\Collection;
 use think\db\exception\DataNotFoundException as DataNotFoundExceptionAlias;
 use think\db\exception\DbException as DbExceptionAlias;
 use think\db\exception\ModelNotFoundException as ModelNotFoundExceptionAlias;
+use think\db\Query;
 use think\Exception;
 use think\facade\Db;
 
@@ -59,6 +61,22 @@ class FormSelect extends BaseForm
         return $data;
     }
 
+    protected function getQueryArr($query, $pk, $property)
+    {
+        $options = [];
+        foreach ($query as $item) {
+            if (!array_key_exists($pk, $item)) throw new Exception("{$pk} 不存在于查询字段给中");
+            if (!array_key_exists($property, $item)) throw new Exception("{$property} 不存在于查询字段给中");
+
+            array_push($options, [
+                'key' => $item[$pk],
+                'text' => $item[$property],
+            ]);
+
+        }
+        return $options;
+    }
+
     /**
      * 解析 query
      * @return array
@@ -70,20 +88,27 @@ class FormSelect extends BaseForm
         if (empty($query)) {
             return [];
         }
-
         $options = [];
+        if (is_callable($query)){
+            $options = call_user_func($query);
+            if($options instanceof Collection){
+                return $options->toArray();
+            }
+            return $options;
+        }
+
+
         $pk = $this->getOption('pk', 'id');
         $property = $this->getOption('property', 'text');
-        foreach ($query as $item) {
-            if (!array_key_exists($pk, $item)) throw new Exception("{$pk} 不存在于查询字段给中");
-            if (!array_key_exists($property, $item)) throw new Exception("{$property} 不存在于查询字段给中");
 
-            array_push($options, [
-                'key' => $item[$pk],
-                'text' => $item[$property],
-            ]);
 
+        if ($query instanceof Collection) {
+            $options = $this->getQueryArr($query, $pk, $property);
+        } elseif ($query instanceof Query) {
+            $query = $query->field("{$pk},{$property},{$pk}")->select();
+            $options = $this->getQueryArr($query, $pk, $property);
         }
+
         return $options;
     }
 

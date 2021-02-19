@@ -12,7 +12,7 @@
     {/if}
 
 </div>
-
+<div style="color: #d2d2d2;font-size: 12px;">{if !$cropper}建议{/if}尺寸 {$width}*{$height}  比例 {:sprintf("%.2f",$width/$height)}:1</div>
 <input type="hidden" {$attr} id="{$elem_id}_input" class="layui-input {$class}" name="{$field}" value="{$value}">
 
 {/block}
