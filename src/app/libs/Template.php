@@ -5,7 +5,6 @@ namespace easyadmin\app\libs;
 
 
 use think\Exception;
-use easyadmin\app\libs\ThinkTemplate as thinkTemplate;
 
 /**
  * 模板类
@@ -14,7 +13,7 @@ use easyadmin\app\libs\ThinkTemplate as thinkTemplate;
  * 原来的 private 部分修改成  protected 方便继承后重写
  * @package src\app\libs
  */
-class Template extends thinkTemplate
+class Template extends \think\Template
 {
 
     protected $dirs = [];
