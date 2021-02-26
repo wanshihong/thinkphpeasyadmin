@@ -5,6 +5,7 @@ namespace easyadmin\app\columns;
 
 
 use easyadmin\app\columns\form\BaseForm;
+use easyadmin\app\libs\Lib;
 use easyadmin\app\libs\ListTableRow;
 use easyadmin\app\libs\Resource;
 
@@ -169,11 +170,8 @@ class ColumnClass
      */
     public function getOption($name = '', $default = null)
     {
-        if ($this->options && is_array($this->options) && array_key_exists($name, $this->options)) {
-            return $this->options[$name];
-        }
-
-        return $default;
+        $lib = new Lib();
+        return $lib->getArrayValue($this->options,$name,$default);
     }
 
     /**

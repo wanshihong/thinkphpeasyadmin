@@ -49,11 +49,10 @@ class FormCheckbox extends BaseForm
      */
     public function requestValue(&$data = [])
     {
-        $request = request();
         $fieldName = $this->getSelectAlias();
 
         //接收用户参数
-        $value = $request->post($fieldName, $request->get($fieldName, $this->getOption('default')));
+        $value = request()->post($fieldName, request()->get($fieldName, $this->getOption('default')));
 
         if ($value === null) {
             $value = $this->getOption('error',0);

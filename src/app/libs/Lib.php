@@ -23,12 +23,23 @@ class Lib
 
     public function getArrayValue(array $arr, string $field, $default = null)
     {
-        if (array_key_exists($field, $arr)) {
+        if (array_key_exists($field, $arr) && $arr[$field]) {
             return $arr[$field];
         } else {
             return $default;
         }
 
+    }
+
+    /**
+     * 渲染模板的时候,没有传递参数,取当前访问的方法
+     * @param string $path
+     * @return mixed|string
+     */
+    public function getViewPath($path = '')
+    {
+        if ($path) return $path;
+        return request()->controller() . ':' . request()->action();
     }
 
 }

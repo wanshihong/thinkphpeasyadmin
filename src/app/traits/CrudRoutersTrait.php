@@ -16,8 +16,6 @@ use think\db\exception\DbException as DbExceptionAlias;
 use think\db\exception\ModelNotFoundException as ModelNotFoundExceptionAlias;
 use think\Exception;
 use think\facade\Db;
-use think\Request;
-use think\Request as RequestAlias;
 use think\response\Json as JsonAlias;
 
 /**
@@ -29,17 +27,15 @@ trait CrudRoutersTrait
 {
 
     /**
-     * @param RequestAlias $request
      * @return mixed
      * @throws DbExceptionAlias
      * @throws ExceptionAlias
      */
-    public function lists(Request $request)
+    public function lists()
     {
-        $this->request = $request;
 
         //实例化查询
-        $listQuery = new ListQuery($this->request);
+        $listQuery = new ListQuery();
         //实例化数据表格
         $page = new PageList($this->getTableName(), $this->getPageName(), $this->pk);
 
@@ -75,22 +71,20 @@ trait CrudRoutersTrait
 
     /**
      * 启用与禁用
-     * @param RequestAlias $request
      * @return JsonAlias
      */
-    public function enable(Request $request): JsonAlias
+    public function enable(): JsonAlias
     {
         try {
-            $this->request = $request;
-            $id = $request->get('id');
-            $field = $request->get('field');
-            $value = $request->post('value', 0);
+            $id = request()->get('id');
+            $field = request()->get('field');
+            $value = request()->post('value', 0);
 
             if (empty($id) || empty($field)) throw new ExceptionAlias('缺少参数');
 
             /** @noinspection PhpDynamicAsStaticMethodCallInspection */
             $query = Db::table($this->getTableName());
-            $res = $query->where($this->pk, $id)->save([$field => $value]);
+            $res = $query->where($this->pk,'=', $id)->save([$field => $value]);
             return $this->success([
                 'res' => $res
             ]);
@@ -102,13 +96,11 @@ trait CrudRoutersTrait
 
     /**
      * 添加页面
-     * @param RequestAlias $request
      * @return mixed|string
      * @throws Exception
      */
-    public function add(Request $request): string
+    public function add( ): string
     {
-        $this->request = $request;
         $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
 
         $this->configFormField($page);
@@ -122,15 +114,13 @@ trait CrudRoutersTrait
 
     /**
      * 修改页面
-     * @param RequestAlias $request
      * @return mixed|string
      * @throws Exception
      */
-    public function edit(Request $request): string
+    public function edit(): string
     {
-        $id = $request->get($this->pk);
+        $id = request()->get($this->pk);
         if (empty($id)) throw new Exception("缺少{$this->pk}参数");
-        $this->request = $request;
         $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
         $page->setId($id);
 
@@ -153,16 +143,14 @@ trait CrudRoutersTrait
 
     /**
      * 保存记录
-     * @param RequestAlias $request
      * @return JsonAlias
      */
-    public function form_save(Request $request): JsonAlias
+    public function form_save( ): JsonAlias
     {
         try {
-            $this->request = $request;
             $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
             $this->configFormField($page);
-            $id = $request->post($this->pk);
+            $id = request()->post($this->pk);
 
             $form = $this->formRequestParam($page->getFields());
             $data = $this->formSave($form, $id);
@@ -175,16 +163,14 @@ trait CrudRoutersTrait
 
     /**
      * 查看详细页面
-     * @param RequestAlias $request
      * @return mixed
      * @throws DataNotFoundExceptionAlias
      * @throws DbExceptionAlias
      * @throws ModelNotFoundExceptionAlias|Exception
      */
-    public function show(Request $request)
+    public function show( )
     {
-        $this->request = $request;
-        $id = $request->get('id');
+        $id = request()->get('id');
         if (empty($id)) {
             return redirect(url('lists'));
         }
@@ -205,14 +191,12 @@ trait CrudRoutersTrait
 
     /**
      * 删除一条数据
-     * @param RequestAlias $request
      * @return mixed
      */
-    public function delete(Request $request)
+    public function delete( )
     {
         try {
-            $this->request = $request;
-            $id = $request->get('id');
+            $id = request()->get('id');
             if (empty($id)) throw new ExceptionAlias('缺少参数');
 
             //创建查询
@@ -237,22 +221,20 @@ trait CrudRoutersTrait
 
     /**
      * 搜索下拉框, 搜索值
-     * @param RequestAlias $request
      * @return mixed
      * @throws DbExceptionAlias
      * @throws DataNotFoundExceptionAlias
      * @throws ModelNotFoundExceptionAlias
      * @noinspection PhpUnused
      */
-    public function autocomplete_select(Request $request)
+    public function autocomplete_select( )
     {
-        $this->request = $request;
-        $pk = $request->get('pk');
-        $table = $request->get('table');
-        $property = $request->get('property');
-        $search = $request->get('search');
-        $default = $request->get('default');
-        $fieldName = $request->get('field');
+        $pk = request()->get('pk');
+        $table = request()->get('table');
+        $property = request()->get('property');
+        $search = request()->get('search');
+        $default = request()->get('default');
+        $fieldName = request()->get('field');
 
         if (empty($pk) || empty($table) || empty($property)) {
             return $this->error('缺少参数');

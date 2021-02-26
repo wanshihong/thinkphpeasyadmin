@@ -7,7 +7,6 @@ namespace easyadmin\app\libs;
 use easyadmin\app\columns\form\BaseForm;
 use think\db\Query;
 use think\Exception as ExceptionAlias;
-use think\Request;
 
 /**
  * 列表过滤器类
@@ -93,16 +92,15 @@ class ListFilter
     /**
      * 用户输入筛选条件以后,设置查询过滤
      *
-     * @param Request $request 请求类
      * @param Query $query 查询 query
      * @param array $fields 列表的所有字段
      * @param string $alias 主表别名
      * @return ListFilter
      */
-    public function setFilterQuery(Request $request, Query $query, array $fields, string $alias): ListFilter
+    public function setFilterQuery( Query $query, array $fields, string $alias): ListFilter
     {
 
-        $this->filters = array_map(function ($filter) use ($request, $query, $fields, $alias) {
+        $this->filters = array_map(function ($filter) use ( $query, $fields, $alias) {
             /** @var BaseForm $filter */
 
             //接收用户传参
@@ -111,7 +109,7 @@ class ListFilter
             if ($val === null) {
                 return $filter;
             }
-            
+
             // _query_ 表示全部的字段查询, 相当于一个输入框, 搜索全部的字段
             if ($filter->getField() === '_query_') {
                 //like 查询 全部的字段

@@ -13,7 +13,6 @@ use easyadmin\app\traits\CrudRoutersTrait;
 use Exception;
 use stdClass as stdClassAlias;
 use think\facade\Filesystem;
-use think\Request as RequestAlias;
 use think\response\Json;
 
 class Admin
@@ -35,11 +34,7 @@ class Admin
 
     /** @var Menu */
     protected $menu;
-    /**
-     * Request实例
-     * @var RequestAlias
-     */
-    protected $request;
+
 
 
     public function __construct()
@@ -68,7 +63,7 @@ class Admin
     protected function getTableName(): string
     {
         if (empty($this->tableName)) {
-            $this->tableName = $this->request->controller();
+            $this->tableName = request()->controller();
         }
 
         return strtolower($this->tableName);
@@ -108,7 +103,7 @@ class Admin
      * @return string
      * @throws \think\Exception
      */
-    protected function fetch($path, $data = []): string
+    protected function fetch($path = '', $data = []): string
     {
         $lib = new Lib();
         $data['__page_name__'] = $lib->getArrayValue($data, '__page_name__', $this->getPageName());
@@ -122,9 +117,8 @@ class Admin
         $data['__menu__'] = Menu::getInstance();
         $data['__breadcrumb__'] = $lib->getArrayValue($data, '__breadcrumb__', '');
 
-
         $template = new Template();
-        $template->fetch($path, $data);
+        $template->fetch($lib->getViewPath($path), $data);
         return '';
     }
 

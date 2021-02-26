@@ -11,7 +11,6 @@ use think\db\exception\ModelNotFoundException as ModelNotFoundExceptionAlias;
 use think\db\Query;
 use think\Exception as ExceptionAlias;
 use think\facade\Db;
-use think\Request;
 
 /**
  * 列表的查询类
@@ -33,24 +32,6 @@ class ListQuery
      * @var string
      */
     private $alias = 't0';
-
-
-    /**
-     * 数据请求对象
-     * @var Request
-     */
-    private $request;
-
-
-    /**
-     *
-     * ListQuery constructor.
-     * @param Request $request
-     */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
 
 
     /**
@@ -104,7 +85,7 @@ class ListQuery
 
 
         //过滤器参数
-        $table->getFilter()->setFilterQuery($this->request, $this->query, $fields, $alias);
+        $table->getFilter()->setFilterQuery( $this->query, $fields, $alias);
 
         //查询别名
         $this->query->alias($alias);
@@ -133,7 +114,7 @@ class ListQuery
 
         //查询分页
         $page = $table->getPage(); //获取分页类
-        $p = $this->request->get('page', $page->getCurrentPage());
+        $p = request()->get('page', $page->getCurrentPage());
         $page->setCurrentPage($p); //设置当前分页的页码
         $result = $searchQuery->page($p, $page->getPageSize())->select();
 

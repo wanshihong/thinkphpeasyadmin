@@ -142,7 +142,7 @@ trait CrudRewriteTrait
      */
     protected function configShowField(ListField $field)
     {
-        $id = $this->request->get('id');
+        $id = request()->get('id');
         if (empty($id)) return;
         /** @noinspection PhpDynamicAsStaticMethodCallInspection */
         $res = Db::table($this->getTableName())->where($this->pk, $id)->find();
@@ -162,7 +162,7 @@ trait CrudRewriteTrait
      */
     protected function configShowAction(Actions $action)
     {
-        $id = $this->request->get($this->pk);
+        $id = request()->get($this->pk);
         if (empty($id)) return;
 
         $params = [
@@ -229,7 +229,7 @@ trait CrudRewriteTrait
      */
     protected function configFormAction(Actions $action)
     {
-        $id = $this->request->get($this->pk);
+        $id = request()->get($this->pk);
 
         $params = [];
         if ($id) {

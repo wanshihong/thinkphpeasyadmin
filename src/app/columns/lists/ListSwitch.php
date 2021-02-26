@@ -39,7 +39,7 @@ class ListSwitch extends BaseList
 
 
         $onValue = $this->getOption('success', 1);
-        $offValue = $this->getOption('error', 1);
+        $offValue = $this->getOption('error', 0);
         $data['isChecked'] = $this->getValue() == $onValue ? 'checked' : '';
         $data['text'] = $this->getOption('text');
         $data['url'] = $url;
