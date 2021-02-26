@@ -13,7 +13,7 @@ use think\Exception;
  * 原来的 private 部分修改成  protected 方便继承后重写
  * @package src\app\libs
  */
-class Template extends \think\Template
+class Template extends ThinkTemplate
 {
 
     protected $dirs = [];
