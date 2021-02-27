@@ -248,7 +248,7 @@ class ThinkTemplate extends \think\Template
 
             // 页面缓存
             ob_start();
-            ob_implicit_flush(false);
+            ob_implicit_flush();
 
             // 读取编译存储
             $this->storage->read($cacheFile, $this->data);
@@ -262,6 +262,7 @@ class ThinkTemplate extends \think\Template
             }
 
             echo $content;
+            flush();
         }
     }
 

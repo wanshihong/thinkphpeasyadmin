@@ -47,6 +47,11 @@ class Page
      */
     protected $template;
 
+    /**
+     * 赋值到模板的数据
+     * @var array
+     */
+    public $data = [];
 
     /**
      * @return string
@@ -187,6 +192,7 @@ class Page
         $path = $this->getTemplate();
         $template = new \easyadmin\app\libs\Template();
 
+        $data = array_merge($data,$this->data);
         //渲染
         $template->fetch($path, $data);
         return '';
