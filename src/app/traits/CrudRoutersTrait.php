@@ -37,7 +37,8 @@ trait CrudRoutersTrait
         //实例化查询
         $listQuery = new ListQuery();
         //实例化数据表格
-        $page = new PageList($this->getTableName(), $this->getPageName(), $this->pk);
+        $page = new PageList($this->siteName,$this->getTableName(), $this->getPageName(), $this->pk);
+
 
         //配置字段
         $this->configList($page);
@@ -48,9 +49,9 @@ trait CrudRoutersTrait
         $listQuery->createQuery($page);
 
         //自定义查询相关
-        $this->configListJoin($listQuery->getQuery(), $listQuery->getAlias());
-        $this->configQuery($listQuery->getQuery(), $listQuery->getAlias());
-        $this->configWhere($listQuery->getQuery(), $listQuery->getAlias());
+        $this->configListJoin($page,$listQuery->getQuery(), $listQuery->getAlias());
+        $this->configListQuery($page,$listQuery->getQuery(), $listQuery->getAlias());
+        $this->configListWhere($page,$listQuery->getQuery(), $listQuery->getAlias());
 
         //查询没有被删除的
         $listQuery->softDelete($this->softDeleteField, $this->softDeleteBeforeVal);
@@ -101,7 +102,7 @@ trait CrudRoutersTrait
      */
     public function add( ): string
     {
-        $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
+        $page = new PageForm($this->siteName,$this->getTableName(), $this->getPageName(), $this->pk);
 
         $this->configFormField($page);
         $this->configFormAction($page->getAction());
@@ -121,7 +122,7 @@ trait CrudRoutersTrait
     {
         $id = request()->get($this->pk);
         if (empty($id)) throw new Exception("缺少{$this->pk}参数");
-        $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
+        $page = new PageForm($this->siteName,$this->getTableName(), $this->getPageName(), $this->pk);
         $page->setId($id);
 
         $this->configFormField($page);
@@ -174,7 +175,7 @@ trait CrudRoutersTrait
         if (empty($id)) {
             return redirect(url('lists'));
         }
-        $show = new PageShow($this->getTableName(), $this->getPageName(), $this->pk);
+        $show = new PageShow($this->siteName,$this->getTableName(), $this->getPageName(), $this->pk);
         $show->createQuery($id);
         $this->configShowQuery($show->getQuery(), $show->getAlias());
         $this->configShow($show);

@@ -13,7 +13,7 @@ class Menu
      * 模板路径
      * @var string
      */
-    private $template = 'menu';
+    private $template = 'public:menu';
 
     /**
      * 导航存放数组

@@ -42,7 +42,7 @@ class Btn
     /**
      * @var string 按钮的模板路径
      */
-    private $template = 'btn';
+    private $template = 'public:btn';
 
     /**
      * 是否启用 调整

@@ -44,10 +44,11 @@ class PageShow extends Page
      * 模板路径
      * @var string
      */
-    protected $template = 'show';
+    protected $template = 'show:show';
 
-    public function __construct($tableName, $pageName, $pk = 'id')
+    public function __construct($siteName, $tableName, $pageName, $pk = 'id')
     {
+        $this->setSiteName($siteName);
         $this->setPageName($pageName);
         $this->setTableName($tableName);
         $this->setPk($pk);

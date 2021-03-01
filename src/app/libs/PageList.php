@@ -74,10 +74,11 @@ class PageList extends Page implements IteratorAlias
     private $orderBy = [];
 
 
-    public function __construct($tableName, $pageName, $pk)
+    public function __construct($siteName, $tableName, $pageName, $pk)
     {
         $this->setPageName($pageName);
         $this->setTableName($tableName);
+        $this->setSiteName($siteName);
         $this->setPk($pk);
 
         //初始化 列表字段

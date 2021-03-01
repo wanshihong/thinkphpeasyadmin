@@ -18,7 +18,7 @@
 <div class="layout">
     <div class="layout-left layui-bg-black">
         <i class="close-menu layui-icon layui-icon-close-fill"></i>
-        <h1 class="layui-bg-black site-title">网站标题</h1>
+        <h1 class="layui-bg-black site-title">{$__site_name__}</h1>
         {block name="left"}
         {$__menu__}
         {/block}
@@ -45,16 +45,17 @@
 
             {/block}
         </div>
-
-
         <div class="layout-main-body">
-            <div>
-                <!-- 过滤器 -->
-                {block name="filter"}{/block}
-            </div>
+
             <div class="layout-main-body-main">
+
+                <div>
+                    <!-- 过滤器 -->
+                    {block name="filter"}{/block}
+                </div>
                 <!-- 主体-表格 -->
-                {block name="body"}body{/block}
+                {block name="body"}{/block}
+
             </div>
             <div>
                 <!-- 分页 -->

@@ -186,3 +186,16 @@
     color: #00b0e8;
 }
 /* end 文件上传 */
+
+.empty-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #dbdbdb;
+}
+.empty-data img{
+    width: 60px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

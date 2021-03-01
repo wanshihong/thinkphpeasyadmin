@@ -14,7 +14,7 @@ class Breadcrumb
      */
     private $lists = [];
 
-    private $template = 'breadcrumb';
+    private $template = 'public:breadcrumb';
 
 
     /**

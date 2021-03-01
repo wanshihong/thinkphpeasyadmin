@@ -248,7 +248,14 @@ class ThinkTemplate extends \think\Template
 
             // 页面缓存
             ob_start();
-            ob_implicit_flush(false);
+
+            // php 8 有强制类型限制
+            if (PHP_VERSION_ID >= 80000) {
+                ob_implicit_flush(false);
+            } else {
+                ob_implicit_flush(0);
+            }
+
 
             // 读取编译存储
             $this->storage->read($cacheFile, $this->data);

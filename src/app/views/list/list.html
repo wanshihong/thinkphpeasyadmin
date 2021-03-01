@@ -60,10 +60,23 @@
 {/block}
 
 {block name="pagination"}
+
+<!-- 空数据 -->
+{if $table->getTotal()===0}
+<div class="empty-data">
+    <img src="/easy_admin_static/img/no_data.png" alt="空数据">
+    <span>列表为空</span>
+</div>
+
+
+{/if}
+
 <!-- 分页 -->
 {if isset($table)}
-{$table->getPage()}
+    {$table->getPage()}
 {/if}
+
+
 {/block}
 
 

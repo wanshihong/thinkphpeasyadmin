@@ -52,8 +52,9 @@ class PageForm extends Page
      */
     private $resource;
 
-    public function __construct($tableName, $pageName, $pk = 'id')
+    public function __construct($siteName, $tableName, $pageName, $pk = 'id')
     {
+        $this->setSiteName($siteName);
         $this->setPageName($pageName);
         $this->setTableName($tableName);
         $this->setPk($pk);

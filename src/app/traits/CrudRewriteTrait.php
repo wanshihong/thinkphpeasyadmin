@@ -11,6 +11,7 @@ use easyadmin\app\libs\Btn;
 use easyadmin\app\libs\Actions;
 use easyadmin\app\libs\ListField;
 use easyadmin\app\libs\ListFilter;
+use easyadmin\app\libs\Page;
 use easyadmin\app\libs\PageForm;
 use easyadmin\app\libs\PageList;
 use easyadmin\app\libs\Pagination;
@@ -87,10 +88,11 @@ trait CrudRewriteTrait
 
     /**
      * 列表查询设置 join
+     * @param Page $page
      * @param Query $query
      * @param string $alias 主表的别名
      */
-    protected function configListJoin(Query $query, string $alias)
+    protected function configListJoin(Page $page, Query $query, string $alias)
     {
 
     }
@@ -106,20 +108,22 @@ trait CrudRewriteTrait
 
     /**
      * 自定义查询
+     * @param Page $page
      * @param Query $query
      * @param $alias
      */
-    protected function configQuery(Query $query, $alias)
+    protected function configListQuery(Page $page, Query $query, $alias)
     {
 
     }
 
     /**
      * 设置查询条件
+     * @param Page $page
      * @param Query $query
      * @param $alias
      */
-    protected function configWhere(Query $query, $alias)
+    protected function configListWhere(Page $page, Query $query, $alias)
     {
 
     }
@@ -283,7 +287,6 @@ trait CrudRewriteTrait
      * @param $id
      * @return int|mixed|string
      * @throws DbException
-     * @noinspection PhpUndefinedClassInspection
      */
     protected function formSave($data, $id)
     {
@@ -301,10 +304,10 @@ trait CrudRewriteTrait
      */
     protected function formInsert($data): array
     {
+
         $data = $this->verifyData($data);
         $data = $this->insertBefore($data);
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $id = Db::name($this->getTableName())->insertGetId($data);
+        $id = $this->getModel()->save($data);
         $data[$this->pk] = $id;
         $data = $this->insertAfter($data);
         return $data;
@@ -316,16 +319,14 @@ trait CrudRewriteTrait
      * @param $id
      * @return mixed
      * @throws DbException
-     * @noinspection PhpDynamicAsStaticMethodCallInspection
-     * @noinspection PhpUndefinedClassInspection
      */
     protected function formUpdate($data, $id)
     {
         $data = $this->verifyData($data);
         $data = $this->updateBefore($data);
-        Db::name($this->getTableName())
+        $this->getModel()
             ->where($this->pk, $id)
-            ->update($data);
+            ->save($data);
         $data[$this->pk] = $id;
         $data = $this->updateAfter($data);
         return $data;
@@ -374,4 +375,20 @@ trait CrudRewriteTrait
 
     }
 
+    /**
+     * 获取模型,如果模型定义就返回模型,
+     * 否则返回查询 DB类
+     * @return mixed
+     */
+    protected function getModel()
+    {
+        $tableName = $this->getTableName();
+        $modelName = "app\model\\" . ucfirst($tableName);
+        if (class_exists($modelName)) {
+            return new $modelName();
+        } else {
+            return Db::name($this->getTableName());
+        }
+
+    }
 }

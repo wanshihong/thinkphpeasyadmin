@@ -22,7 +22,7 @@ class Actions
      * 列表模板路径
      * @var string
      */
-    private $template = 'actions';
+    private $template = 'public:actions';
 
 
     private $options = [];
@@ -72,7 +72,7 @@ class Actions
         $btn->setClass($class);
         $btn->setIcon($this->getOption('icon', ''));
         $btn->setParams($this->getOption('params', []));
-        $btn->setTemplate($this->getOption('template', 'btn'));
+        $btn->setTemplate($this->getOption('template', 'public:btn'));
         $btn->setIsConfirm($this->getOption('confirm', ''));
         $btn->setBtnType($this->getOption('btn_type', 'btn'));
         $btn->setReferer($this->getOption('referer', false));
