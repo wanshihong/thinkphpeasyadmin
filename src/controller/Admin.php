@@ -24,12 +24,12 @@ class Admin
     protected $pk = 'id';
 
     //配置是否使用软删除
-    protected string $softDeleteField;//软删除字段
+    protected $softDeleteField;//软删除字段
     protected $softDeleteAfterVal = 1;//软删除后的值.  例如  is_delete=1 标识已经删除
     protected $softDeleteBeforeVal = 0;//软删除前的值.  例如  is_delete=0 标识尚未删除
 
 
-    protected string $pageName;//页面名称,默认使用表格名称; 页面标题,导航 会用到
+    protected $pageName;//页面名称,默认使用表格名称; 页面标题,导航 会用到
     protected $tableName;//数据库,数据表格名称
     protected $siteName = '网站标题';
     protected $jsFiles = [];
