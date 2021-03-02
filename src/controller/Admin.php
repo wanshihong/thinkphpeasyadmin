@@ -65,7 +65,9 @@ class Admin
     protected function getTableName(): string
     {
         if (empty($this->tableName)) {
-            $this->tableName = request()->controller();
+            $controller = request()->controller();
+            $controller = strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $controller));
+            $this->tableName = $controller;
         }
 
         return strtolower($this->tableName);

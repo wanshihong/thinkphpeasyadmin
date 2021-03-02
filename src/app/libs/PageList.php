@@ -91,7 +91,7 @@ class PageList extends Page implements IteratorAlias
         $this->setPage(new Pagination());
 
         //初始化 面包屑
-        $this->setBreadcrumb(new Breadcrumb());
+        $this->setBreadcrumb(Breadcrumb::getInstance());
         $this->configBreadcrumb();
 
     }

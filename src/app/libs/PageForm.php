@@ -59,7 +59,7 @@ class PageForm extends Page
         $this->setTableName($tableName);
         $this->setPk($pk);
         $this->setAction(new Actions());
-        $this->setBreadcrumb(new Breadcrumb());
+        $this->setBreadcrumb(Breadcrumb::getInstance());
         $this->configBreadcrumb();
         $this->resource = Resource::getInstance();
         $this->addJsFile('/easy_admin_static/js/form.js');

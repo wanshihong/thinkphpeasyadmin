@@ -54,7 +54,7 @@ class PageShow extends Page
         $this->setPk($pk);
         $this->setField(new ListField());
         $this->setAction(new Actions());
-        $this->setBreadcrumb(new Breadcrumb());
+        $this->setBreadcrumb(Breadcrumb::getInstance());
         $this->configBreadcrumb();
     }
 

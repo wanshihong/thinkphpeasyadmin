@@ -8,12 +8,15 @@ class Lib
 {
     public static function formatUrl($url, $params)
     {
+
         if (substr($url, 0, 11) === 'javascript:') {
             return $url;
         } elseif (substr($url, 0, 7) === 'http://' || substr($url, 0, 8) === 'https://') {
             $url = $url . '?' . http_build_query($params);
         } elseif (substr($url, 0, 6) === 'window' || substr($url, 0, 7) === 'history') {
             $url = 'javascript:' . $url;
+        } else if (stripos( $url,'?')!==false) {
+            $url .= '&' . http_build_query($params);
         } else {
             $url = url($url, $params);
         }
