@@ -78,16 +78,16 @@ class Template extends ThinkTemplate
             return $template;
         }
 
+        $paths = [];
         foreach ($this->dirs as $dir) {
             $path = $this->getFullName($dir . $template);
-
+            array_push($paths,$path);
             if (is_file($path)) {
                 return $path;
             }
         }
 
-        $dirStr = implode(',', $this->dirs);
-        throw new Exception("目录{$dirStr}中都不存在{$template}");
+        throw new Exception(implode(';',$paths). ' 不存在');
     }
 
 

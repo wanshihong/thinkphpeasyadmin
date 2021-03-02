@@ -1,9 +1,5 @@
 {extend name="layout" /}
 {block name="title"}{$__page_name__}列表{/block}
-{block name="style"}
-<style>
-</style>
-{/block}
 
 
 {block name="header_action"}
@@ -75,10 +71,4 @@
 {if isset($table)}
     {$table->getPage()}
 {/if}
-
-
-{/block}
-
-
-{block name="body_script"}
 {/block}
