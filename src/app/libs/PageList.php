@@ -99,7 +99,7 @@ class PageList extends Page implements IteratorAlias
     public function configBreadcrumb()
     {
         $this->getBreadcrumb()
-            ->add('首页', url('home/index'), 'layui-icon-home')
+            ->add('首页', url('home/index'), 'layui-icon layui-icon-home')
             ->add("{$this->getPageName()}列表", url('lists'));
     }
 

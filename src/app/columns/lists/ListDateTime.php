@@ -41,7 +41,11 @@ class ListDateTime extends BaseList
             return call_user_func($format, $ret);
         }
 
-        return date($format, $ret);
+        if ($ret > 0) {
+            return date($format, $ret);
+        }
+        return $this->getOption('default');
+
     }
 
 }

@@ -30,6 +30,7 @@ use think\facade\Db;
  */
 trait CrudRewriteTrait
 {
+    protected $disabledAction = [];
 
     /**
      * 定义列表的默认按钮
@@ -37,23 +38,33 @@ trait CrudRewriteTrait
      */
     protected function configList(PageList $page)
     {
-        $page->addAction('查看', 'show', [
-            'icon' => 'layui-icon-release',
-            'class' => ['layui-btn-primary', 'layui-btn-xs'],
-        ])->addAction('编辑', 'edit', [
-            'icon' => 'layui-icon-edit',
-            'class' => ['layui-btn-primary', 'layui-btn-xs']
-        ])->addAction('删除', 'delete', [
-            'icon' => 'layui-icon-delete',
-            'class' => ['layui-btn-danger', 'layui-btn-xs'],
-            'confirm' => '确定要删除数据吗?',
-        ]);
+        if (!in_array('show', $this->disabledAction)) {
+            $page->addAction('查看', 'show', [
+                'icon' => 'layui-icon layui-icon-release',
+                'class' => ['layui-btn-primary', 'layui-btn-xs'],
+            ]);
+        }
+        if (!in_array('edit', $this->disabledAction)) {
+            $page->addAction('编辑', 'edit', [
+                'icon' => 'layui-icon layui-icon-edit',
+                'class' => ['layui-btn-primary', 'layui-btn-xs']
+            ]);
+        }
+        if (!in_array('delete', $this->disabledAction)) {
+            $page->addAction('删除', 'delete', [
+                'icon' => 'layui-icon layui-icon-delete',
+                'class' => ['layui-btn-danger', 'layui-btn-xs'],
+                'confirm' => '确定要删除数据吗?',
+            ]);
+        }
 
-        $addBtn = new Btn();
-        $addBtn->setLabel('添加');
-        $addBtn->setUrl('add');
-        $addBtn->setIcon('layui-icon-add-1');
-        $page->setActionAdd($addBtn);
+        if (!in_array('new', $this->disabledAction)) {
+            $addBtn = new Btn();
+            $addBtn->setLabel('添加');
+            $addBtn->setUrl('add');
+            $addBtn->setIcon('layui-icon layui-icon-add-1');
+            $page->setActionAdd($addBtn);
+        }
     }
 
     /**
@@ -173,24 +184,29 @@ trait CrudRewriteTrait
             $this->pk => $id
         ];
 
-        $action
-            ->addAction('返回', 'javascript:', [
-                'icon' => 'layui-icon-return',
-                'class' => ['layui-btn-primary'],
-                'params' => $params,
-                'referer' => true,
-            ])
-            ->addAction('编辑', 'edit', [
-                'icon' => 'layui-icon-edit',
+        $action->addAction('返回', 'javascript:', [
+            'icon' => 'layui-icon layui-icon-return',
+            'class' => ['layui-btn-primary'],
+            'params' => $params,
+            'referer' => true,
+        ]);
+
+        if (!in_array('edit', $this->disabledAction)) {
+            $action->addAction('编辑', 'edit', [
+                'icon' => 'layui-icon layui-icon-edit',
                 'class' => [''],
                 'params' => $params
-            ])
-            ->addAction('删除', 'delete', [
-                'icon' => 'layui-icon-delete',
+            ]);
+        }
+        if (!in_array('delete', $this->disabledAction)) {
+            $action->addAction('删除', 'delete', [
+                'icon' => 'layui-icon layui-icon-delete',
                 'class' => ['layui-btn-danger'],
                 'confirm' => '确定要删除数据吗?',
                 'params' => $params
             ]);
+        }
+
     }
 
 
@@ -240,22 +256,22 @@ trait CrudRewriteTrait
             $params[$this->pk] = $id;
         }
 
-        $action
-            ->addAction('取消', 'window.history.back();', [
-                'icon' => 'layui-icon-return',
-                'class' => 'layui-btn-primary',
-                'params' => $params,
-            ])
-            ->addAction($id ? '更新' : '添加', 'javascript:', [
-                'icon' => 'layui-icon-ok',
-                'params' => $params,
-                'btn_type' => 'submit',
-                'referer' => true
-            ]);
+        $action->addAction('取消', 'window.history.back();', [
+            'icon' => 'layui-icon layui-icon-return',
+            'class' => 'layui-btn-primary',
+            'params' => $params,
+        ]);
 
-        if ($id) {
+        $action->addAction($id ? '更新' : '添加', 'javascript:', [
+            'icon' => 'layui-icon layui-icon-ok',
+            'params' => $params,
+            'btn_type' => 'submit',
+            'referer' => true
+        ]);
+
+        if ($id && !in_array('delete', $this->disabledAction)) {
             $action->addAction('删除', 'delete', [
-                'icon' => 'layui-icon-delete',
+                'icon' => 'layui-icon layui-icon-delete',
                 'class' => ['layui-btn-danger'],
                 'confirm' => '确定要删除数据吗?',
                 'params' => $params,

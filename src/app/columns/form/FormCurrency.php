@@ -12,7 +12,7 @@ class FormCurrency extends BaseForm
 {
 
     protected $options = [
-        'icon' => 'layui-icon-rmb',
+        'icon' => 'layui-icon layui-icon-rmb',
         'type' => 'number'
     ];
 
