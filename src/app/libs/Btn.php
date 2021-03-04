@@ -19,7 +19,7 @@ class Btn
     private $label;
 
     /**
-     * @var string 按钮URL
+     * 按钮URL
      */
     private $url;
 
@@ -86,18 +86,16 @@ class Btn
         $this->label = $label;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl(): string
+
+    public function getUrl()
     {
         return $this->url;
     }
 
     /**
-     * @param string $url
+     * @param  $url
      */
-    public function setUrl(string $url)
+    public function setUrl($url)
     {
         $this->url = $url;
     }
