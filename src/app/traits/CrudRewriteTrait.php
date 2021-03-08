@@ -285,13 +285,21 @@ trait CrudRewriteTrait
      * form 表单接收参数
      * @param $fields
      * @return array
+     * @throws ExceptionAlias
      */
     protected function formRequestParam($fields): array
     {
         $form = [];
         /** @var BaseForm $field */
         foreach ($fields as $field) {
+            //接收表单参数
             $field->requestValue($form);
+
+            //处理表单验证
+            $check = $field->verify($field->getValue());
+            if ($check !== true) {
+                throw new ExceptionAlias($check);
+            }
         }
         return $this->requestAfter($form);
     }

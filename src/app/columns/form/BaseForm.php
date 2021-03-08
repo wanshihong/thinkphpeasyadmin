@@ -5,11 +5,10 @@ namespace easyadmin\app\columns\form;
 
 
 use easyadmin\app\columns\ColumnClass;
-use easyadmin\app\libs\ListFilter;
 use easyadmin\app\libs\Template;
+use easyadmin\app\libs\Verify;
+use Exception as ExceptionAlias;
 use think\db\Query;
-use think\Exception as ExceptionAlias;
-use think\Request;
 
 class BaseForm extends ColumnClass
 {
@@ -26,7 +25,10 @@ class BaseForm extends ColumnClass
             'class' => $this->getOption('class', ''), //列的样式
             //dom 元素 id
             'elem_id' => str_replace(':', '_', $elemId),
-            'type' => $this->getOption('type', 'text')
+            'type' => $this->getOption('type', 'text'),
+            'placeholder' => $this->getOption('placeholder', ''),//输入提示
+            'required' => $this->getOption('required', false), //是否必填
+            'verify' => $this->getOption('verify', []), //验证器,
         ];
     }
 
@@ -74,6 +76,40 @@ class BaseForm extends ColumnClass
         $data[$fieldName] = $value;
         $this->setValue($value);
         return $data;
+    }
+
+
+    public function verify($value)
+    {
+
+        //必填验证
+        if ($this->getOption('required') && empty($value)) {
+            return ('请输入' . $this->getLabel());
+        }
+
+        // 不是必填, 0个长度表示没输入,不验证
+        if (strlen($value) === 0) return true;
+
+        //自定义验证
+        $rule = $this->getOption('verify');
+
+        //自定义函数验证
+        if (is_callable($rule)) {
+            $res = call_user_func($rule, $value);
+            if ($res !== true) {
+                return $res;
+            }
+        }
+
+        if ($rule instanceof Verify) {
+            $res = $rule->verify($value);
+            if ($res !== true) {
+                return $res;
+            }
+        }
+
+        return true;
+
     }
 
     /**

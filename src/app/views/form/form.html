@@ -11,7 +11,10 @@
     {$form}
     {else/}
     <div class="layui-form-item">
-        <label class="layui-form-label">{$form->getLabel()}</label>
+        <label class="layui-form-label">
+            {if $form->getOption("required")}<span style="color: #FF5722">*</span>{/if}
+            {$form->getLabel()}
+        </label>
         <div class="layui-input-block">
             {$form}
         </div>
