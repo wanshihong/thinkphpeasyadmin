@@ -78,8 +78,22 @@ class BaseForm extends ColumnClass
         return $data;
     }
 
-
     public function verify($value)
+    {
+        if (is_array($value)) {
+            foreach ($value as $v) {
+                $res = $this->verifyAction($v);
+                if ($res !== true) {
+                    return $res;
+                }
+            }
+            return true ;
+        } else {
+            return $this->verifyAction($value);
+        }
+    }
+
+    public function verifyAction($value)
     {
 
         //必填验证
