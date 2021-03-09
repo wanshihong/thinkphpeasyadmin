@@ -30,9 +30,9 @@ function clickBtn(btn) {
     if (dataset.confirm) {
         btnConfirm(btn);
     } else if (dataset.href) {
-        if(dataset.referer){
+        if (dataset.referer) {
             window.location.href = dataset.referer;
-        }else{
+        } else {
             window.location.href = dataset.href;
         }
         return false;
@@ -90,5 +90,30 @@ layui.use(['element', 'layer', 'jquery', 'form'], function () {
             }
         });
     });
+
+    //列表行内编辑
+    let listEditTimer, listEditAjax;
+    listEditAjax = $('.list-edit').keyup(function () {
+        if (listEditTimer) {
+            clearTimeout(listEditTimer);
+            listEditAjax && listEditAjax.abort();
+        }
+        let elem = $(this)[0];
+        listEditTimer = setTimeout(function () {
+            let dataset = elem.dataset;
+            let value = $(elem).val();
+            listEditAjax = $.post(dataset.url, {
+                value: value,
+            }, res => {
+                if (res.code) {
+                    layer.msg('操作成功', {icon: 1});
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+                }
+            });
+        }, 350)
+
+
+    })
 
 });

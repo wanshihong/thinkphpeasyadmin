@@ -1,5 +1,10 @@
 {block name="main"}
+{if $edit}
+<input type="{$type}" {$attr} id="{$elem_id}" class="layui-input list-edit {$class}" data-url="{$url}" data-field="{$field}" value="{$value}">
+{else/}
 <span {$attr} class="{$class}" id="{$elem_id}">{$value|raw}</span>
+{/if}
+
 {/block}
 {block name="style"}{/block}
 {block name="js"}{/block}
