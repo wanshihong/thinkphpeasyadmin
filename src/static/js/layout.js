@@ -92,17 +92,16 @@ layui.use(['element', 'layer', 'jquery', 'form'], function () {
     });
 
     //列表行内编辑
-    let listEditTimer, listEditAjax;
-    listEditAjax = $('.list-edit').keyup(function () {
+    let listEditTimer;
+    $('.list-edit').keyup(function () {
         if (listEditTimer) {
             clearTimeout(listEditTimer);
-            listEditAjax && listEditAjax.abort();
         }
         let elem = $(this)[0];
         listEditTimer = setTimeout(function () {
             let dataset = elem.dataset;
             let value = $(elem).val();
-            listEditAjax = $.post(dataset.url, {
+            $.post(dataset.url, {
                 value: value,
             }, res => {
                 if (res.code) {
