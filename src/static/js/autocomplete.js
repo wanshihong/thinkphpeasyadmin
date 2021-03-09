@@ -9,6 +9,7 @@ function renderSelect2($, select, xmSelect) {
         clickClose: true,
         filterable: true,
         tips: dataset.placeholder,
+        searchTips: '请输入关键词进行搜索',
         autoRow: true,
         toolbar: {
             show: true,

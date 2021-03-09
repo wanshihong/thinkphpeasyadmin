@@ -328,11 +328,21 @@ trait CrudRewriteTrait
      */
     protected function formInsert($data): array
     {
-
+        // 数据验证
         $data = $this->verifyData($data);
+
+        //写入之前数据处理
         $data = $this->insertBefore($data);
+
+        //软删除字段 添加的时候,如果没有设置值就 默认值赋值
+        if ($this->softDeleteField && !array_key_exists($this->softDeleteField, $data)) {
+            $data[$this->softDeleteField] = $this->softDeleteBeforeVal;
+        }
+
         $id = $this->getModel()->save($data);
         $data[$this->pk] = $id;
+
+        //写入之后数据处理
         $data = $this->insertAfter($data);
         return $data;
     }
