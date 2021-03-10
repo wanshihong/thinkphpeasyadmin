@@ -1,0 +1,37 @@
+{extend name="login:layout" /}
+
+
+{block name="body"}
+
+
+<div class="layui-card">
+    <div class="layui-card-header">欢迎登录-{$__site_name__}</div>
+    <div class="layui-card-body">
+
+
+        <form class="layui-form" action="">
+
+            <label class="form-item">
+                <i class="layui-icon layui-icon-username"></i>
+                <input type="text" name="username" placeholder="username" autocomplete="off" class="layui-input">
+            </label>
+
+            <label class="form-item">
+                <i class="layui-icon layui-icon-password"></i>
+                <input type="password" name="password" placeholder="password" autocomplete="off" class="layui-input">
+            </label>
+
+            <label class="form-item">
+                <i class="layui-icon layui-icon-auz"></i>
+                <input type="text" name="code" placeholder="验证码" autocomplete="off" class="layui-input">
+                <img class="verify" src="{:url('verify')}" alt="captcha" />
+            </label>
+
+
+        </form>
+
+
+    </div>
+</div>
+
+{/block}

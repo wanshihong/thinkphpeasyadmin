@@ -80,10 +80,12 @@ class Menu
 
     /**
      * @param array $items
+     * @return Menu
      */
-    public function setItems(array $items): void
+    public function setItems(array $items): Menu
     {
         $this->items = $items;
+        return $this;
     }
 
     /**

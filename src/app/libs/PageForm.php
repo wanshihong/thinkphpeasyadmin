@@ -70,7 +70,7 @@ class PageForm extends Page
         }
         $alias = $this->getAlias();
         /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $this->query = Db::table($this->getTableName())->alias($alias)->where("{$alias}.{$this->getPk()}", $id);
+        $this->query = Db::name($this->getTableName())->alias($alias)->where("{$alias}.{$this->getPk()}", $id);
         return $this->query;
     }
 

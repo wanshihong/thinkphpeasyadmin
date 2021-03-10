@@ -45,7 +45,7 @@ class Lib
      * @param string $path
      * @return mixed|string
      */
-    public function getViewPath($path = '')
+    public function getViewPath($path = ''): string
     {
         if ($path) return $path;
         return request()->controller() . ':' . request()->action();

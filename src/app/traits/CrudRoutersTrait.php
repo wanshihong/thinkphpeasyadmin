@@ -84,8 +84,7 @@ trait CrudRoutersTrait
 
             if (empty($id) || empty($field)) throw new ExceptionAlias('缺少参数');
 
-            /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-            $query = Db::table($this->getTableName());
+            $query = $this->getModel();
             $res = $query->where($this->pk, '=', $id)->save([$field => $value]);
             return $this->success([
                 'res' => $res
@@ -217,8 +216,7 @@ trait CrudRoutersTrait
             if (empty($id)) throw new ExceptionAlias('缺少参数');
 
             //创建查询
-            /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-            $query = Db::table($this->getTableName())->where($this->pk, $id);
+            $query = $this->getModel()->where($this->pk, $id);
 
             //删除
             if ($this->softDeleteField) {
@@ -275,7 +273,7 @@ trait CrudRoutersTrait
         //默认的查询
         if (empty($query)) {
             /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-            $query = Db::table($table)->field("`{$pk}`,`{$property}`")->limit(30);
+            $query = Db::name($table)->field("`{$pk}`,`{$property}`")->limit(30);
 
             //处理搜索
             if ($search) {

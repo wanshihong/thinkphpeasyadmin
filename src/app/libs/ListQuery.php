@@ -73,7 +73,7 @@ class ListQuery
     {
 
         /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $this->query = Db::table($table->getTableName());
+        $this->query = Db::name($table->getTableName());
         $alias = $this->getAlias();
 
         //查询排序

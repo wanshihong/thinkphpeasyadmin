@@ -63,7 +63,7 @@ class MenuItem
      */
     public function checkNowUrl(): bool
     {
-        return stripos((string)$this->url,request()->pathinfo())!==false;
+        return stripos((string)$this->url,strtolower(request()->controller() . '/' . request()->action()))!==false;
     }
 
     /**

@@ -34,18 +34,9 @@ class Admin
     protected $jsFiles = [];
     protected $cssFiles = [];
 
-    /** @var Menu */
-    protected $menu;
 
     /** @var array 赋值到页面的数据 */
     protected $data = [];
-
-
-    public function __construct()
-    {
-        $this->menu = Menu::getInstance();
-        $this->configMenu($this->menu);
-    }
 
 
     /**
@@ -123,7 +114,7 @@ class Admin
         $data['__js__'] = $resource->getJsFiles();
 
         //导航
-        $data['__menu__'] = Menu::getInstance();
+        $data['__menu__'] = $this->configMenu();
 
         //面包屑
         $breadcrumb = Breadcrumb::getInstance();
@@ -151,12 +142,6 @@ class Admin
         $template = new Template();
         $template->fetch($path, $data);
         return '';
-    }
-
-
-    protected function configMenu(Menu $menu)
-    {
-
     }
 
 

@@ -12,6 +12,7 @@ use easyadmin\app\libs\Btn;
 use easyadmin\app\libs\Actions;
 use easyadmin\app\libs\ListField;
 use easyadmin\app\libs\ListFilter;
+use easyadmin\app\libs\Menu;
 use easyadmin\app\libs\Page;
 use easyadmin\app\libs\PageForm;
 use easyadmin\app\libs\PageList;
@@ -32,6 +33,15 @@ use think\facade\Db;
 trait CrudRewriteTrait
 {
     protected $disabledAction = [];
+
+    /**
+     * 配置系统导航
+     * @return Menu
+     */
+    protected function configMenu(): Menu
+    {
+        return Menu::getInstance()->setItems([]);
+    }
 
     /**
      * 定义列表的默认按钮
@@ -160,8 +170,7 @@ trait CrudRewriteTrait
     {
         $id = request()->get('id');
         if (empty($id)) return;
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $res = Db::table($this->getTableName())->where($this->pk, $id)->find();
+        $res = $this->getModel()->where($this->pk, $id)->find();
         if (empty($res)) return;
 
         foreach ($res as $key => $val) {
@@ -311,7 +320,6 @@ trait CrudRewriteTrait
      * @param $data
      * @param $id
      * @return int|mixed|string
-     * @throws DbException
      */
     protected function formSave($data, $id)
     {

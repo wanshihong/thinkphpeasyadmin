@@ -129,7 +129,7 @@ class FormSelect extends BaseForm
         $property = $this->getOption('property', 'text');
 
         /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $query = Db::table($table)->field("{$pk},{$property}")->select();
+        $query = Db::name($table)->field("{$pk},{$property}")->select();
         $options = [];
 
         foreach ($query as $item) {

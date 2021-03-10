@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        {block name="title"}登录{/block}
+    </title>
+    <style>
+        body {
+            background-color: #2F4056;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main {
+            max-width: 320px;
+        }
+
+        .main .layui-card, .main .layui-card-header, .main .layui-card-body {
+            background-color: rgba(255, 255, 255, .55);
+        }
+
+        .layui-form{
+            margin-top: 10px;
+        }
+        .form-item {
+            display: block;
+            width: 290px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .form-item .layui-icon {
+            position: absolute;
+            left: 10px;
+            top: 7px;
+            color: #c2c2c2;
+        }
+
+        .form-item input {
+            padding-left: 32px;
+        }
+    </style>
+
+    {block name="style"}{/block}
+    {foreach name="__css__" item="file"}
+    <link rel="stylesheet" href="{$file}">
+    {/foreach}
+    {block name="head_script"}{/block}
+</head>
+<body>
+
+<div class="main">
+    {block name="body"}{/block}
+</div>
+
+
+{foreach name="__js__" item="file"}
+<script src="{$file}"></script>
+{/foreach}
+{block name="body_script"}{/block}
+<script>
+    layui.use(['element', 'jquery'], function () {
+        let $ = layui.jquery;
+        $(function () {
+            let num = Math.ceil(Math.random() * 3);
+            $('body').css('background-image', 'url("/easy_admin_static/img/login_bg' + num + '.jpg")');
+        })
+    });
+</script>
+</body>
+</html>
