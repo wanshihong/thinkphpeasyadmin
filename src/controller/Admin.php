@@ -4,15 +4,14 @@
 namespace easyadmin\controller;
 
 
-use easyadmin\app\libs\Lib;
+use easyadmin\app\libs\Breadcrumb;
 use easyadmin\app\libs\Menu;
 use easyadmin\app\libs\Resource;
 use easyadmin\app\libs\Template;
 use easyadmin\app\traits\CrudRewriteTrait;
 use easyadmin\app\traits\CrudRoutersTrait;
-use Exception;
 use stdClass as stdClassAlias;
-use think\facade\Filesystem;
+use think\Exception;
 use think\response\Json;
 
 class Admin
@@ -37,6 +36,9 @@ class Admin
 
     /** @var Menu */
     protected $menu;
+
+    /** @var array 赋值到页面的数据 */
+    protected $data = [];
 
 
     public function __construct()
@@ -100,17 +102,20 @@ class Admin
         ]);
     }
 
-    /**
-     * 渲染模板
-     * @param $path
-     * @param array $data
-     * @return string
-     * @throws \think\Exception
-     */
-    protected function fetch($path = '', $data = []): string
+    protected function assign($key, $value)
     {
-        $lib = new Lib();
-        $data['__page_name__'] = $lib->getArrayValue($data, '__page_name__', $this->getPageName());
+        $this->data[$key] = $value;
+    }
+
+    /**
+     * 页面的公共参数赋值
+     * @param $data
+     * @return mixed
+     */
+    private function _assignCommon($data)
+    {
+
+        $data['__page_name__'] = $this->getPageName();
 
         //资源文件
         $resource = Resource::getInstance();
@@ -119,46 +124,38 @@ class Admin
 
         //导航
         $data['__menu__'] = Menu::getInstance();
-        $data['__breadcrumb__'] = $lib->getArrayValue($data, '__breadcrumb__', '');
+
+        //面包屑
+        $breadcrumb = Breadcrumb::getInstance();
+        $data['__breadcrumb__'] = $breadcrumb;
         $data['__site_name__'] = $this->siteName;
 
+        return $data;
+    }
+
+    /**
+     * 渲染模板
+     * @param $path
+     * @param array $data
+     * @return string
+     * @throws Exception
+     */
+    protected function fetch($path = '', $data = []): string
+    {
+
+        $data = $this->_assignCommon($data);
+
+        //合并数组 输出到页面
+        $data = array_merge($this->data, $data);
+
         $template = new Template();
-        $template->fetch($lib->getViewPath($path), $data);
+        $template->fetch($path, $data);
         return '';
     }
 
 
     protected function configMenu(Menu $menu)
     {
-
-    }
-
-    // 图片上传
-    public function upload()
-    {
-        try {
-            // 获取表单上传文件 例如上传了001.jpg
-            $files = request()->file();
-
-            $paths = [];
-            foreach ($files as $file) {
-                // 上传到本地服务器
-                $path = Filesystem::disk('public')->putFile('easy_admin', $file);
-                array_push($paths, request()->domain() . '/storage/' . $path);
-            }
-
-            return json([
-                'errno' => 0,
-                'msg' => 'ok',
-                'data' => $paths
-            ]);
-        } catch (Exception $e) {
-            return json([
-                'errno' => 0,
-                'msg' => $e->getMessage(),
-                'data' => new stdClassAlias()
-            ]);
-        }
 
     }
 

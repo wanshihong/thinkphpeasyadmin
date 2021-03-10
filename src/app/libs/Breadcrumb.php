@@ -70,23 +70,29 @@ class Breadcrumb
      * @param $name
      * @param $url
      * @param string $icon
-     * @param int $index 追加还是插入
-     * @param int $length 是否替换,0\不替换, 大于0 替换的长度
+     *
+     * 索引说明
+     * 首页是 0
+     * 列表是 10
+     * 添加编辑是 20
+     * 查看是 30
+     * 如果需要在中间穿插其他的面包屑 按照顺序插入即可
+     *
+     * @param int $index 插入索引, 输出的时候会按照这个索引有小到大排序,
      * @return $this
      */
-    public function add($name, $url, $icon = '', $index = 0,$length=0): Breadcrumb
+    public function add($name, $url, $icon = '', $index = 0): Breadcrumb
     {
         $item = [
             'name' => $name,
             'url' => $url,
             'icon' => $icon
         ];
-        if ($index > 0) {
-            array_splice($this->lists, $index, $length, [$item]);
-        } else {
-            array_push($this->lists, $item);
-        }
 
+        if (array_key_exists($index, $this->lists)) {
+            $index += 1;
+        }
+        $this->lists[$index] = $item;
         return $this;
     }
 
@@ -119,11 +125,12 @@ class Breadcrumb
     {
         //模板路径
         $path = $this->getTemplate();
-
+        $lists = $this->get();
+        ksort($lists);
         //渲染
         $template = new Template();
         $template->fetch($path, [
-            'lists' => $this->get()
+            'lists' => $lists
         ]);
         return '';
     }

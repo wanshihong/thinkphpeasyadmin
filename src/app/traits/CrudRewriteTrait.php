@@ -7,6 +7,7 @@ use easyadmin\app\columns\form\BaseForm;
 use easyadmin\app\columns\form\FormHidden;
 use easyadmin\app\columns\form\FormText;
 use easyadmin\app\columns\lists\ListText;
+use easyadmin\app\libs\Breadcrumb;
 use easyadmin\app\libs\Btn;
 use easyadmin\app\libs\Actions;
 use easyadmin\app\libs\ListField;
@@ -90,9 +91,9 @@ trait CrudRewriteTrait
 
     /**
      * 设置分页相关
-     * @param Pagination $page
+     * @param Pagination $pagination
      */
-    protected function configPage(Pagination $page)
+    protected function configListPagination(Pagination $pagination)
     {
 
     }
@@ -352,7 +353,6 @@ trait CrudRewriteTrait
      * @param $data
      * @param $id
      * @return mixed
-     * @throws DbException
      */
     protected function formUpdate($data, $id)
     {
@@ -425,4 +425,33 @@ trait CrudRewriteTrait
         }
 
     }
+
+    // 列表页面面包屑
+    protected function configListBreadcrumb()
+    {
+        $breadcrumb = Breadcrumb::getInstance();
+        $breadcrumb->add('首页', 'index/index', 'layui-icon layui-icon-home', 0);
+        $breadcrumb->add($this->pageName . '列表', 'javascript:', '', 10);
+    }
+
+    // 表单页面面包屑
+    protected function configFormBreadcrumb()
+    {
+        $breadcrumb = Breadcrumb::getInstance();
+        $breadcrumb->add('首页', 'index/index', 'layui-icon layui-icon-home', 0);
+        $breadcrumb->add($this->pageName . '列表', 'lists', '', 10);
+        $id = request()->get('id');
+        $breadcrumb->add($this->pageName . ($id ? ('编辑#' . $id) : '添加'), 'javascript:', '', 20);
+    }
+
+    //详情页面面包屑
+    protected function configShowBreadcrumb()
+    {
+        $breadcrumb = Breadcrumb::getInstance();
+        $breadcrumb->add('首页', 'index/index', 'layui-icon layui-icon-home', 0);
+        $breadcrumb->add($this->pageName . '列表', 'lists', '', 10);
+        $id = request()->get('id', '');
+        $breadcrumb->add($this->pageName . ('查看#' . $id), 'javascript:', '', 30);
+    }
+
 }

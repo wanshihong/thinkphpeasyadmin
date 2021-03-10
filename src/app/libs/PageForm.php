@@ -46,57 +46,15 @@ class PageForm extends Page
      */
     protected $template = 'form:form';
 
-    /**
-     * 资源文件管理器
-     * @var Resource
-     */
-    private $resource;
 
-    public function __construct($siteName, $tableName, $pageName, $pk = 'id')
+    public function __construct($tableName, $pk = 'id')
     {
-        $this->setSiteName($siteName);
-        $this->setPageName($pageName);
         $this->setTableName($tableName);
         $this->setPk($pk);
         $this->setAction(new Actions());
         $this->setBreadcrumb(Breadcrumb::getInstance());
-        $this->configBreadcrumb();
-        $this->resource = Resource::getInstance();
-        $this->addJsFile('/easy_admin_static/js/form.js');
-    }
-
-
-    /**
-     * 添加 js 文件
-     * @param $path
-     * @return PageForm
-     */
-    public function addJsFile($path): PageForm
-    {
-        $this->resource->appendJsFile($path);
-        return $this;
-    }
-
-    /**
-     * 添加 css 文件
-     * @param $path
-     * @return PageForm
-     */
-    public function addCssFile($path): PageForm
-    {
-        $this->resource->appendCssFile($path);
-        return $this;
-    }
-
-
-    public function configBreadcrumb()
-    {
-        $this->getBreadcrumb()
-            ->add('首页', url('home/index'), 'layui-icon layui-icon-home')
-            ->add("{$this->getPageName()}列表", url('lists'));
-
-        $name = $this->getId() ? '编辑' : '添加';
-        $this->getBreadcrumb()->add("{$this->getPageName()}{$name}", 'javascript');
+        $resource = Resource::getInstance();
+        $resource->appendJsFile('/easy_admin_static/js/form.js');
     }
 
 

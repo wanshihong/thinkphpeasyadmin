@@ -81,13 +81,13 @@ class Template extends ThinkTemplate
         $paths = [];
         foreach ($this->dirs as $dir) {
             $path = $this->getFullName($dir . $template);
-            array_push($paths,$path);
+            array_push($paths, $path);
             if (is_file($path)) {
                 return $path;
             }
         }
 
-        throw new Exception(implode(';',$paths). ' 不存在');
+        throw new Exception(implode(';', $paths) . ' 不存在');
     }
 
 
@@ -124,8 +124,14 @@ class Template extends ThinkTemplate
      * @param array $vars
      * @throws Exception
      */
-    public function fetch(string $template, array $vars = []): void
+    public function fetch($template = '', array $vars = []): void
     {
+        //如果没有赋值模板路径,默认取当前控制器的当前方法
+        if (empty($template)) {
+            $lib = new Lib();
+            $template = $lib->getViewPath($template);
+        }
+
         $template = $this->findTemplate($template);
         parent::fetch($template, $vars);
     }

@@ -46,24 +46,12 @@ class PageShow extends Page
      */
     protected $template = 'show:show';
 
-    public function __construct($siteName, $tableName, $pageName, $pk = 'id')
+    public function __construct($tableName, $pk = 'id')
     {
-        $this->setSiteName($siteName);
-        $this->setPageName($pageName);
         $this->setTableName($tableName);
         $this->setPk($pk);
         $this->setField(new ListField());
         $this->setAction(new Actions());
-        $this->setBreadcrumb(Breadcrumb::getInstance());
-        $this->configBreadcrumb();
-    }
-
-    public function configBreadcrumb()
-    {
-        $this->getBreadcrumb()
-            ->add('首页', url('home/index'), 'layui-icon layui-icon-home')
-            ->add("{$this->getPageName()}列表", url('lists'))
-            ->add("{$this->getPageName()}详情", url('show'));
     }
 
 

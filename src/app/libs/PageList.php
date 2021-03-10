@@ -74,11 +74,9 @@ class PageList extends Page implements IteratorAlias
     private $orderBy = [];
 
 
-    public function __construct($siteName, $tableName, $pageName, $pk)
+    public function __construct($tableName, $pk)
     {
-        $this->setPageName($pageName);
         $this->setTableName($tableName);
-        $this->setSiteName($siteName);
         $this->setPk($pk);
 
         //初始化 列表字段
@@ -90,17 +88,6 @@ class PageList extends Page implements IteratorAlias
         //初始化 分页类
         $this->setPage(new Pagination());
 
-        //初始化 面包屑
-        $this->setBreadcrumb(Breadcrumb::getInstance());
-        $this->configBreadcrumb();
-
-    }
-
-    public function configBreadcrumb()
-    {
-        $this->getBreadcrumb()
-            ->add('首页', url('home/index'), 'layui-icon layui-icon-home')
-            ->add("{$this->getPageName()}列表", url('lists'));
     }
 
 

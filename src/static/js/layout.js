@@ -111,8 +111,5 @@ layui.use(['element', 'layer', 'jquery', 'form'], function () {
                 }
             });
         }, 350)
-
-
     })
-
 });

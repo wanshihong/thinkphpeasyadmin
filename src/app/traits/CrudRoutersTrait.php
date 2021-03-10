@@ -14,9 +14,10 @@ use Exception as ExceptionAlias;
 use think\db\exception\DataNotFoundException as DataNotFoundExceptionAlias;
 use think\db\exception\DbException as DbExceptionAlias;
 use think\db\exception\ModelNotFoundException as ModelNotFoundExceptionAlias;
-use think\Exception;
 use think\facade\Db;
+use think\facade\Filesystem;
 use think\response\Json as JsonAlias;
+use stdClass as stdClassAlias;
 
 /**
  * 路由类
@@ -33,11 +34,10 @@ trait CrudRoutersTrait
      */
     public function lists()
     {
-
         //实例化查询
         $listQuery = new ListQuery();
         //实例化数据表格
-        $page = new PageList($this->siteName, $this->getTableName(), $this->getPageName(), $this->pk);
+        $page = new PageList($this->getTableName(), $this->pk);
 
 
         //配置字段
@@ -57,12 +57,13 @@ trait CrudRoutersTrait
         $listQuery->softDelete($this->softDeleteField, $this->softDeleteBeforeVal);
 
         //配置分页
-        $this->configPage($page->getPage());
+        $this->configListPagination($page->getPage());
 
         //获取结果
         $listQuery->listResult($page);
 
-        return $page->fetch($this->getPageName(), [
+        $this->configListBreadcrumb();
+        return $this->fetch($page->getTemplate(), [
             'table' => $page,
             'addAction' => $page->getActionAdd(),
         ]);
@@ -98,16 +99,16 @@ trait CrudRoutersTrait
     /**
      * 添加页面
      * @return mixed|string
-     * @throws Exception
      */
     public function add(): string
     {
-        $page = new PageForm($this->siteName, $this->getTableName(), $this->getPageName(), $this->pk);
+        $page = new PageForm($this->getTableName(), $this->pk);
 
         $this->configFormField($page);
         $this->configFormAction($page->getAction());
 
-        return $page->fetch($this->getPageName(), [
+        $this->configFormBreadcrumb();
+        return $this->fetch($page->getTemplate(), [
             'forms' => $page->getFields(),
             'actions' => $page->getAction()
         ]);
@@ -116,13 +117,13 @@ trait CrudRoutersTrait
     /**
      * 修改页面
      * @return mixed|string
-     * @throws Exception
+     * @throws ExceptionAlias
      */
     public function edit(): string
     {
         $id = request()->get($this->pk);
-        if (empty($id)) throw new Exception("缺少{$this->pk}参数");
-        $page = new PageForm($this->siteName, $this->getTableName(), $this->getPageName(), $this->pk);
+        if (empty($id)) throw new ExceptionAlias("缺少{$this->pk}参数");
+        $page = new PageForm($this->getTableName(), $this->pk);
         $page->setId($id);
 
         $this->configFormField($page);
@@ -133,10 +134,11 @@ trait CrudRoutersTrait
         $data = $page->getResult();
 
         if (empty($data)) {
-            throw new Exception("参数{$id},查找不到内容");
+            throw new ExceptionAlias("参数{$id},查找不到内容");
         }
 
-        return $page->fetch($this->getPageName(), [
+        $this->configFormBreadcrumb();
+        return $this->fetch($page->getTemplate(), [
             'forms' => $page->getFields(),
             'actions' => $page->getAction()
         ]);
@@ -149,7 +151,7 @@ trait CrudRoutersTrait
      * edit: 编辑页面
      * @return string
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         $id = request()->post($this->pk, request()->get($this->pk));
         return $id ? 'edit' : 'add';
@@ -163,7 +165,7 @@ trait CrudRoutersTrait
     {
         try {
             $id = request()->post($this->pk, request()->get($this->pk));
-            $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
+            $page = new PageForm($this->getTableName(), $this->pk);
             $this->configFormField($page);
 
             $form = $this->formRequestParam($page->getFields());
@@ -180,7 +182,7 @@ trait CrudRoutersTrait
      * @return mixed
      * @throws DataNotFoundExceptionAlias
      * @throws DbExceptionAlias
-     * @throws ModelNotFoundExceptionAlias|Exception
+     * @throws ModelNotFoundExceptionAlias|ExceptionAlias
      */
     public function show()
     {
@@ -188,7 +190,7 @@ trait CrudRoutersTrait
         if (empty($id)) {
             return redirect(url('lists'));
         }
-        $show = new PageShow($this->siteName, $this->getTableName(), $this->getPageName(), $this->pk);
+        $show = new PageShow($this->getTableName(), $this->pk);
         $show->createQuery($id);
         $this->configShowQuery($show->getQuery(), $show->getAlias());
         $this->configShow($show);
@@ -196,7 +198,8 @@ trait CrudRoutersTrait
         $this->configShowAction($show->getAction());
         $row = $show->getResult();
 
-        return $show->fetch($this->getPageName(), [
+        $this->configShowBreadcrumb();
+        return $this->fetch($show->getTemplate(), [
             'result' => $row,
             'action' => $show->getAction(),
         ]);
@@ -239,7 +242,6 @@ trait CrudRoutersTrait
      * @throws DbExceptionAlias
      * @throws DataNotFoundExceptionAlias
      * @throws ModelNotFoundExceptionAlias
-     * @noinspection PhpUnused
      */
     public function autocomplete_select()
     {
@@ -254,7 +256,7 @@ trait CrudRoutersTrait
             return $this->error('缺少参数');
         }
 
-        $page = new PageForm($this->getTableName(), $this->getPageName(), $this->pk);
+        $page = new PageForm($this->getTableName(), $this->pk);
         $this->configFormField($page);
 
 
@@ -299,5 +301,36 @@ trait CrudRoutersTrait
         return $this->success($result);
 
     }
+
+
+    // 图片上传
+    public function upload(): JsonAlias
+    {
+        try {
+            // 获取表单上传文件 例如上传了001.jpg
+            $files = request()->file();
+
+            $paths = [];
+            foreach ($files as $file) {
+                // 上传到本地服务器
+                $path = Filesystem::disk('public')->putFile('easy_admin', $file);
+                array_push($paths, request()->domain() . '/storage/' . $path);
+            }
+
+            return json([
+                'errno' => 0,
+                'msg' => 'ok',
+                'data' => $paths
+            ]);
+        } catch (ExceptionAlias $e) {
+            return json([
+                'errno' => 0,
+                'msg' => $e->getMessage(),
+                'data' => new stdClassAlias()
+            ]);
+        }
+
+    }
+
 
 }
