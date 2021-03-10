@@ -24,6 +24,13 @@
         {/block}
     </div>
     <div class="layout-main">
+        <div class="user-info">
+            {if isset($user) && $user}
+            <span>{$user.username}</span>|
+            <a href="{:url('login/change_pwd')}">修改密码</a>|
+            <a href="{:url('login/logout')}">安全退出</a>
+            {/if}
+        </div>
         <div class="layout-main-head">
             {block name="header"}
             <div class="layui-show-xs layui-hide-sm layui-hide-md layui-hide-lg">

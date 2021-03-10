@@ -5,7 +5,7 @@
 
 
 <div class="layui-card">
-    <div class="layui-card-header">注册账号 - {$__site_name__}</div>
+    <div class="layui-card-header">修改密码 - {$__site_name__}</div>
     <div class="layui-card-body">
 
 
@@ -13,7 +13,7 @@
 
             <label class="form-item">
                 <i class="layui-icon layui-icon-username"></i>
-                <input type="text" name="username" placeholder="请输入账号" autocomplete="off" class="layui-input">
+                <input type="password" name="opassword" placeholder="请输入账号" autocomplete="off" class="layui-input">
             </label>
 
             <label class="form-item">
@@ -33,9 +33,9 @@
             </label>
 
 
-            <button lay-submit lay-filter="register" class="layui-btn layui-btn-normal">注册</button>
+            <button lay-submit lay-filter="register" class="layui-btn layui-btn-normal">修改</button>
 
-            已有账号?<a href="{:url('login')}">返回登录</a>
+            <a href="{:url('login')}">返回登录</a>
 
         </form>
 
@@ -53,33 +53,9 @@
         // 表单提交
         form.on('submit(register)', function (data) {
 
-            if (!data.field.username) {
+            if (!data.field.opassword) {
                 layer.msg('请输入账号', {icon: 2});
-                $('input[name=username]').focus();
-                return false;
-            }
-
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(data.field.username)) {
-                layer.msg('用户名不能有特殊字符', {icon: 2});
-                $('input[name=username]').focus();
-                return false;
-            }
-
-            if (/(^\_)|(\__)|(\_+$)/.test(data.field.username)) {
-                layer.msg('用户名首尾不能出现下划线', {icon: 2});
-                $('input[name=username]').focus();
-                return false;
-            }
-
-            if (/^\d+\d+\d$/.test(data.field.username)) {
-                layer.msg('用户名不能全为数字', {icon: 2});
-                $('input[name=username]').focus();
-                return false;
-            }
-
-            if (data.field.username.length < 6) {
-                layer.msg('用户名不小于6位', {icon: 2});
-                $('input[name=username]').focus();
+                $('input[name=opassword]').focus();
                 return false;
             }
 
@@ -113,9 +89,12 @@
                 return false;
             }
 
-            $.post('{:url("register")}', data.field, res => {
+            $.post('{:url("change_pwd")}', data.field, res => {
                 if (res.code) {
-                    window.location.href = res.data.url;
+                    layer.msg('密码修改成功', {icon: 1},function () {
+                        window.location.href = res.data.url;
+                    });
+
                 } else {
                     layer.msg(res.msg, {icon: 2});
                 }

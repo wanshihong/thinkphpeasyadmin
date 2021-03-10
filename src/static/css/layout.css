@@ -71,8 +71,22 @@
     overflow: hidden;
     min-height: 100vh;
     background-color: #f7fafc;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     box-sizing: border-box;
+}
+
+.layout-main .user-info {
+    height: 20px;
+    line-height: 20px;
+    width: 100%;
+    text-align: right;
+}
+
+.layout-main .user-info span, .layout-main .user-info a {
+    margin-right: 5px;
+    display: inline-block;
+    color: #999999;
+    font-size: 12px;
 }
 
 .layout-main-head {
@@ -148,26 +162,28 @@
     font-size: 24px;
     color: #999999;
 }
+
 /* end 输入框图标 */
 
 
 /* 重写 FormAutocomplete 样式  */
-.easy-form .select-input{
-    width: 100%!important;
+.easy-form .select-input {
+    width: 100% !important;
     box-sizing: border-box;
 }
-.easy-form xm-select{
+
+.easy-form xm-select {
     width: 100%;
     box-sizing: border-box;
 }
+
 /* end 重写 FormAutocomplete 样式  */
 
 
-
 /* start 文件上传 */
-.upload-img-box{
+.upload-img-box {
     box-sizing: border-box;
-    border: 1px dashed #e0e2e4 ;
+    border: 1px dashed #e0e2e4;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -176,29 +192,33 @@
     color: #cccccc;
     font-size: 12px;
 }
-.upload-img-box .layui-icon{
+
+.upload-img-box .layui-icon {
     font-size: 35px;
     color: #cccccc;
 }
 
-.upload-img-box:hover,.upload-img-box:hover .layui-icon{
+.upload-img-box:hover, .upload-img-box:hover .layui-icon {
     font-weight: bold;
     color: #00b0e8;
 }
+
 /* end 文件上传 */
 
-.empty-data{
+.empty-data {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #dbdbdb;
 }
-.empty-data img{
+
+.empty-data img {
     width: 60px;
     margin-top: 20px;
     margin-bottom: 10px;
 }
-.layui-badge{
+
+.layui-badge {
     height: auto;
 }

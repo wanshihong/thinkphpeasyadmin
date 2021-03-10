@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>
-        {block name="title"}登录{/block}
+        {block name="title"}登录注册 - {$__site_name__}{/block}
     </title>
     <style>
         body {
@@ -23,14 +23,14 @@
             background-color: rgba(255, 255, 255, .55);
         }
 
-        .layui-form{
-            margin-top: 10px;
+        .main .layui-card-body{
+            padding-top: 20px;
         }
         .form-item {
             display: block;
             width: 290px;
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .form-item .layui-icon {
@@ -42,6 +42,21 @@
 
         .form-item input {
             padding-left: 32px;
+        }
+        .form-item-verify{
+            display: flex;
+            flex-direction: row;
+        }
+        .verify{
+            height: 38px;
+            margin-left: 10px;
+        }
+
+        .btn-box{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 
@@ -64,11 +79,15 @@
 {block name="body_script"}{/block}
 <script>
     layui.use(['element', 'jquery'], function () {
-        let $ = layui.jquery;
-        $(function () {
-            let num = Math.ceil(Math.random() * 3);
-            $('body').css('background-image', 'url("/easy_admin_static/img/login_bg' + num + '.jpg")');
-        })
+        let form = layui.form, $ = layui.jquery, layer = layui.layer;
+
+        // 背景图片随机
+        $('body').css('background-image', 'url("/easy_admin_static/img/login_bg' + Math.ceil(Math.random() * 3) + '.jpg")');
+
+        // 验证码刷新
+        $('.verify').click(function () {
+            $(this).attr('src','{:url("verify")}?ver=' + Math.random())
+        });
     });
 </script>
 </body>

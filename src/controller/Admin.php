@@ -12,6 +12,7 @@ use easyadmin\app\traits\CrudRewriteTrait;
 use easyadmin\app\traits\CrudRoutersTrait;
 use stdClass as stdClassAlias;
 use think\Exception;
+use think\facade\Session;
 use think\response\Json;
 
 class Admin
@@ -121,7 +122,15 @@ class Admin
         $data['__breadcrumb__'] = $breadcrumb;
         $data['__site_name__'] = $this->siteName;
 
+        //用户信息
+        $data['user'] = $this->getUser();
         return $data;
+    }
+
+    // 获取当前登陆的用户信息
+    protected function getUser()
+    {
+        return Session::get('user');
     }
 
     /**
