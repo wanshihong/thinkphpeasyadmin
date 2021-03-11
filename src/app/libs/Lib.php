@@ -29,9 +29,17 @@ class Lib
         return $url;
     }
 
-
-    public function getArrayValue(array $arr, string $field, $default = null)
+    /**
+     * 获取数组中 某一个字段的值
+     * @param $arr
+     * @param string $field
+     * @param null $default
+     * @return mixed|null
+     */
+    public function getArrayValue($arr, string $field, $default = null)
     {
+        if (!is_array($arr)) return $default;
+
         if (array_key_exists($field, $arr) && $arr[$field]) {
             return $arr[$field];
         } else {

@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>
-        {block name="title"}登录注册 - {$__site_name__}{/block}
-    </title>
+    <title>{block name="title"}登录注册 - {$__site_name__}{/block}</title>
     <style>
         body {
             background-color: #2F4056;
@@ -82,7 +80,7 @@
         let form = layui.form, $ = layui.jquery, layer = layui.layer;
 
         // 背景图片随机
-        $('body').css('background-image', 'url("/easy_admin_static/img/login_bg' + Math.ceil(Math.random() * 3) + '.jpg")');
+        $('body').css('background-image', 'url("{$static_root}img/login_bg' + Math.ceil(Math.random() * 3) + '.jpg")');
 
         // 验证码刷新
         $('.verify').click(function () {

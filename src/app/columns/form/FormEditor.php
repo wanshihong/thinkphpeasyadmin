@@ -7,7 +7,7 @@ namespace easyadmin\app\columns\form;
 class FormEditor extends BaseForm
 {
 
-    protected $jsFiles = ['/easy_admin_static/wangEditor4.6.2.min.js', '/easy_admin_static/js/editor.js'];
+    protected $jsFiles = ['wangEditor4.6.2.min.js', 'js/editor.js'];
 
     protected $options = [
         'jsFiles' => [],

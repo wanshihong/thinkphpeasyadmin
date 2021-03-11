@@ -8,7 +8,7 @@ use think\Exception;
 class FormDateTime extends BaseForm
 {
 
-    protected $jsFiles = ['/easy_admin_static/js/laydate.js'];
+    protected $jsFiles = ['js/laydate.js'];
 
     protected $options = [
         'jsFiles' => [],

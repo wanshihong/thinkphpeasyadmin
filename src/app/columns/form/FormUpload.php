@@ -7,8 +7,8 @@ namespace easyadmin\app\columns\form;
 class FormUpload extends BaseForm
 {
 
-    protected $jsFiles = ['/easy_admin_static/cropperjs/cropper.js', '/easy_admin_static/js/upload.js'];
-    protected $cssFiles = ['/easy_admin_static/cropperjs/cropper.css'];
+    protected $jsFiles = ['cropperjs/cropper.js', 'js/upload.js'];
+    protected $cssFiles = ['cropperjs/cropper.css'];
 
     public $options = [
         'highlight' => false, //包含搜索的值是否高亮

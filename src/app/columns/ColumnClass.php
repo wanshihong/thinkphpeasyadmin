@@ -136,13 +136,13 @@ class ColumnClass
      */
     public function setSelectAlias(string $field): ColumnClass
     {
-        if (stripos($field, 'as') !== false) {
+        if (stripos($field, ' as ') !== false) {
             //如果用户指定了别名的,直接使用用户的别名
-            $arr = explode('as', $field);
+            $arr = explode(' as ', $field);
             $this->field = trim($arr[0]);
             $field = trim($arr[1]);
         } else {
-            //如果用户没有指定别名, 默认采用 字段名称做完别名
+            //如果用户没有指定别名, 默认采用 字段名称做为别名
             if (stripos($field, '.') !== false) {
                 $field = str_replace('.', '_', $field);
             }

@@ -59,7 +59,7 @@ function renderSelect2($, select, xmSelect) {
     }
 }
 
-layui.config({base: '/easy_admin_static/layui-v2.5.7/lay/modules/'}).extend({
+layui.config({base: '{$static_root}layui-v2.5.7/lay/modules/'}).extend({
     xmSelect: 'xm-select/xm-select'
 }).use(['xmSelect', 'jquery'], function () {
     let xmSelect = layui.xmSelect, $ = layui.jquery;

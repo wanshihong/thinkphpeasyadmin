@@ -5,6 +5,7 @@ namespace easyadmin\app\columns\lists;
 
 
 use easyadmin\app\columns\ColumnClass;
+use easyadmin\app\libs\Resource;
 use easyadmin\app\libs\Template;
 use think\Exception as ExceptionAlias;
 
@@ -34,6 +35,7 @@ class BaseList extends ColumnClass
             'class' => $this->getOption('class', ''), //列的样式
             //dom 元素 id
             'elem_id' => str_replace(':', '_', $elemId),
+            'static_root' => Resource::getInstance()->getRoot()
         ];
     }
 

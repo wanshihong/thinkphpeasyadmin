@@ -37,7 +37,7 @@
     <!-- 主体 -->
     {foreach $table as $index=>$row }
     <tbody>
-    <tr>
+    <tr data-id="{$row->getRowId()}">
         {foreach $row as $rowIndex=>$td }
         <td class="align-middle text-sm text-gray-600">{$td}</td>
         {/foreach}
@@ -60,7 +60,7 @@
 <!-- 空数据 -->
 {if $table->getTotal()===0}
 <div class="empty-data">
-    <img src="/easy_admin_static/img/no_data.png" alt="空数据">
+    <img src="{$static_root}img/no_data.png" alt="空数据">
     <span>列表为空</span>
 </div>
 

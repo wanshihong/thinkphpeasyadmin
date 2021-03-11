@@ -62,8 +62,8 @@ class Actions
         $this->setOptions($options);
 
         $class = $this->getOption('class', []);
-        if(!is_array($class)){
-            $class = explode(' ',$class);
+        if (!is_array($class)) {
+            $class = explode(' ', $class);
         }
 
         $btn = new Btn();
@@ -76,15 +76,16 @@ class Actions
         $btn->setIsConfirm($this->getOption('confirm', ''));
         $btn->setBtnType($this->getOption('btn_type', 'btn'));
         $btn->setReferer($this->getOption('referer', false));
+        $btn->setDataId($this->getOption('dataId', ''));
 
         array_push($this->actions, $btn);
 
 
         $resource = Resource::getInstance();
-        foreach ($this->getOption('jsFiles',[]) as $js) {
+        foreach ($this->getOption('jsFiles', []) as $js) {
             $resource->appendJsFile($js);
         }
-        foreach ($this->getOption('cssFiles',[]) as $css) {
+        foreach ($this->getOption('cssFiles', []) as $css) {
             $resource->appendCssFile($css);
         }
 

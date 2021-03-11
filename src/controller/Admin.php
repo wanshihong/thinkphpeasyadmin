@@ -5,9 +5,11 @@ namespace easyadmin\controller;
 
 
 use easyadmin\app\libs\Breadcrumb;
+use easyadmin\app\libs\Install;
 use easyadmin\app\libs\Menu;
 use easyadmin\app\libs\Resource;
 use easyadmin\app\libs\Template;
+use easyadmin\app\libs\User;
 use easyadmin\app\traits\CrudRewriteTrait;
 use easyadmin\app\traits\CrudRoutersTrait;
 use stdClass as stdClassAlias;
@@ -39,6 +41,11 @@ class Admin
     /** @var array 赋值到页面的数据 */
     protected $data = [];
 
+
+    public function __construct()
+    {
+        new Install();
+    }
 
     /**
      * 获取页面标题
@@ -121,6 +128,7 @@ class Admin
         $breadcrumb = Breadcrumb::getInstance();
         $data['__breadcrumb__'] = $breadcrumb;
         $data['__site_name__'] = $this->siteName;
+        $data['static_root'] = $resource->getRoot();
 
         //用户信息
         $data['user'] = $this->getUser();
@@ -130,7 +138,7 @@ class Admin
     // 获取当前登陆的用户信息
     protected function getUser()
     {
-        return Session::get('user');
+        return User::getInstance()->getUser();
     }
 
     /**

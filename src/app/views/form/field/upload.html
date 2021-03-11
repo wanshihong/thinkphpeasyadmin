@@ -5,7 +5,7 @@
      data-cropper="{$cropper}"
 >
     {if $value }
-         <img src="{$value}" alt="" style="width: 100%;height: 100%;" onerror="this.src='/easy_admin_static/img/img_load_error.png'">
+         <img src="{$value}" alt="" style="width: 100%;height: 100%;" onerror="this.src='{$static_root}img/img_load_error.png'">
     {else/}
         <i class="layui-icon layui-icon-upload-drag"></i>
         <span>点击上传</span>

@@ -16,19 +16,19 @@ if($icon){
 ?>
 
 {if $btnType=='a'}
-<a onclick=clickBtn(this) {$confirmAttr} data-href="{$url}" data-referer="{$referer}"  href="javascript:" class="{$class}">
+<a onclick=clickBtn(this) {$confirmAttr} data-href="{$url}" data-id="{$dataId}" data-referer="{$referer}"  href="javascript:" class="{$class}">
     {$iconElem|raw}{$label}
 </a>
 {elseif $btnType=='btn' /}
-<a onclick=clickBtn(this) {$confirmAttr} data-href="{$url}" data-referer="{$referer}"  href="javascript:" class="layui-btn {$class}">
+<a onclick=clickBtn(this) {$confirmAttr} data-href="{$url}" data-id="{$dataId}" data-referer="{$referer}"  href="javascript:" class="layui-btn {$class}">
     {$iconElem|raw}{$label}
 </a>
 {elseif $btnType=='button' /}
-<button onclick=clickBtn(this) {$confirmAttr} data-href="{$url}" data-referer="{$referer}"  type="button" class="layui-btn {$class}">
+<button onclick=clickBtn(this) {$confirmAttr} data-href="{$url}" data-id="{$dataId}" data-referer="{$referer}"  type="button" class="layui-btn {$class}">
     {$iconElem|raw}{$label}
 </button>
 {elseif $btnType=='submit' /}
-<button onclick=clickBtn(this) {$confirmAttr} lay-submit lay-filter="easy_form" data-referer="{$referer}" type="submit" class="layui-btn {$class}">
+<button onclick=clickBtn(this) {$confirmAttr} lay-submit lay-filter="easy_form" data-id="{$dataId}" data-referer="{$referer}" type="submit" class="layui-btn {$class}">
     {$iconElem|raw}{$label}
 </button>
 {/if}

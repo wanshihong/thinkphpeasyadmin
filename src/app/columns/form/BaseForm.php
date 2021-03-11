@@ -5,6 +5,7 @@ namespace easyadmin\app\columns\form;
 
 
 use easyadmin\app\columns\ColumnClass;
+use easyadmin\app\libs\Resource;
 use easyadmin\app\libs\Template;
 use easyadmin\app\libs\Verify;
 use Exception as ExceptionAlias;
@@ -29,6 +30,7 @@ class BaseForm extends ColumnClass
             'placeholder' => $this->getOption('placeholder', ''),//输入提示
             'required' => $this->getOption('required', false), //是否必填
             'verify' => $this->getOption('verify', []), //验证器,
+            'static_root' => Resource::getInstance()->getRoot()
         ];
     }
 
@@ -87,7 +89,7 @@ class BaseForm extends ColumnClass
                     return $res;
                 }
             }
-            return true ;
+            return true;
         } else {
             return $this->verifyAction($value);
         }

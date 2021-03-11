@@ -10,7 +10,7 @@ use think\db\Query;
 class FormDateTimeRange extends FormDateTime
 {
 
-    protected $jsFiles = ['/easy_admin_static/js/laydate.js'];
+    protected $jsFiles = ['js/laydate.js'];
 
     protected $options = [
         'format' => 'Y-m-d H:i:s',

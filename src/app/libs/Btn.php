@@ -70,6 +70,9 @@ class Btn
     private $btnType = 'btn';
 
 
+    private $dataId;
+
+
     /**
      * @return string
      */
@@ -201,6 +204,7 @@ class Btn
             'label' => $this->getLabel(),
             'confirmText' => $this->getIsConfirm(),
             'btnType' => $this->getBtnType(),
+            'dataId'=>$this->getDataId()
         ];
 
         if ($this->isReferer()) {
@@ -268,6 +272,24 @@ class Btn
     public function setReferer(bool $referer): void
     {
         $this->referer = $referer;
+    }
+
+    /**
+     * @param mixed $dataId
+     * @return Btn
+     */
+    public function setDataId($dataId)
+    {
+        $this->dataId = $dataId;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataId()
+    {
+        return $this->dataId;
     }
 
 

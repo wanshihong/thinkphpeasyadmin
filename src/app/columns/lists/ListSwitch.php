@@ -7,7 +7,7 @@ namespace easyadmin\app\columns\lists;
 class ListSwitch extends BaseList
 {
 
-    protected $jsFiles = ['/easy_admin_static/js/switch.js'];
+    protected $jsFiles = ['js/switch.js'];
 
     /**
      * 列的其他选项

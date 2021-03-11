@@ -81,11 +81,19 @@ class ListQuery
 
         //设置查询字段
         $fields = $table->getField()->getQueryField($alias);
+
+        //查看是否包含了主键
+        $pkField = $this->alias . '.' . $table->getPk();
+
+        if (!in_array($pkField, $fields)) {
+            array_push($fields, $pkField);
+        }
+
         $this->query->field($fields);
 
 
         //过滤器参数
-        $table->getFilter()->setFilterQuery( $this->query, $fields, $alias);
+        $table->getFilter()->setFilterQuery($this->query, $fields, $alias);
 
         //查询别名
         $this->query->alias($alias);
@@ -165,6 +173,7 @@ class ListQuery
             $params[$table->getPk()] = $row->getRowId();
 
 
+            $options['dataId'] = $row->getRowId();
             $options['params'] = $params;
             $action->addAction($label, $url, $options);
 

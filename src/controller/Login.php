@@ -1,36 +1,21 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 
 namespace easyadmin\controller;
 
 
+use easyadmin\app\libs\User;
 use think\captcha\facade\Captcha;
 use think\Exception;
-use think\facade\Session;
+use think\facade\Db;
+use think\Response;
 use think\response\Json as JsonAlias;
+use think\response\Redirect;
 
 
 class Login extends Admin
 {
 
-    protected $tableName = 'manage';//用户表名称
-    protected $isRegister = true;//是否开启注册
-    protected $isFindPwd = true;//是否开启注册
-    protected $salt = 'EasyAdmin';//密码 加密的盐
-    protected $homeUrl = '/admin/index/index'; //登录注册成功以后跳转到那个页面
-
-    /**
-     * 加密密码
-     * @param $username
-     * @param $password
-     * @return string
-     */
-    protected function encrypt($username, $password)
-    {
-        $md5 = md5($username . $password . $this->salt);
-        $num = preg_replace('/\D/s', '', $md5);
-        return sha1($md5 . $num) . $num;
-    }
 
     /**
      * 登陆
@@ -48,22 +33,23 @@ class Login extends Admin
             if (empty($password)) return $this->error('请输入密码');
             if (!captcha_check($code)) return $this->error('验证码错误');
 
-            $user = $this->getModel()->where('username', $username)->find();
+            $user = Db::name(config('login.table_name'))->where('username', $username)->find();
             if (empty($user)) return $this->error('用户名不存在');
 
-            if ($this->encrypt($user['username'], $password) !== $user['password']) {
+            if (User::getInstance()->encrypt($user['username'], $password) !== $user['password']) {
                 return $this->error('密码输入错误');
             }
 
-            unset($user['password']);
-            Session::set('user', $user);
-            Session::set('user_id', $user['id']);
+            User::getInstance()->save($user);
 
-            return $this->success(['url' => (string)url($this->homeUrl)]);
+            Db::name(config('login.table_name'))->where('id', $user['id'])->update([
+                'last_login_time' => time()
+            ]);
+            return $this->success(['url' => (string)url(config('login.home_url'))]);
         } else {
             return $this->fetch('login:login', [
-                'is_register' => $this->isRegister,
-                'is_find_pwd' => $this->isFindPwd,
+                'is_register' => config('login.register'),
+                'is_find_pwd' => config('login.find_password'),
             ]);
         }
 
@@ -76,7 +62,7 @@ class Login extends Admin
      */
     public function register()
     {
-        if (!$this->isRegister) {
+        if (!config('login.register')) {
             return '为开通注册';
         }
 
@@ -91,29 +77,33 @@ class Login extends Admin
             if ($password !== $rpassword) return $this->error('两次密码输入不一致');
             if (!captcha_check($code)) return $this->error('验证码错误');
 
-            $user = $this->getModel()->where('username', $username)->find();
+            $user = Db::name(config('login.table_name'))->where('username', $username)->find();
             if ($user) return $this->error('用户已经存在,您可以直接登陆');
 
             $user = [
                 'username' => $username,
-                'password' => $this->encrypt($username, $password),
+                'password' => User::getInstance()->encrypt($username, $password),
                 'reg_time' => time(),
                 'last_login_time' => time(),
             ];
 
-            $userId = $this->getModel()->insertGetId($user);
+            $userId = Db::name(config('login.table_name'))->insertGetId($user);
 
-            unset($user['password']);
             $user['id'] = $userId;
-            Session::set('user', $user);
-            Session::set('user_id', $userId);
+            User::getInstance()->save($user);
 
-            return $this->success(['url' => (string)url($this->homeUrl)]);
+
+            return $this->success(['url' => (string)url(config('login.home_url'))]);
         } else {
             return $this->fetch('login:register');
         }
     }
 
+    /**
+     * 修改密码
+     * @return string|JsonAlias|Redirect
+     * @throws Exception
+     */
     public function change_pwd()
     {
         if (request()->isAjax()) {
@@ -128,38 +118,37 @@ class Login extends Admin
             if (!captcha_check($code)) return $this->error('验证码错误');
 
 
-            $userId = Session::get('user_id');
-            $user = $this->getModel()->where('id', $userId)->find();
+            $userId = User::getInstance()->getUserId();
+            $user = Db::name(config('login.table_name'))->where('id', $userId)->find();
             if (empty($user)) {
                 return redirect('login');
             }
 
-            if ($this->encrypt($user['username'], $opassword) !== $user['password']) {
+            if (User::getInstance()->encrypt($user['username'], $opassword) !== $user['password']) {
                 return $this->error('旧密码输入错误');
             }
 
-            $newPwd = $this->encrypt($user['username'], $password);
-            if ($this->encrypt($user['username'], $opassword) === $newPwd) {
+            $newPwd = User::getInstance()->encrypt($user['username'], $password);
+            if (User::getInstance()->encrypt($user['username'], $opassword) === $newPwd) {
                 return $this->error('新密码不能和旧密码相同');
             }
 
 
-            $this->getModel()->where('id', $userId)->update([
+            Db::name(config('login.table_name'))->where('id', $userId)->update([
                 'password' => $newPwd
             ]);
 
 
-            return $this->success(['url' => (string)url($this->homeUrl)]);
+            return $this->success(['url' => (string)url(config('login.home_url'))]);
         } else {
             return $this->fetch('login:change_pwd');
         }
     }
 
     //退出登录
-    public function logout()
+    public function logout(): Redirect
     {
-        Session::delete('user');
-        Session::delete('user_id');
+        User::getInstance()->clear();
         return redirect('login');
     }
 
@@ -170,9 +159,15 @@ class Login extends Admin
     }
 
     // 显示验证码
-    public function verify()
+    public function verify(): Response
     {
         return Captcha::create();
+    }
+
+    //无权访问
+    public function no_access()
+    {
+        return $this->fetch('login:no_access');
     }
 
 

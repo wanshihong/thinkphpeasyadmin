@@ -54,7 +54,7 @@ class PageForm extends Page
         $this->setAction(new Actions());
         $this->setBreadcrumb(Breadcrumb::getInstance());
         $resource = Resource::getInstance();
-        $resource->appendJsFile('/easy_admin_static/js/form.js');
+        $resource->appendJsFile('js/form.js');
     }
 
 
