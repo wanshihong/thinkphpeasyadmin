@@ -67,8 +67,15 @@ class Template extends ThinkTemplate
         }
 
         if (0 !== strpos($template, '/')) {
+            // win
             $template = str_replace(['/', ':'], $this->config['view_depr'], $template);
+
+            //取得盘符
+            $panfu = substr($template, 0, 1);
+            //如果盘符被替换了  C:\  被替换成成了 c\\  还原回来
+            $template = str_replace("{$panfu}\\\\", "{$panfu}:\\", $template);
         } else {
+            // linux
             $template = '/' . str_replace(['/', ':'], $this->config['view_depr'], substr($template, 1));
         }
 
@@ -124,7 +131,7 @@ class Template extends ThinkTemplate
      * @param array $vars
      * @throws Exception
      */
-    public function fetch($template = '', array $vars = []): void
+    public function fetch(string $template = '',array $vars = []): void
     {
         //如果没有赋值模板路径,默认取当前控制器的当前方法
         if (empty($template)) {

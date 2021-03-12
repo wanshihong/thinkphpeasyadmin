@@ -20,7 +20,8 @@
         "ext-gd": "*",
         "topthink/framework": "^6.0.0",
         "topthink/think-template": "^2.0",
-        "topthink/think-captcha": "^3.0"
+        "topthink/think-captcha": "^3.0",
+        "topthink/think-multi-app":"v1.0.14"
     },
     "autoload": {
         "psr-4": {
