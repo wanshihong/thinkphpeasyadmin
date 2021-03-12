@@ -4,6 +4,8 @@
 namespace easyadmin\app\libs;
 
 
+use think\facade\Db;
+
 class Install
 {
 
@@ -25,12 +27,35 @@ class Install
             return true;
         }
 
+        if (!is_writable($app_path)) {
+            exit("请给与 {$app_path} 目录可写权限");
+        }
+
+
         //源文件
         $sourceDir = dirname(dirname(dirname(__FILE__))) . '/install/admin/';
 
         //复制目录到 web 根目录
         $this->files = [];
         $this->copyDir($sourceDir, $app_path);
+
+
+
+        //创建管理员表
+        $sql = <<<SQL
+CREATE TABLE IF NOT EXISTS `manage` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` varchar(55) NOT NULL COMMENT '账号',
+  `password` varchar(255) NOT NULL COMMENT '密码',
+  `reg_time` int(10) UNSIGNED DEFAULT NULL COMMENT '注册时间',
+  `last_login_time` int(10) UNSIGNED DEFAULT NULL COMMENT '最后登录时间',
+  `user_role` text COMMENT '用户角色 数组序列化',
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+SQL;
+        Db::query($sql);
+
 
         $handle = fopen($lockPath, "w");
         fwrite($handle, '应用安装锁文件,安装过之后不在安装;' . PHP_EOL . '请不要删除,否则会覆盖下列相关的文件' . PHP_EOL);
@@ -39,6 +64,7 @@ class Install
         }
 
         fclose($handle);
+
         exit('<h1>安装成功,请刷新页面</h1>');
     }
 
@@ -60,6 +86,10 @@ class Install
         $lockPath = $toDir . 'is_install.lock';
         if (is_file($lockPath)) {
             return true;
+        }
+
+        if (!is_writable($public_path)) {
+            exit("请给与 {$public_path} 目录可写权限");
         }
 
         //源文件

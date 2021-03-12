@@ -45,7 +45,7 @@ class Login
             return $next($request);
         }
         if ($needRole === false) {
-            return redirect(config('login.manage_login_url'));
+            return redirect(config('login.login_url'));
         }
 
 
@@ -56,7 +56,7 @@ class Login
                 if (User::getInstance()->getUserId()) {
                     return $next($request);
                 } else {
-                    return redirect(config('login.manage_login_url'));
+                    return redirect(config('login.login_url'));
                 }
             default:
                 //判断是否有权限, 无权限调整到无权限页面

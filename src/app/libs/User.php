@@ -64,7 +64,10 @@ class User
             $user['user_role'] = [];
         }
 
-        if (!is_array($user['user_role'])) throw new Exception('用户权限必须是一个数组');
+        if (!is_array($user['user_role'])) {
+            $roles = unserialize($user['user_role']);
+            $user['user_role'] = $roles ? $roles : [];
+        }
 
         $user['user_role'] = array_unique($user['user_role']);
 
