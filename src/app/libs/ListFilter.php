@@ -68,15 +68,15 @@ class ListFilter
      * @param string $label
      * @param string $fieldClass 字段的class引用
      * @param array $options 字段的其他属性
-     * @return BaseForm
+     * @return ListFilter
      */
-    public function addFilter(string $field, string $label, string $fieldClass, $options = []): BaseForm
+    public function addFilter(string $field, string $label, string $fieldClass, $options = []): ListFilter
     {
         /** @var BaseForm $column */
         $column = new $fieldClass($field, $label, $options);
 
         array_push($this->filters, $column);
-        return $column;
+        return $this;
     }
 
     /**
