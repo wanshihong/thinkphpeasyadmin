@@ -79,13 +79,14 @@ class Breadcrumb
      * 如果需要在中间穿插其他的面包屑 按照顺序插入即可
      *
      * @param int $index 插入索引, 输出的时候会按照这个索引有小到大排序,
+     * @param array $params
      * @return $this
      */
-    public function add($name, $url, $icon = '', $index = 0): Breadcrumb
+    public function add($name, $url, $icon = '', $index = 0,$params = []): Breadcrumb
     {
         $item = [
             'name' => $name,
-            'url' => $url,
+            'url' => Lib::formatUrl($url,$params),
             'icon' => $icon
         ];
 
