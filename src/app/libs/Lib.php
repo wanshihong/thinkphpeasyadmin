@@ -40,7 +40,7 @@ class Lib
     {
         if (!is_array($arr)) return $default;
 
-        if (array_key_exists($field, $arr) && $arr[$field]) {
+        if (isset($arr[$field])) {
             return $arr[$field];
         } else {
             return $default;
