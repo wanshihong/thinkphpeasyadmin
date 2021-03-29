@@ -148,6 +148,8 @@ class Pagination
         $template = new Template();
         $options = $this->getOptions();
 
+        $options = array_merge(request()->get(), $options);
+
         $template->fetch($this->getTemplate(), [
             'page' => $this->getCurrentPage(),
             'pageTotal' => ceil($this->getTotal() / $this->getPageSize()),
