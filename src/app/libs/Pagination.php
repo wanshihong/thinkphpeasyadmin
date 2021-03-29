@@ -148,7 +148,10 @@ class Pagination
         $template = new Template();
         $options = $this->getOptions();
 
-        $options = array_merge(request()->get(), $options);
+        $gets = request()->get();
+        unset($gets['page']);
+
+        $options = array_merge($gets, $options);
 
         $template->fetch($this->getTemplate(), [
             'page' => $this->getCurrentPage(),
