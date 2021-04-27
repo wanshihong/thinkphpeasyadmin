@@ -59,6 +59,9 @@ class Btn
      */
     private $isConfirm = '';
 
+    // 条件回调,判断这个按钮是否能够被显示
+    private $condition;
+
     /**
      * 按钮类型
      * a:  a   素 a 标签
@@ -204,7 +207,7 @@ class Btn
             'label' => $this->getLabel(),
             'confirmText' => $this->getIsConfirm(),
             'btnType' => $this->getBtnType(),
-            'dataId'=>$this->getDataId()
+            'dataId' => $this->getDataId()
         ];
 
         if ($this->isReferer()) {
@@ -290,6 +293,24 @@ class Btn
     public function getDataId()
     {
         return $this->dataId;
+    }
+
+    /**
+     * @param mixed $condition
+     * @return Btn
+     */
+    public function setCondition($condition)
+    {
+        $this->condition = $condition;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCondition()
+    {
+        return $this->condition;
     }
 
 

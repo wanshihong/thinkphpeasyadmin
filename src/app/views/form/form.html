@@ -16,7 +16,11 @@
         </label>
         <div class="layui-input-block">
             {$form}
+            {if $form->getOption("help")}
+            <p class="input-help" style="color: #999;">{$form->getOption("help")}</p>
+            {/if}
         </div>
+
     </div>
     {/if}
 

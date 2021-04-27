@@ -7,6 +7,7 @@ namespace easyadmin\controller;
 use easyadmin\app\libs\User;
 use think\captcha\facade\Captcha;
 use think\Exception;
+use think\facade\Cache;
 use think\facade\Db;
 use think\Response;
 use think\response\Json as JsonAlias;
@@ -24,6 +25,7 @@ class Login extends Admin
      */
     public function login()
     {
+
         if (request()->isAjax()) {
             $username = request()->post('username');
             $password = request()->post('password');
@@ -45,8 +47,20 @@ class Login extends Admin
             Db::name(config('login.table_name'))->where('id', $user['id'])->update([
                 'last_login_time' => time()
             ]);
-            return $this->success(['url' => (string)url(config('login.home_url'))]);
+
+
+            // 有来源地址,跳回来源地址
+            $HTTP_REFERER = Cache::get('login_referer');
+            $retUrl = $HTTP_REFERER ?: (string)url(config('login.home_url'));
+
+
+            return $this->success(['url' => $retUrl]);
         } else {
+            $HTTP_REFERER = $_SERVER['HTTP_REFERER'] ?? '';
+            if ($HTTP_REFERER) {
+                Cache::set('login_referer', $HTTP_REFERER, 86400);
+            }
+
             return $this->fetch('login:login', [
                 'is_register' => config('login.register'),
                 'is_find_pwd' => config('login.find_password'),

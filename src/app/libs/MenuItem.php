@@ -63,7 +63,16 @@ class MenuItem
      */
     public function checkNowUrl(): bool
     {
-        return stripos((string)$this->url,strtolower(request()->controller() . '/' . request()->action()))!==false;
+        $nowUrl = (string)$this->formatName($this->url);
+        $targetUrl = (string)strtolower($this->formatName(request()->controller() . '/' . request()->action()));
+
+        return stripos($nowUrl, $targetUrl) !== false;
+    }
+
+    // 驼峰转下划线
+    public function formatName($str): string
+    {
+        return strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
     }
 
     /**

@@ -59,6 +59,7 @@ class Actions
      */
     public function addAction($label = '', $url = '', $options = []): Actions
     {
+        // 装进去方便后续取值
         $this->setOptions($options);
 
         $class = $this->getOption('class', []);
@@ -77,6 +78,7 @@ class Actions
         $btn->setBtnType($this->getOption('btn_type', 'btn'));
         $btn->setReferer($this->getOption('referer', false));
         $btn->setDataId($this->getOption('dataId', ''));
+        $btn->setCondition($this->getOption('condition', null));
 
         array_push($this->actions, $btn);
 
@@ -148,5 +150,15 @@ class Actions
     public function setOptions(array $options): void
     {
         $this->options = $options;
+    }
+
+    /**
+     * @param array $actions
+     * @return Actions
+     */
+    public function setActions(array $actions): Actions
+    {
+        $this->actions = $actions;
+        return $this;
     }
 }

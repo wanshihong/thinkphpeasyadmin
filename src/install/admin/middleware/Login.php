@@ -40,6 +40,11 @@ class Login
 
     public function handle($request, \Closure $next)
     {
+        // 没有开启登陆
+        if (!config('login.enable_login')) {
+            return $next($request);
+        }
+
         $needRole = $this->getRole();
         if ($needRole === true) {
             return $next($request);

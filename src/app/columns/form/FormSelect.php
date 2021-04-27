@@ -38,6 +38,12 @@ class FormSelect extends BaseForm
      */
     public function formatData($data)
     {
+        if (empty($data['options'])) {
+            $data['options'] = [
+                ['key' => '', 'text' => '无数据',]
+            ];
+        }
+
         //如果定义了数组, 直接使用,不做其他判断
         $options = $this->getOption('options');
         if ($options) {
@@ -89,9 +95,9 @@ class FormSelect extends BaseForm
             return [];
         }
         $options = [];
-        if (is_callable($query)){
+        if (is_callable($query)) {
             $options = call_user_func($query);
-            if($options instanceof Collection){
+            if ($options instanceof Collection) {
                 return $options->toArray();
             }
             return $options;

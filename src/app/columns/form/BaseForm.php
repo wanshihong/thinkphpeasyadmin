@@ -30,6 +30,7 @@ class BaseForm extends ColumnClass
             'placeholder' => $this->getOption('placeholder', ''),//输入提示
             'required' => $this->getOption('required', false), //是否必填
             'verify' => $this->getOption('verify', []), //验证器,
+            'help' => $this->getOption('help', ''), //表单说明,
             'static_root' => Resource::getInstance()->getRoot()
         ];
     }

@@ -131,7 +131,23 @@ class ListTableRow implements IteratorAlias
      */
     public function getActions(): Actions
     {
-        return $this->actions;
+
+        $ret = [];
+        /** @var Btn $action */
+        foreach ($this->actions->getActions() as $action) {
+
+            // 是否显示这个按钮
+            $call = $action->getCondition();
+            if (is_callable($call)) {
+                $isShowAction = call_user_func($call, $this->row);
+                if ($isShowAction) {
+                    array_push($ret, $action);
+                }
+            } else {
+                array_push($ret, $action);
+            }
+        }
+        return $this->actions->setActions($ret);
     }
 
     /**

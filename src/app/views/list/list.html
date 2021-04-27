@@ -34,40 +34,39 @@
     </tr>
     </thead>
 
+    <tbody>
     <!-- 主体 -->
     {foreach $table as $index=>$row }
-    <tbody>
     <tr data-id="{$row->getRowId()}">
         {foreach $row as $rowIndex=>$td }
         <td class="align-middle text-sm text-gray-600">{$td}</td>
         {/foreach}
 
         <!-- 操作 -->
-        {if $row->getActions() }
+        {if $table->getActions() }
         <td>
             {$row->getActions()}
         </td>
         {/if}
     </tr>
-    </tbody>
     {/foreach}
+    </tbody>
 </table>
-    <!-- 空数据 -->
-    {if $table->getTotal()===0}
-    <div class="empty-data">
-        <img src="{$static_root}img/no_data.png" alt="空数据">
-        <span>列表为空</span>
-    </div>
-    {/if}
+<!-- 空数据 -->
+{if $table->getTotal()===0}
+<div class="empty-data">
+    <img src="{$static_root}img/no_data.png" alt="空数据">
+    <span>列表为空</span>
+</div>
+{/if}
 {/if}
 {/block}
 
 {block name="pagination"}
 
 
-
 <!-- 分页 -->
 {if isset($table)}
-    {$table->getPage()}
+{$table->getPage()}
 {/if}
 {/block}
