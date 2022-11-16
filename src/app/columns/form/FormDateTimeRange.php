@@ -100,7 +100,7 @@ class FormDateTimeRange extends FormDateTime
                 }
 
                 if (is_callable($format) || function_exists($format)) {
-                    $value = call_user_func($format, $value);
+                    $value = call_user_func($format, $value,$this->row->getRow());
                 } elseif (is_string($format)) {
                     $value = date($format, $value);
                 }

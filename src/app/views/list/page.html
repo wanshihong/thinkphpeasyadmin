@@ -2,27 +2,39 @@
 {if $pageTotal >1}
 <div class="layui-btn-group">
 
+
     {if $page >1 }
     <a class="layui-btn layui-btn-primary layui-btn-sm" href="?page={$page-1}&{$options}">上一页</a>
     {/if}
 
-    {for start="$page-5" end="$page+5"}
+    {if $page-5 >1 }
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="?page=1&{$options}">1</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:">...</a>
+    {/if}
 
+
+    {for start="$page-5" end="$page+5"}
     {if $i>=1 && $i<=$pageTotal }
     <a class="layui-btn layui-btn-sm {if $page==$i}{else/}layui-btn-primary{/if}" href="?page={$i}&{$options}">
         {$i}
     </a>
     {/if}
-
     {/for}
+
+    {if $page+5 <$pageTotal }
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:">...</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm" href="?page={$pageTotal}&{$options}">{$pageTotal}</a>
+    {/if}
 
     {if $page < $pageTotal }
     <a class="layui-btn layui-btn-primary layui-btn-sm" href="?page={$page+1}&{$options}">下一页</a>
     {/if}
 
-</div>
-{/if}
 
+</div>
+
+{/if}
+<span>共 {$pageTotal} 条</span>
 {/block}
 
 {block name="style"}{/block}

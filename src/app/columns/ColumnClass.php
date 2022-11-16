@@ -244,7 +244,7 @@ class ColumnClass
         }
 
         if (is_callable($format) || function_exists($format)) {
-            $ret = call_user_func($format, $ret);
+            $ret = call_user_func($format, $ret,$this->row->getRow());
         }
         return $ret;
     }

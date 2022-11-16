@@ -44,10 +44,17 @@ let MyUpload = {
                 return false
             }
 
-            let path = res.data[0];
-            $(`#${id_prev}_input`).val(path);
+            if (res.data[0].alipay) {
+                let alipay = res.data[0].alipay;
+                $(`#${id_prev}_input`).val(alipay['resource_id']);
+                $self.html(`<img src="${alipay['resource_url']}" style="width: 100%;height: 100%;" alt=""/>`);
+            } else {
+                let path = res.data[0];
+                $(`#${id_prev}_input`).val(path);
 
-            $self.html(`<img src="${path}" style="width: 100%;height: 100%;" alt=""/>`);
+                $self.html(`<img src="${path}" style="width: 100%;height: 100%;" alt=""/>`);
+            }
+
 
             layer.close(loadIndex);
             layer.close(layerCropperIndex);
@@ -114,11 +121,15 @@ layui.use(['jquery', 'layer'], function () {
     $('.upload-img-box').click(function () {
         let $self = $(this);
         let isCropper = $self.data('cropper');
-        let fileInput = $('.upload-img-file-input');
+        let id = $self.data('id');
+
+        let className = `upload-img-file-input${id}`;
+        let selectName = `.upload-img-file-input${id}`;
+        let fileInput = $(selectName);
 
         if (!fileInput.length) {
-            $('body').append("<input type='file' class='upload-img-file-input' style='position: fixed;left: -5000px;' />");
-            fileInput = $('.upload-img-file-input');
+            $('body').append(`<input type='file' class='${className}' style='position: fixed;left: -5000px;' />`);
+            fileInput = $(selectName);
             fileInput.change(function () {
                 let file = $(this)[0].files[0];
                 if (!file) return;
@@ -134,6 +145,7 @@ layui.use(['jquery', 'layer'], function () {
 
             });
         }
+
 
         fileInput.click();
 

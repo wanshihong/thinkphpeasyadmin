@@ -76,6 +76,7 @@
                 if (res.code) {
                     window.location.href = res.data.url;
                 } else {
+                    $('.verify').attr('src', "{:url('verify')}?ver=" + Math.random());
                     layer.msg(res.msg, {icon: 2});
                 }
             })

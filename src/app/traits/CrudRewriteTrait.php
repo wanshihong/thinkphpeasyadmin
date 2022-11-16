@@ -159,6 +159,23 @@ trait CrudRewriteTrait
     }
 
     /**
+     * 配置字段的显示名称，
+     * 导出和查看详情页面可以用到
+     */
+    protected function configFieldName()
+    {
+        /**
+         * 示例
+         * [
+         *    "id"=>"ID",
+         *    "name"=>"姓名",
+         *    "age"=>"年龄",
+         * ]
+         */
+        return [];
+    }
+
+    /**
      * 查看字段配置
      * @param ListField $field
      * @throws DataNotFoundExceptionAlias
@@ -173,8 +190,14 @@ trait CrudRewriteTrait
         $res = $this->getModel()->where($this->pk, $id)->find();
         if (empty($res)) return;
 
-        foreach ($res as $key => $val) {
-            $field->addField($key, $key, ListText::class);
+        foreach ($res->toArray() as $key => $val) {
+            if($arr = $this->configFieldName()){
+                if(array_key_exists($key,$arr)){
+                    $field->addField($key, $arr[$key], ListText::class);
+                }
+            }else{
+                $field->addField($key, $key, ListText::class);
+            }
         }
 
     }
@@ -348,12 +371,11 @@ trait CrudRewriteTrait
             $data[$this->softDeleteField] = $this->softDeleteBeforeVal;
         }
 
-        $id = $this->getModel()->save($data);
+        $id = $this->getModel()->insertGetId($data);
         $data[$this->pk] = $id;
 
         //写入之后数据处理
-        $data = $this->insertAfter($data);
-        return $data;
+        return $this->insertAfter($data);
     }
 
     /**

@@ -15,7 +15,7 @@ class FormUpload extends BaseForm
         'width' => 80, //宽
         'height' => 80,//高
         'cropper' => true,//裁剪
-        'url' => ''
+        'url' => 'upload'
     ];
 
 

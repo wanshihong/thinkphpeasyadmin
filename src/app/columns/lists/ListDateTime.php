@@ -38,7 +38,7 @@ class ListDateTime extends BaseList
         }
 
         if (is_callable($format) || function_exists($format)) {
-            return call_user_func($format, $ret);
+            return call_user_func($format, $ret,$this->row->getRow());
         }
 
         if ($ret > 0) {
