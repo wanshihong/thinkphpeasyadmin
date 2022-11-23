@@ -168,6 +168,9 @@ class ListQuery
             $url = empty($item['url']) ? '' : $item['url'];
             $options = empty($item['options']) ? [] : $item['options'];
 
+            if ($options && isset($options['format']) && is_callable($options['format'])) {
+                $url = call_user_func($options['format'], $row->getRow());
+            }
 
             $params = empty($options['params']) ? [] : $options['params'];
             $params[$table->getPk()] = $row->getRowId();
