@@ -155,6 +155,7 @@ class Pagination
 
         $template->fetch($this->getTemplate(), [
             'page' => $this->getCurrentPage(),
+            'total' => $this->getTotal(),
             'pageTotal' => ceil($this->getTotal() / $this->getPageSize()),
             'options' => $options ? http_build_query($options) : ''
         ]);
