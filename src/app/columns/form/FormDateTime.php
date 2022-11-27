@@ -59,7 +59,7 @@ class FormDateTime extends BaseForm
         }
 
         if (is_callable($format) || function_exists($format)) {
-            $ret = call_user_func($format, $ret,$this->row->getRow());
+            $ret = call_user_func($format, $ret);
         } elseif (is_string($format)) {
             $ret = date($format, $ret);
         }
