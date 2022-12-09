@@ -27,15 +27,21 @@ class BaseList extends ColumnClass
     {
         $elemId = 'id_' . $this->getSelectAlias() . '_' . $this->row->getRowId();
 
+
+        $class = $this->getOption('class', '');
+        if ($this->getOption('copy') && !$this->getOption('edit')) {
+            $class .= ' easy_admin_copy_text';
+        }
+
         return [
             'field' => $this->getField(),//列的字段
             'row' => $this->row->getRow(), //行的数据 array
             'row_id' => $this->row->getRowId(), //行的主键值
             'attr' => $this->getOption('attr', ''), //列的属性
-            'class' => $this->getOption('class', ''), //列的样式
+            'class' => $class, //列的样式
             //dom 元素 id
             'elem_id' => str_replace(':', '_', $elemId),
-            'static_root' => Resource::getInstance()->getRoot()
+            'static_root' => Resource::getInstance()->getRoot(),
         ];
     }
 

@@ -57,7 +57,8 @@ class ColumnClass
         'highlight' => false, //包含搜索的值是否高亮 ; false 关闭高亮, 不写或者 true 开启高亮
         'default' => null,//默认值
         'filter_callback' => null,//过滤器回调 参数有2个  query查询对象  $alias别名
-        'end_field' => null,//日期时间范围选择器, 第二个字段
+        'end_field' => null,//日期时间范围选择器, 第二个字段,
+        'copy' => true,//是否启用复制， 启用后；点击列就复制了
     ];
 
     /**

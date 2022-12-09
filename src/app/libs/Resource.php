@@ -40,9 +40,10 @@ class Resource
         $this->insertCssFile('css/layout.css');
         $this->insertCssFile('layui-v2.5.7/css/layui.css');
         //初始化 js
+        $this->insertJsFile('js/copy.js');
+        $this->insertJsFile('js/clipboard-polyfill.promise.js');
         $this->insertJsFile('js/layout.js');
         $this->insertJsFile('layui-v2.5.7/layui.js');
-
     }
 
     //克隆方法私有化，防止复制实例
