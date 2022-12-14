@@ -173,7 +173,10 @@ class ListQuery
             }
 
             $params = empty($options['params']) ? [] : $options['params'];
-            $params[$table->getPk()] = $row->getRowId();
+
+            if (!isset($options['url_no_id']) || !$options['url_no_id']) {
+                $params[$table->getPk()] = $row->getRowId();
+            }
 
 
             $options['dataId'] = $row->getRowId();
