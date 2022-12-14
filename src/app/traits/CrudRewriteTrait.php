@@ -190,12 +190,14 @@ trait CrudRewriteTrait
         $res = $this->getModel()->where($this->pk, $id)->find();
         if (empty($res)) return;
 
-        foreach ($res->toArray() as $key => $val) {
-            if($arr = $this->configFieldName()){
-                if(array_key_exists($key,$arr)){
+        $res = is_array($res) ? $res : $res->toArray();
+
+        foreach ($res as $key => $val) {
+            if ($arr = $this->configFieldName()) {
+                if (array_key_exists($key, $arr)) {
                     $field->addField($key, $arr[$key], ListText::class);
                 }
-            }else{
+            } else {
                 $field->addField($key, $key, ListText::class);
             }
         }
