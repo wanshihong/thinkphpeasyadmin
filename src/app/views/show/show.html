@@ -15,7 +15,8 @@
     </thead>
     <!-- 主体 -->
     <tbody>
-    {foreach $result as $index=>$item }
+
+    {foreach $result->getColumns() as $index=>$item }
     <tr>
         <td class="align-middle text-sm text-gray-600">{$item->getLabel()}</td>
         <td class="align-middle text-sm text-gray-600">{$item}</td>

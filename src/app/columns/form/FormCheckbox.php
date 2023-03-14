@@ -13,7 +13,7 @@ use think\facade\Db;
 class FormCheckbox extends BaseForm
 {
 
-    protected $options = [
+    protected array $options = [
 
         'title' => '',//空是传统的 checkbox 框框中间勾选,   带文字是 layui 美化的样式
         'success' => 1, //正确或者打开 的值
@@ -24,7 +24,7 @@ class FormCheckbox extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:checkbox';
+    protected string $templatePath = 'form:field:checkbox';
 
 
     /**
@@ -35,8 +35,8 @@ class FormCheckbox extends BaseForm
     {
         $onValue = $this->getOption('success', 1);
         $data['isChecked'] = $this->getValue() == $onValue ? 'checked' : '';
-        $data['title'] = $this->getOption('title','');
-        $data['success'] = $this->getOption('success',1);
+        $data['title'] = $this->getOption('title', '');
+        $data['success'] = $this->getOption('success', 1);
 
         return $data;
     }
@@ -45,9 +45,9 @@ class FormCheckbox extends BaseForm
     /**
      * 接收用户输入的值
      * @param array $data 外部接收数据得数组
-     * @return array|false|int|mixed
+     * @return array|null
      */
-    public function requestValue(&$data = [])
+    public function requestValue(array &$data = []): ?array
     {
         $fieldName = $this->getSelectAlias();
 
@@ -55,7 +55,7 @@ class FormCheckbox extends BaseForm
         $value = request()->post($fieldName, request()->get($fieldName, $this->getOption('default')));
 
         if ($value === null) {
-            $value = $this->getOption('error',0);
+            $value = $this->getOption('error', 0);
         }
         $value = $this->inFormat($value);
         $data[$fieldName] = $value;

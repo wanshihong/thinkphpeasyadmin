@@ -1,4 +1,23 @@
+
 let MyUpload = {
+    imgs: {},
+    updateImg(index, path) {
+        this.imgs[index] = path;
+        return this.getImgStr();
+    },
+    getImgStr() {
+        let str = "";
+        for (let i = 0; i < 99999; i++) {
+            if (this.imgs[i]) {
+                str += this.imgs[i] + ',';
+            }
+        }
+        return str.substr(0, str.length - 1);
+    },
+    delImg(index) {
+        delete this.imgs[index];
+        return this.getImgStr();
+    },
     checkImage: function (type) {
         if (!type) return false;
         let arr = type.split('/');
@@ -30,7 +49,9 @@ let MyUpload = {
     uploadImg: function ($self, layer, formData, layerCropperIndex) {
         let loadIndex = layer.load();
         let id_prev = $self.data('id');
+        let index = $self.data('index');
         let url = $self.data('url');
+        let $this = this;
         $.ajax({
             url: url,
             type: 'POST',
@@ -44,24 +65,36 @@ let MyUpload = {
                 return false
             }
 
-            if (res.data[0].alipay) {
-                let alipay = res.data[0].alipay;
-                $(`#${id_prev}_input`).val(alipay['resource_id']);
-                $self.html(`<img src="${alipay['resource_url']}" style="width: 100%;height: 100%;" alt=""/>`);
-            } else {
-                let path = res.data[0];
-                $(`#${id_prev}_input`).val(path);
+            let path = res.data[0];
+            let imgStr = $this.updateImg(index, path);
+            let inputId = `#${id_prev}_input`
+            $(inputId).val(imgStr);
 
-                $self.html(`<img src="${path}" style="width: 100%;height: 100%;" alt=""/>`);
-            }
-
-
+            $self.html(`
+                <img src="${path}" class="upload-img-res" alt=""/>
+                <i class="layui-icon layui-icon-close" onclick='MyUpload.onDel(${index},"${inputId}")'></i>
+            `);
             layer.close(loadIndex);
             layer.close(layerCropperIndex);
         }).fail(function (res) {
             layer.msg(res.msg);
         });
     },
+
+    onDel(index, inputId) {
+        console.log(index,inputId)
+        event.stopPropagation();
+        let imgBox =  $('.upload-img-box');
+        imgBox.each(function () {
+            if ($(this).data('index') == index) {
+                $(this).html(`<i class="layui-icon layui-icon-upload-drag"></i> <span>点击上传</span>`)
+            }
+        })
+        let imgStr = this.delImg(index)
+        $(`#${inputId}`).val(imgStr);
+    },
+
+
 
     cropper: function (file, $self, layer) {
         let id_prev = $self.data('id');
@@ -122,9 +155,10 @@ layui.use(['jquery', 'layer'], function () {
         let $self = $(this);
         let isCropper = $self.data('cropper');
         let id = $self.data('id');
+        let index = $self.data('index');
 
-        let className = `upload-img-file-input${id}`;
-        let selectName = `.upload-img-file-input${id}`;
+        let className = `upload-img-file-input${id}-${index}`;
+        let selectName = `.upload-img-file-input${id}-${index}`;
         let fileInput = $(selectName);
 
         if (!fileInput.length) {
@@ -151,5 +185,16 @@ layui.use(['jquery', 'layer'], function () {
 
     });
 
+    $(function () {
+        let imgBox = $('.upload-img-box');
+        let id_prev = imgBox.data('id')
+        let defVal = $(`#${id_prev}_input`).val();
+        let arr = defVal.split(',');
+        for (let i = 0; i < arr.length; i++) {
+            MyUpload.updateImg(i, arr[i]);
+        }
+    })
+
 
 });
+

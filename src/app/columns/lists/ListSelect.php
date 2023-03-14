@@ -16,7 +16,7 @@ class ListSelect extends BaseList
      * 列的其他选项
      * @var array
      */
-    protected $options = [
+    protected array $options = [
         'attr' => '',//属性
         'class' => '',//样式表
         'success' => 1,
@@ -31,7 +31,7 @@ class ListSelect extends BaseList
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'list:field:select';
+    protected string $templatePath = 'list:field:select';
 
     public function formatData($data)
     {

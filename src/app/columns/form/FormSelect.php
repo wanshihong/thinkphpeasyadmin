@@ -15,7 +15,7 @@ use think\facade\Db;
 class FormSelect extends BaseForm
 {
 
-    protected $options = [
+    protected array $options = [
 
         'options' => [],
 
@@ -29,7 +29,7 @@ class FormSelect extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:select';
+    protected string $templatePath = 'form:field:select';
 
     /**
      * @param $data

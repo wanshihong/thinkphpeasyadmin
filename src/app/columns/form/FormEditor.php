@@ -7,9 +7,9 @@ namespace easyadmin\app\columns\form;
 class FormEditor extends BaseForm
 {
 
-    protected $jsFiles = ['wangEditor4.6.2.min.js', 'js/editor.js'];
+    protected array $jsFiles = ['wangEditor4.6.2.min.js', 'js/editor.js'];
 
-    protected $options = [
+    protected array $options = [
         'jsFiles' => [],
         'url' => 'upload'
     ];
@@ -19,7 +19,7 @@ class FormEditor extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:editor';
+    protected string $templatePath = 'form:field:editor';
 
 
     public function formatData($data)

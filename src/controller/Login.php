@@ -50,7 +50,7 @@ class Login extends Admin
 
 
             // 有来源地址,跳回来源地址
-            $HTTP_REFERER = Cache::get('login_referer');
+            $HTTP_REFERER = Cache::get('redirect.login.login_url');
             $retUrl = $HTTP_REFERER ?: (string)url(config('login.home_url'));
 
 

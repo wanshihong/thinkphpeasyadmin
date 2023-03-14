@@ -4,14 +4,12 @@
 namespace easyadmin\app\libs;
 
 
-use Iterator as IteratorAlias;
-
 /**
  * 列表页面 数据表格
  * Class Table
  * @package easyadmin\app\libs
  */
-class PageList extends Page implements IteratorAlias
+class PageList extends Page
 {
 
     /**
@@ -101,31 +99,6 @@ class PageList extends Page implements IteratorAlias
         return $this;
     }
 
-
-    public function current()
-    {
-        return current($this->rows);
-    }
-
-    public function next()
-    {
-        return next($this->rows);
-    }
-
-    public function key()
-    {
-        return key($this->rows);
-    }
-
-    public function valid(): bool
-    {
-        return key($this->rows) !== null;
-    }
-
-    public function rewind()
-    {
-        return reset($this->rows);
-    }
 
     /**
      * @return int
@@ -274,6 +247,11 @@ class PageList extends Page implements IteratorAlias
     {
         $this->field = $field;
         return $this;
+    }
+
+    public function getRows(): array
+    {
+        return $this->rows;
     }
 
 

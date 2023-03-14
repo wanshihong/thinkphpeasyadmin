@@ -11,7 +11,7 @@ use Iterator as IteratorAlias;
  * Class ListTableRow
  * @package easyadmin\app\libs
  */
-class ListTableRow implements IteratorAlias
+class ListTableRow
 {
 
 
@@ -19,25 +19,25 @@ class ListTableRow implements IteratorAlias
      * 行标识,通常是一行的ID
      * @var array
      */
-    private $row;
+    private array $row;
 
     /**
      * 一行中主键的值
      * @var int
      */
-    private $rowId;
+    private int $rowId;
 
     /**
      * @var Actions
      */
-    private $actions;
+    private Actions $actions;
 
 
     /**
      * 一行中 列的存放
      * @var array
      */
-    private $columns = [];
+    private array $columns = [];
 
     /**
      * @return array
@@ -45,6 +45,19 @@ class ListTableRow implements IteratorAlias
     public function getRow(): array
     {
         return $this->row;
+    }
+
+    /**
+     * 获取某一列的值
+     * @param string $key
+     * @return mixed
+     */
+    public function getColumnVal(string $key): mixed
+    {
+        if ($this->row && array_key_exists($key, $this->row)) {
+            return $this->row[$key] ?: '';
+        }
+        return '';
     }
 
     /**
@@ -60,9 +73,9 @@ class ListTableRow implements IteratorAlias
     /**
      * 或者一列的值
      * @param $field
-     * @return mixed|null
+     * @return mixed
      */
-    public function getRowValue($field)
+    public function getRowValue($field): mixed
     {
         return array_key_exists($field, $this->row) ? $this->row[$field] : null;
     }
@@ -85,30 +98,6 @@ class ListTableRow implements IteratorAlias
         return $this;
     }
 
-    public function current()
-    {
-        return current($this->columns);
-    }
-
-    public function next()
-    {
-        return next($this->columns);
-    }
-
-    public function key()
-    {
-        return key($this->columns);
-    }
-
-    public function valid(): bool
-    {
-        return key($this->columns) !== null;
-    }
-
-    public function rewind()
-    {
-        return reset($this->columns);
-    }
 
     /**
      * @return int

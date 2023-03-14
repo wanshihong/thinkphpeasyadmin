@@ -10,7 +10,7 @@ class FormText extends BaseForm
      * 列的其他选项
      * @var array
      */
-    protected $options = [
+    protected array $options = [
         'highlight' => true, //包含搜索的值是否高亮 ; false 关闭高亮, 不写或者 true 开启高亮
     ];
 
@@ -18,7 +18,7 @@ class FormText extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:text';
+    protected string $templatePath = 'form:field:text';
 
 
 }

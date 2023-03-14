@@ -13,10 +13,10 @@ return [
     'table_name' => env('manage_table_name', 'manage'),
 
     // 是否开放注册
-    'register' => env('manage_register', false),
+    'register' => env('manage_register', true),
 
     // 是否启用密码找回
-    'find_password' => env('manage_find_password', false),
+    'find_password' => env('manage_find_password', true),
 
     // 密码加密的盐
     'crypt_salt' => env('manage_crypt_salt', 'easy_admin'),

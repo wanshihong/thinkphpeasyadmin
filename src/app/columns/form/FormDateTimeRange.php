@@ -10,9 +10,9 @@ use think\db\Query;
 class FormDateTimeRange extends FormDateTime
 {
 
-    protected $jsFiles = ['js/laydate.js'];
+    protected array $jsFiles = ['js/laydate.js'];
 
-    protected $options = [
+    protected array $options = [
         'format' => 'Y-m-d H:i:s',
         'in_format' => '',//strtotime , 或者传入一个匿名函数
         'end_field' => '', // 第二字段
@@ -86,7 +86,7 @@ class FormDateTimeRange extends FormDateTime
     }
 
 
-    public function formatValue()
+    public function formatValue():?string
     {
         $arr = $this->getValue();
         $separator = $this->getSeparator();
@@ -99,7 +99,7 @@ class FormDateTimeRange extends FormDateTime
                     return $value;
                 }
 
-                if (is_callable($format) || function_exists($format)) {
+                if ($format && (is_callable($format) || function_exists($format))) {
                     $value = call_user_func($format, $value);
                 } elseif (is_string($format)) {
                     $value = date($format, $value);
@@ -110,18 +110,18 @@ class FormDateTimeRange extends FormDateTime
 
             $val = implode(" {$separator} ", $arr);
 
-            if ($val === " {$separator} ") return '';
+            if ($val === " {$separator} ") return null;
             return $val;
         }
-        return '';
+        return null;
     }
 
     /**
      * 接收用户输入的值
      * @param array $data 外部接收数据得数组
-     * @return array|false|int|mixed
+     * @return array|null
      */
-    public function requestValue(&$data = [])
+    public function requestValue(array &$data = []):?array
     {
         $fieldName = $this->getSelectAlias();
 
@@ -166,7 +166,7 @@ class FormDateTimeRange extends FormDateTime
      * @param array $fields 外部查询所有字段得接收
      * @return string
      */
-    public function getSelectField($alias = 't0', $isSelect = false, &$fields = []): string
+    public function getSelectField(string $alias = 't0', bool $isSelect = false, array &$fields = []): string
     {
 
         //第一字段

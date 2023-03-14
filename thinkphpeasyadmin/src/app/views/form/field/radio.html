@@ -1,9 +1,0 @@
-{block name="main"}
-<div id="{$elem_id}">
-    {foreach name="options" item="item"}
-        <input class="{$class}" {$attr} {if $item['key']==$value}checked{/if} type="radio" name="{$field}" value="{$item.key}" title="{$item.text}">
-    {/foreach}
-</div>
-{/block}
-{block name="style"}{/block}
-{block name="js"}{/block}

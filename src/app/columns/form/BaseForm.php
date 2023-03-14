@@ -63,9 +63,9 @@ class BaseForm extends ColumnClass
     /**
      * 接收用户输入的值
      * @param array $data 外部接收数据得数组
-     * @return array|false|int|mixed
+     * @return array|null
      */
-    public function requestValue(&$data = [])
+    public function requestValue(array &$data = []): ?array
     {
         $fieldName = $this->getSelectAlias();
 
@@ -135,7 +135,7 @@ class BaseForm extends ColumnClass
      * @param $val
      * @return mixed
      */
-    public function inFormat($val)
+    public function inFormat($val): mixed
     {
         $ret = $val;
 
@@ -143,8 +143,8 @@ class BaseForm extends ColumnClass
         if ($format === null) {
             $ret = $val;
         }
-
-        if (is_callable($format) || function_exists($format)) {
+    
+        if ($format && (is_callable($format) || function_exists($format))) {
             $ret = call_user_func($format, $val);
         }
 

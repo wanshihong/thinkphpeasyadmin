@@ -11,7 +11,7 @@ namespace easyadmin\app\columns\form;
 class FormNumber extends BaseForm
 {
 
-    protected $options = [
+    protected array $options = [
         'type' => 'number'
     ];
 
@@ -19,7 +19,7 @@ class FormNumber extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:text';
+    protected string $templatePath = 'form:field:text';
 
 
 }

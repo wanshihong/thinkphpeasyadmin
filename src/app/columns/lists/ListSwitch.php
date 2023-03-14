@@ -7,13 +7,13 @@ namespace easyadmin\app\columns\lists;
 class ListSwitch extends BaseList
 {
 
-    protected $jsFiles = ['js/switch.js'];
+    protected array $jsFiles = ['js/switch.js'];
 
     /**
      * 列的其他选项
      * @var array
      */
-    protected $options = [
+    protected array $options = [
         'attr' => '',//属性
         'class' => '',//样式表
         'success' => 1, //正确,开启的值
@@ -28,7 +28,7 @@ class ListSwitch extends BaseList
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'list:field:switch';
+    protected string $templatePath = 'list:field:switch';
 
     public function formatData($data)
     {

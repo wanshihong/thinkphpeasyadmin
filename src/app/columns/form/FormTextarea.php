@@ -12,7 +12,7 @@ class FormTextarea extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:textarea';
+    protected string $templatePath = 'form:field:textarea';
 
 
 }

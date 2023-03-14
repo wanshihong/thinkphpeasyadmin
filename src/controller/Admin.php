@@ -6,7 +6,6 @@ namespace easyadmin\controller;
 
 use easyadmin\app\libs\Breadcrumb;
 use easyadmin\app\libs\Install;
-use easyadmin\app\libs\Menu;
 use easyadmin\app\libs\Resource;
 use easyadmin\app\libs\Template;
 use easyadmin\app\libs\User;
@@ -14,7 +13,6 @@ use easyadmin\app\traits\CrudRewriteTrait;
 use easyadmin\app\traits\CrudRoutersTrait;
 use stdClass as stdClassAlias;
 use think\Exception;
-use think\facade\Session;
 use think\response\Json;
 
 class Admin
@@ -23,23 +21,23 @@ class Admin
     use CrudRewriteTrait;
 
     //主键 字段名称
-    protected $pk = 'id';
+    protected string $pk = 'id';
 
     //配置是否使用软删除
-    protected $softDeleteField;//软删除字段
-    protected $softDeleteAfterVal = 1;//软删除后的值.  例如  is_delete=1 标识已经删除
-    protected $softDeleteBeforeVal = 0;//软删除前的值.  例如  is_delete=0 标识尚未删除
+    protected string $softDeleteField='';//软删除字段
+    protected int $softDeleteAfterVal = 1;//软删除后的值.  例如  is_delete=1 标识已经删除
+    protected int $softDeleteBeforeVal = 0;//软删除前的值.  例如  is_delete=0 标识尚未删除
 
 
-    protected $pageName;//页面名称,默认使用表格名称; 页面标题,导航 会用到
-    protected $tableName;//数据库,数据表格名称
-    protected $siteName = '网站标题';
-    protected $jsFiles = [];
-    protected $cssFiles = [];
+    protected string $pageName;//页面名称,默认使用表格名称; 页面标题,导航 会用到
+    protected string $tableName;//数据库,数据表格名称
+    protected string $siteName = '网站标题';
+    protected array $jsFiles = [];
+    protected array $cssFiles = [];
 
 
     /** @var array 赋值到页面的数据 */
-    protected $data = [];
+    protected array $data = [];
 
 
     public function __construct()
@@ -97,7 +95,7 @@ class Admin
         return json([
             'code' => 0,
             'msg' => $msg,
-            'data' => new stdClassAlias()
+            'data' => new stdClassAlias(),
         ]);
     }
 
@@ -111,7 +109,7 @@ class Admin
      * @param $data
      * @return mixed
      */
-    private function _assignCommon($data)
+    private function _assignCommon($data): mixed
     {
 
         $data['__page_name__'] = $this->getPageName();
@@ -136,19 +134,19 @@ class Admin
     }
 
     // 获取当前登陆的用户信息
-    protected function getUser()
+    protected function getUser(): ?array
     {
         return User::getInstance()->getUser();
     }
 
     /**
      * 渲染模板
-     * @param $path
+     * @param string $path
      * @param array $data
      * @return string
      * @throws Exception
      */
-    protected function fetch($path = '', $data = []): string
+    protected function fetch(string $path = '', array $data = []): string
     {
 
         $data = $this->_assignCommon($data);

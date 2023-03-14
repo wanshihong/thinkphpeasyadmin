@@ -3,14 +3,13 @@
 
 namespace easyadmin\app\columns\form;
 
-use think\Exception;
 
 class FormDateTime extends BaseForm
 {
 
-    protected $jsFiles = ['js/laydate.js'];
+    protected array $jsFiles = ['js/laydate.js'];
 
-    protected $options = [
+    protected array $options = [
         'jsFiles' => [],
         // layui-date 文档 https://www.layui.com/doc/modules/laydate.html#use
         // options 使用官方参数
@@ -23,7 +22,7 @@ class FormDateTime extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:datetime';
+    protected string $templatePath = 'form:field:datetime';
 
 
     /**
@@ -43,9 +42,9 @@ class FormDateTime extends BaseForm
     /**
      * 格式化数据
      * 格式化给用户看的
-     * @return bool|int|mixed|string|null
+     * @return array|null
      */
-    public function formatValue()
+    public function formatValue():?string
     {
         $ret = $this->getValue();
 
@@ -58,7 +57,7 @@ class FormDateTime extends BaseForm
             return $ret;
         }
 
-        if (is_callable($format) || function_exists($format)) {
+        if ($format && (is_callable($format) || function_exists($format))) {
             $ret = call_user_func($format, $ret);
         } elseif (is_string($format)) {
             $ret = date($format, $ret);
@@ -72,7 +71,7 @@ class FormDateTime extends BaseForm
      * @param $val
      * @return mixed
      */
-    public function inFormat($val)
+    public function inFormat($val):mixed
     {
         $ret = $val;
 
@@ -81,7 +80,7 @@ class FormDateTime extends BaseForm
             $ret = $val;
         }
 
-        if (is_callable($format) || function_exists($format)) {
+        if ($format && (is_callable($format) || function_exists($format))) {
             $ret = call_user_func($format, $val);
         }
 

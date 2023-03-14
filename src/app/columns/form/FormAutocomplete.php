@@ -13,9 +13,9 @@ use think\facade\Db;
 class FormAutocomplete extends BaseForm
 {
 
-    protected $jsFiles = ['js/autocomplete.js'];
+    protected array $jsFiles = ['js/autocomplete.js'];
 
-    protected $options = [
+    protected array $options = [
         'table' => '',// 选择的查询表名
         'pk' => 'id',//使用查询,的主键
         'property' => 'text',//查询显示字段,
@@ -26,7 +26,7 @@ class FormAutocomplete extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:autocomplete';
+    protected string $templatePath = 'form:field:autocomplete';
 
 
     public function formatData($data)

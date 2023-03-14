@@ -8,48 +8,49 @@ use easyadmin\app\columns\form\BaseForm;
 use easyadmin\app\libs\Lib;
 use easyadmin\app\libs\ListTableRow;
 use easyadmin\app\libs\Resource;
+use JetBrains\PhpStorm\Pure;
 
 class ColumnClass
 {
 
-    protected $jsFiles = [];//默认的JS 资源文件
-    protected $cssFiles = [];//默认的 css 资源文件
+    protected array $jsFiles = [];//默认的JS 资源文件
+    protected array $cssFiles = [];//默认的 css 资源文件
 
     /**
      * 列的字段
      * @var string
      */
-    protected $field;
+    protected string $field;
 
     /**
      * 列的别名
      * @var string
      */
-    protected $selectAlias;
+    protected string $selectAlias;
 
     /**
      * 列的显示名称
      * @var string
      */
-    protected $label;
+    protected string $label;
 
     /**
      * 一行的数据
      * @var ListTableRow
      */
-    protected $row;
+    protected ListTableRow $row;
 
     /**
      * 过滤器
      * @var array
      */
-    protected $filters;
+    protected array $filters;
 
     /**
      * 列的其他选项
      * @var array
      */
-    protected $options = [
+    protected array $options = [
         'attr' => '',//属性
         'class' => '',//样式表
         'format' => null,//格式化输出,格式化给用户看  例如: Y-m-d H:i:s  |  匿名函数 ;
@@ -63,21 +64,21 @@ class ColumnClass
 
     /**
      * 列所对应的值
-     * @var string|int|bool|null
+     * @var mixed
      */
-    protected $value = null;
+    protected mixed $value = '';
 
     /**
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath;
+    protected string $templatePath;
 
 
     public function __construct($field, $label = '', $options = [])
     {
         $this->field = $field;
-        $this->label = $label ? $label : $field;
+        $this->label = $label ?: $field;
         $this->options = array_merge($this->options, $options);
 
         $this->setSelectAlias($field);
@@ -110,7 +111,7 @@ class ColumnClass
      * @param array $fields 外部查询所有字段得接收
      * @return string
      */
-    public function getSelectField($alias = 't0', $isSelect = false, &$fields = []): string
+    public function getSelectField(string $alias = 't0', bool $isSelect = false, array &$fields = []): string
     {
         if (stripos($this->field, '.') === false) {
             $fieldName = $alias . '.' . $this->field;
@@ -165,11 +166,11 @@ class ColumnClass
     /**
      * 获取一个选项
      * @param string $name
-     * @param false $default
+     * @param mixed $default
      * @return false|mixed
      * @noinspection PhpMissingReturnTypeInspection
      */
-    public function getOption($name = '', $default = null)
+    #[Pure] public function getOption(string $name = '', mixed $default = '')
     {
         $lib = new Lib();
         return $lib->getArrayValue($this->options,$name,$default);
@@ -184,14 +185,15 @@ class ColumnClass
     }
 
 
-    public function getValue()
+    #[Pure] public function getValue()
     {
-        if ($this->value === null) {
+        if ($this->value === '') {
             $default = $this->getOption('default');
-            if ($default !== null) {
+            if ($default !== '') {
                 return $default;
             }
         }
+
         return $this->value;
     }
 
@@ -208,9 +210,9 @@ class ColumnClass
      */
     public function setValue($value): ColumnClass
     {
-
-        if (is_array($value) && array_key_exists($this->getSelectAlias(), $value)) {
-            $this->value = $value[$this->getSelectAlias()];
+        $fieldAlias = $this->getSelectAlias();
+        if (is_array($value) && array_key_exists($fieldAlias, $value)) {
+            $this->value = $value[$fieldAlias] ?:'' ;
         } else {
             $this->value = $value;
         }
@@ -221,7 +223,7 @@ class ColumnClass
     /**
      * @return string
      */
-    public function getTemplatePath(): string
+    #[Pure] public function getTemplatePath(): string
     {
         return $this->getOption('template') ?: $this->templatePath;
     }
@@ -229,22 +231,21 @@ class ColumnClass
     /**
      * 格式化数据
      * 格式化给用户看的
-     * @return bool|int|mixed|string|null
+     * @return mixed
      */
-    public function formatValue()
+    public function formatValue(): mixed
     {
         $ret = $this->getValue();
-
-        if ($ret === null) {
-            return null;
+        if ($ret === '') {
+            return '';
         }
 
         $format = $this->getOption('format');
-        if ($format === null) {
+        if ($format === '') {
             return $ret;
         }
 
-        if (is_callable($format) || function_exists($format)) {
+        if ($format && (is_callable($format) || function_exists($format))) {
             $ret = call_user_func($format, $ret,$this->row->getRow());
         }
         return $ret;
@@ -253,9 +254,9 @@ class ColumnClass
     /**
      * 列表中, 包含过滤器的内容高亮
      * @param $value
-     * @return string|string[]
+     * @return string
      */
-    public function filterHighlight($value)
+    public function filterHighlight($value): string
     {
         if (empty($this->filters)) return $value;
 
@@ -281,7 +282,7 @@ class ColumnClass
                 $hValue = '<em class="layui-bg-orange">' . $filter->getValue() . '</em>';
             }
 
-            $value = str_replace($filter->getValue(), $hValue, $value);
+            $value = str_replace($filter->getValue(), $hValue, ''.$value);
 
         }
         return $value;

@@ -63,6 +63,7 @@ trait CrudRoutersTrait
         $listQuery->listResult($page);
 
         $this->configListBreadcrumb();
+
         return $this->fetch($page->getTemplate(), [
             'table' => $page,
             'addAction' => $page->getActionAdd(),
@@ -115,7 +116,10 @@ trait CrudRoutersTrait
 
     /**
      * 修改页面
-     * @return mixed|string
+     * @return string
+     * @throws DataNotFoundExceptionAlias
+     * @throws DbExceptionAlias
+     * @throws ModelNotFoundExceptionAlias
      * @throws ExceptionAlias
      */
     public function edit(): string

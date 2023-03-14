@@ -3,16 +3,16 @@
 
 
 {block name="header_action"}
-<!-- 添加按钮 -->
-{if isset($addAction)}
-{$addAction}
-{/if}
+    <!-- 添加按钮 -->
+    {if isset($addAction)}
+        {$addAction}
+    {/if}
 {/block}
 
 {block name="filter"}
-{if isset($table)}
-{$table->getFilter()}
-{/if}
+    {if isset($table)}
+        {$table->getFilter()}
+    {/if}
 {/block}
 
 
@@ -36,9 +36,9 @@
 
     <tbody>
     <!-- 主体 -->
-    {foreach $table as $index=>$row }
+    {foreach $table->getRows() as $index=>$row }
     <tr data-id="{$row->getRowId()}">
-        {foreach $row as $rowIndex=>$td }
+        {foreach $row->getColumns() as $rowIndex=>$td }
         <td class="align-middle text-sm text-gray-600">{$td}</td>
         {/foreach}
 

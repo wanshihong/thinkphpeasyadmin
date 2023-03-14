@@ -32,7 +32,7 @@ use think\facade\Db;
  */
 trait CrudRewriteTrait
 {
-    protected $disabledAction = [];
+    protected array $disabledAction = [];
 
     /**
      * 配置系统导航
@@ -178,10 +178,6 @@ trait CrudRewriteTrait
     /**
      * 查看字段配置
      * @param ListField $field
-     * @throws DataNotFoundExceptionAlias
-     * @throws DbException
-     * @throws ModelNotFoundExceptionAlias
-     * @noinspection PhpUndefinedClassInspection
      */
     protected function configShowField(ListField $field)
     {
@@ -463,7 +459,7 @@ trait CrudRewriteTrait
     {
         $breadcrumb = Breadcrumb::getInstance();
         $breadcrumb->add('首页', 'index/index', 'layui-icon layui-icon-home', 0);
-        $breadcrumb->add($this->pageName . '列表', 'javascript:', '', 10);
+        $breadcrumb->add($this->getPageName() . '列表', 'javascript:', '', 10);
     }
 
     // 表单页面面包屑
@@ -471,9 +467,9 @@ trait CrudRewriteTrait
     {
         $breadcrumb = Breadcrumb::getInstance();
         $breadcrumb->add('首页', 'index/index', 'layui-icon layui-icon-home', 0);
-        $breadcrumb->add($this->pageName . '列表', 'lists', '', 10);
+        $breadcrumb->add($this->getPageName() . '列表', 'lists', '', 10);
         $id = request()->get('id');
-        $breadcrumb->add($this->pageName . ($id ? ('编辑#' . $id) : '添加'), 'javascript:', '', 20);
+        $breadcrumb->add($this->getPageName() . ($id ? ('编辑#' . $id) : '添加'), 'javascript:', '', 20);
     }
 
     //详情页面面包屑
@@ -481,9 +477,9 @@ trait CrudRewriteTrait
     {
         $breadcrumb = Breadcrumb::getInstance();
         $breadcrumb->add('首页', 'index/index', 'layui-icon layui-icon-home', 0);
-        $breadcrumb->add($this->pageName . '列表', 'lists', '', 10);
+        $breadcrumb->add($this->getPageName() . '列表', 'lists', '', 10);
         $id = request()->get('id', '');
-        $breadcrumb->add($this->pageName . ('查看#' . $id), 'javascript:', '', 30);
+        $breadcrumb->add($this->getPageName() . ('查看#' . $id), 'javascript:', '', 30);
     }
 
 }

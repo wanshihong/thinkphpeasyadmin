@@ -5,6 +5,7 @@ namespace app\admin\middleware;
 
 
 use easyadmin\app\libs\User;
+use think\facade\Cache;
 
 class Login
 {
@@ -49,6 +50,7 @@ class Login
         if ($needRole === true) {
             return $next($request);
         }
+
         if ($needRole === false) {
             return redirect(config('login.login_url'));
         }
@@ -61,6 +63,7 @@ class Login
                 if (User::getInstance()->getUserId()) {
                     return $next($request);
                 } else {
+                    Cache::set('redirect.login.login_url', $_SERVER['REQUEST_URI']);
                     return redirect(config('login.login_url'));
                 }
             default:

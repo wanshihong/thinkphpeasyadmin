@@ -13,7 +13,7 @@ use think\facade\Db;
 class FormRadio extends BaseForm
 {
 
-    protected $options = [
+    protected array $options = [
 
         'options' => [],
 
@@ -23,7 +23,7 @@ class FormRadio extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:radio';
+    protected string $templatePath = 'form:field:radio';
 
     /**
      * @param $data

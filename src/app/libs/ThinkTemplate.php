@@ -17,6 +17,8 @@ namespace easyadmin\app\libs;
 
 use Exception;
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\InvalidArgumentException;
+use think\template\contract\DriverInterface;
 
 /**
  * ThinkPHP分离出来的模板引擎
@@ -29,13 +31,13 @@ class ThinkTemplate extends \think\Template
      * 模板变量
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * 模板配置参数
      * @var array
      */
-    protected $config = [
+    protected array $config = [
         'view_path' => '', // 模板路径
         'view_suffix' => 'html', // 默认模板文件后缀
         'view_depr' => DIRECTORY_SEPARATOR,
@@ -69,31 +71,30 @@ class ThinkTemplate extends \think\Template
      * 保留内容信息
      * @var array
      */
-    private $literal = [];
+    private array $literal = [];
 
     /**
      * 扩展解析规则
      * @var array
      */
-    private $extend = [];
+    private array $extend = [];
 
     /**
      * 模板包含信息
      * @var array
      */
-    protected $includeFile = [];
+    protected array $includeFile = [];
 
     /**
      * 模板存储对象
-     * @var object
+     * @var DriverInterface
      */
-    protected $storage;
+    protected DriverInterface $storage;
 
     /**
      * 查询缓存对象
-     * @var CacheInterface
      */
-    protected $cache;
+    protected ?CacheInterface $cache;
 
     /**
      * 架构函数
@@ -114,7 +115,7 @@ class ThinkTemplate extends \think\Template
 
         // 初始化模板编译存储器
         $type = $this->config['compile_type'] ? $this->config['compile_type'] : 'File';
-        $class = false !== strpos($type, '\\') ? $type : '\\think\\template\\driver\\' . ucwords($type);
+        $class = str_contains($type, '\\') ? $type : '\\think\\template\\driver\\' . ucwords($type);
 
         $this->storage = new $class();
     }
@@ -125,7 +126,7 @@ class ThinkTemplate extends \think\Template
      * @param array $vars 模板变量
      * @return $this
      */
-    public function assign(array $vars = [])
+    public function assign(array $vars = []):static
     {
         $this->data = array_merge($this->data, $vars);
         return $this;
@@ -137,7 +138,7 @@ class ThinkTemplate extends \think\Template
      * @param string $name
      * @param mixed $value
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         $this->config[$name] = $value;
     }
@@ -159,7 +160,7 @@ class ThinkTemplate extends \think\Template
      * @param array $config
      * @return $this
      */
-    public function config(array $config)
+    public function config(array $config):static
     {
         $this->config = array_merge($this->config, $config);
         return $this;
@@ -171,7 +172,7 @@ class ThinkTemplate extends \think\Template
      * @param string $name
      * @return mixed
      */
-    public function getConfig(string $name)
+    public function getConfig(string $name): mixed
     {
         return $this->config[$name] ?? null;
     }
@@ -182,7 +183,7 @@ class ThinkTemplate extends \think\Template
      * @param string $name 变量名
      * @return mixed
      */
-    public function get(string $name = '')
+    public function get(string $name = ''): mixed
     {
         if ('' == $name) {
             return $this->data;
@@ -206,7 +207,7 @@ class ThinkTemplate extends \think\Template
      * 扩展模板解析规则
      * @access public
      * @param string $rule 解析规则
-     * @param callable $callback 解析规则
+     * @param callable|null $callback 解析规则
      * @return void
      */
     public function extend(string $rule, callable $callback = null): void
@@ -220,6 +221,7 @@ class ThinkTemplate extends \think\Template
      * @param string $template 模板文件
      * @param array $vars 模板变量
      * @return void
+     * @throws InvalidArgumentException
      */
     public function fetch(string $template, array $vars = []): void
     {
@@ -249,13 +251,7 @@ class ThinkTemplate extends \think\Template
             // 页面缓存
             ob_start();
 
-            // php 8 有强制类型限制
-            if (PHP_VERSION_ID >= 80000) {
-                ob_implicit_flush(false);
-            } else {
-                ob_implicit_flush(0);
-            }
-
+            ob_implicit_flush(false);
 
             // 读取编译存储
             $this->storage->read($cacheFile, $this->data);
@@ -277,6 +273,7 @@ class ThinkTemplate extends \think\Template
      * @access public
      * @param string $cacheId 缓存的id
      * @return boolean
+     * @throws InvalidArgumentException
      */
     public function isCache(string $cacheId): bool
     {
@@ -319,7 +316,7 @@ class ThinkTemplate extends \think\Template
      * @param string $replace 布局模板内容替换标识
      * @return $this
      */
-    public function layout($name, string $replace = '')
+    public function layout($name, string $replace = ''):static
     {
         if (false === $name) {
             // 关闭布局

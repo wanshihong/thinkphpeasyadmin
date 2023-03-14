@@ -11,7 +11,7 @@ namespace easyadmin\app\columns\form;
 class FormCurrency extends BaseForm
 {
 
-    protected $options = [
+    protected array $options = [
         'icon' => 'layui-icon layui-icon-rmb',
         'type' => 'number'
     ];
@@ -20,7 +20,7 @@ class FormCurrency extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:text';
+    protected string $templatePath = 'form:field:text';
 
 
 }

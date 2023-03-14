@@ -26,10 +26,10 @@
     </thead>
 
     <!-- 主体 -->
-    {foreach $table as $index=>$row }
+    {foreach $table->getRows() as $index=>$row }
     <tbody>
-    <tr data-id="{$row->getRowId()}" data-role="{$row->getRow()['user_role']}">
-        {foreach $row as $rowIndex=>$td }
+    <tr data-id="{$row->getRowId()}" data-role="{$row->getColumnVal('user_role')}">
+        {foreach $row->getColumns() as $rowIndex=>$td }
         <td class="align-middle text-sm text-gray-600">{$td}</td>
         {/foreach}
 

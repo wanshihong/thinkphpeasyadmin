@@ -10,7 +10,7 @@ class FormSwitch extends BaseForm
      * 列的其他选项
      * @var array
      */
-    protected $options = [
+    protected array $options = [
         'attr' => '',//属性
         'class' => '',//样式表
         'success' => 1, //正确或者打开 的值
@@ -35,7 +35,7 @@ class FormSwitch extends BaseForm
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'form:field:switch';
+    protected string $templatePath = 'form:field:switch';
 
     public function formatData($data)
     {

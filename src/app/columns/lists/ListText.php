@@ -10,7 +10,7 @@ class ListText extends BaseList
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'list:field:text';
+    protected string $templatePath = 'list:field:text';
 
     public function formatData($data)
     {

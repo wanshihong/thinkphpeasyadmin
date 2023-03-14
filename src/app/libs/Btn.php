@@ -3,8 +3,6 @@
 namespace easyadmin\app\libs;
 
 use easyadmin\app\libs\Template as TemplateAlias;
-use think\Exception;
-use think\Exception as ExceptionAlias;
 
 /**
  * 按钮类
@@ -16,33 +14,33 @@ class Btn
     /**
      * @var string 按钮名称
      */
-    private $label;
+    private string $label;
 
     /**
      * 按钮URL
      */
-    private $url;
+    private string $url;
 
     /**
      * 按钮URL 参数
      * @var array
      */
-    private $params = [];
+    private array $params = [];
 
     /**
      * @var array 按钮的样式列表
      */
-    private $class = [];
+    private array $class = [];
 
     /**
      * @var string 按钮的图标
      */
-    private $icon;
+    private string $icon;
 
     /**
      * @var string 按钮的模板路径
      */
-    private $template = 'public:btn';
+    private string $template = 'public:btn';
 
     /**
      * 是否启用 调整
@@ -50,17 +48,17 @@ class Btn
      * 按钮执行完成以后 跳转到上一页
      * @var bool
      */
-    private $referer = false;
+    private bool $referer = false;
 
     /**
      * 点击按钮是否需要确认
      * 文字为真, 需要确认,并且提示相关的文字
      * @var string
      */
-    private $isConfirm = '';
+    private string $isConfirm = '';
 
     // 条件回调,判断这个按钮是否能够被显示
-    private $condition;
+    private mixed $condition;
 
     /**
      * 按钮类型
@@ -70,10 +68,10 @@ class Btn
      * submit:  button-submit  button标签 type submit
      * @var string
      */
-    private $btnType = 'btn';
+    private string $btnType = 'btn';
 
 
-    private $dataId;
+    private string $dataId = '';
 
 
     /**
@@ -93,7 +91,7 @@ class Btn
     }
 
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -184,7 +182,7 @@ class Btn
     /**
      * 渲染页面的按钮
      * @return string
-     * @throws ExceptionAlias
+     * @throws \Exception
      */
     public function __toString(): string
     {
@@ -249,13 +247,13 @@ class Btn
     /**
      * @param string $btnType
      * @return $this
-     * @throws ExceptionAlias
+     * @throws \Exception
      */
     public function setBtnType(string $btnType): Btn
     {
         $types = ['a', 'btn', 'submit', 'button'];
         if (!in_array($btnType, $types)) {
-            throw new Exception('按钮类型错误');
+            throw new \Exception('按钮类型错误');
         }
         $this->btnType = $btnType;
         return $this;
@@ -281,16 +279,16 @@ class Btn
      * @param mixed $dataId
      * @return Btn
      */
-    public function setDataId($dataId)
+    public function setDataId(string $dataId): static
     {
         $this->dataId = $dataId;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getDataId()
+    public function getDataId(): string
     {
         return $this->dataId;
     }
@@ -299,7 +297,7 @@ class Btn
      * @param mixed $condition
      * @return Btn
      */
-    public function setCondition($condition)
+    public function setCondition(mixed $condition): static
     {
         $this->condition = $condition;
         return $this;
@@ -308,7 +306,7 @@ class Btn
     /**
      * @return mixed
      */
-    public function getCondition()
+    public function getCondition(): mixed
     {
         return $this->condition;
     }

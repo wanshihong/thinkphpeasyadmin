@@ -7,7 +7,7 @@ namespace easyadmin\app\columns\lists;
 class ListDateTime extends BaseList
 {
 
-    protected $options = [
+    protected array $options = [
         'format' => 'Y-m-d H:i:s',
         'in_format' => 'strtotime',//用户输入的值,用什么格式化  strtotime
     ];
@@ -17,14 +17,14 @@ class ListDateTime extends BaseList
      * 字段的模板路径
      * @var string
      */
-    protected $templatePath = 'list:field:text';
+    protected string $templatePath = 'list:field:text';
 
     /**
      * 格式化数据
      * 格式化给用户看的
-     * @return bool|int|mixed|string|null
+     * @return mixed
      */
-    public function formatValue()
+    public function formatValue() :mixed
     {
         $ret = $this->getValue();
 
@@ -37,7 +37,7 @@ class ListDateTime extends BaseList
             return $ret;
         }
 
-        if (is_callable($format) || function_exists($format)) {
+        if ($format && (is_callable($format) || function_exists($format))) {
             return call_user_func($format, $ret,$this->row->getRow());
         }
 

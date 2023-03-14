@@ -33,10 +33,10 @@ class Lib
      * 获取数组中 某一个字段的值
      * @param $arr
      * @param string $field
-     * @param null $default
-     * @return mixed|null
+     * @param string|array $default
+     * @return mixed
      */
-    public function getArrayValue($arr, string $field, $default = null)
+    public function getArrayValue($arr, string $field, $default = ''): mixed
     {
         if (!is_array($arr)) return $default;
 
@@ -51,9 +51,9 @@ class Lib
     /**
      * 渲染模板的时候,没有传递参数,取当前访问的方法
      * @param string $path
-     * @return mixed|string
+     * @return string
      */
-    public function getViewPath($path = ''): string
+    public function getViewPath(string $path = ''): string
     {
         if ($path) return $path;
         return request()->controller() . ':' . request()->action();

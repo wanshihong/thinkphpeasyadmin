@@ -4,6 +4,7 @@
 namespace easyadmin\app\libs;
 
 
+use JetBrains\PhpStorm\Pure;
 use think\Exception;
 use think\facade\Db;
 use think\facade\Session;
@@ -84,9 +85,9 @@ class User
 
     /**
      * 获取用户ID
-     * @return int|null
+     * @return int|string
      */
-    public function getUserId(): ?int
+    #[Pure] public function getUserId():int|string
     {
         $lib = new Lib();
         return $lib->getArrayValue($this->user, 'id');
@@ -97,7 +98,7 @@ class User
      * @param null $field
      * @return array|null
      */
-    public function getUser($field = null): ?array
+    #[Pure] public function getUser($field = null): ?array
     {
         if ($field === null) {
             return $this->user;
