@@ -48,8 +48,8 @@ class FormDateTime extends BaseForm
     {
         $ret = $this->getValue();
 
-        if ($ret === null) {
-            return null;
+        if ($ret === '') {
+            return '';
         }
 
         $format = $this->getOption('format');
