@@ -1,0 +1,39 @@
+{extend name="layout" /}
+{block name="title"}{$__page_name__}添加-编辑{/block}
+
+
+{block name="body"}
+
+<form class="layui-form easy-form" lay-filter="easy_form" action="{:url('form_save')}" method="post">
+    {foreach name="forms" item="form"}
+    {if $form->isHidden()}
+    {$form}
+    {else/}
+    <div class="layui-form-item">
+        <label class="layui-form-label">
+            {if $form->getOption("required")}<span style="color: #FF5722">*</span>{/if}
+            {$form->getLabel()}
+        </label>
+        <div class="layui-input-block">
+            {$form}
+            {if $form->getOption("help")}
+            <p class="input-help" style="color: #999;">{$form->getOption("help")}</p>
+            {/if}
+        </div>
+
+    </div>
+    {/if}
+
+    {/foreach}
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            {$actions}
+        </div>
+    </div>
+
+</form>
+
+{/block}
+

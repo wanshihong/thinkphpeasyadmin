@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{block name="title"}登录注册 - {$__site_name__}{/block}</title>
+    <style>
+        body {
+            background-color: #2F4056;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main {
+            max-width: 320px;
+        }
+
+        .main .layui-card, .main .layui-card-header, .main .layui-card-body {
+            background-color: rgba(255, 255, 255, .55);
+        }
+
+        .main .layui-card-body{
+            padding-top: 20px;
+        }
+        .form-item {
+            display: block;
+            width: 290px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .form-item .layui-icon {
+            position: absolute;
+            left: 10px;
+            top: 7px;
+            color: #c2c2c2;
+        }
+
+        .form-item input {
+            padding-left: 32px;
+        }
+        .form-item-verify{
+            display: flex;
+            flex-direction: row;
+        }
+        .verify{
+            height: 38px;
+            margin-left: 10px;
+        }
+
+        .btn-box{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+
+    {block name="style"}{/block}
+    {foreach name="__css__" item="file"}
+    <link rel="stylesheet" href="{$file}">
+    {/foreach}
+    {block name="head_script"}{/block}
+</head>
+<body>
+
+<div class="main">
+    {block name="body"}{/block}
+</div>
+
+
+{foreach name="__js__" item="file"}
+<script src="{$file}"></script>
+{/foreach}
+{block name="body_script"}{/block}
+<script>
+    layui.use(['element', 'jquery'], function () {
+        let form = layui.form, $ = layui.jquery, layer = layui.layer;
+
+        // 背景图片随机
+        $('body').css('background-image', 'url("{$static_root}img/login_bg' + Math.ceil(Math.random() * 3) + '.jpg")');
+
+        // 验证码刷新
+        $('.verify').click(function () {
+            $(this).attr('src','{:url("verify")}?ver=' + Math.random())
+        });
+    });
+</script>
+</body>
+</html>

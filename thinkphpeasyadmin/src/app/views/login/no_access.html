@@ -1,0 +1,56 @@
+{extend name="login:layout" /}
+{block name="title"}无权访问 - {$__site_name__}{/block}
+
+{block name="style"}
+<style>
+    .main .layui-card {
+        border-radius: 6px;
+        overflow: hidden
+    }
+
+    .main .layui-card-body {
+        padding: 60px 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column
+    }
+
+    .main .layui-icon {
+        font-size: 80px;
+        color: #999999
+    }
+
+    .title {
+        color: #666666;
+        margin-top: 20px;
+        font-size: 20px;
+    }
+
+    .tip {
+        color: #999999;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+</style>
+{/block}
+
+{block name="body"}
+
+
+<div class="layui-card">
+    <div class="layui-card-body">
+
+
+        <div>
+            <i style="" class="layui-icon layui-icon-password"></i>
+        </div>
+        <p class="title">无权访问</p>
+        <p class="tip">请联系管理员</p>
+
+
+    </div>
+</div>
+
+{/block}
+

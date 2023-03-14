@@ -1,0 +1,72 @@
+{extend name="layout" /}
+{block name="title"}{$__page_name__}列表{/block}
+
+
+{block name="header_action"}
+    <!-- 添加按钮 -->
+    {if isset($addAction)}
+        {$addAction}
+    {/if}
+{/block}
+
+{block name="filter"}
+    {if isset($table)}
+        {$table->getFilter()}
+    {/if}
+{/block}
+
+
+{block name="body"}
+{if isset($table)}
+<table class="layui-table layui-form" lay-skin="nob">
+
+    <!-- 表头 -->
+    <thead>
+    <tr>
+        {foreach $table->getHeader() as $label }
+        <th>{$label}</th>
+        {/foreach}
+
+        <!-- 操作 -->
+        {if $table->getActions() }
+        <th>操作</th>
+        {/if}
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- 主体 -->
+    {foreach $table->getRows() as $index=>$row }
+    <tr data-id="{$row->getRowId()}">
+        {foreach $row->getColumns() as $rowIndex=>$td }
+        <td class="align-middle text-sm text-gray-600">{$td}</td>
+        {/foreach}
+
+        <!-- 操作 -->
+        {if $table->getActions() }
+        <td class="actions">
+            {$row->getActions()}
+        </td>
+        {/if}
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<!-- 空数据 -->
+{if $table->getTotal()===0}
+<div class="empty-data">
+    <img src="{$static_root}img/no_data.png" alt="空数据">
+    <span>列表为空</span>
+</div>
+{/if}
+{/if}
+{/block}
+
+{block name="pagination"}
+
+
+<!-- 分页 -->
+{if isset($table)}
+{$table->getPage()}
+{/if}
+{/block}

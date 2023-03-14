@@ -1,0 +1,225 @@
+.layout {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.layout-left {
+    width: 200px;
+    flex-shrink: 1;
+    min-height: 100vh;
+    background-color: #edf2f7;
+    box-sizing: border-box;
+    box-shadow: 0 1px 30px #eeeeee;
+    transition: width .5s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.layout-left .layout-left-menu {
+    flex: 1;
+}
+
+.layout-left .site-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-size: 24px;
+}
+
+@media screen and (max-width: 768px) {
+    .layout-left {
+        width: 0;
+        visibility: hidden;
+        position: fixed;
+    }
+}
+
+.layout-left.float-menu {
+    visibility: visible;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9;
+    width: 200px;
+}
+
+.layout-left.float-menu .close-menu {
+    display: inline-block;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 20px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.layout-left.float-menu .close-menu:hover {
+    color: #FF5722;
+}
+
+
+.layout-left .close-menu {
+    display: none;
+}
+
+.layout-main {
+    flex: 1;
+    overflow: hidden;
+    min-height: 100vh;
+    background-color: #f7fafc;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+}
+
+.layout-main .user-info {
+    height: 20px;
+    line-height: 20px;
+    width: 100%;
+    text-align: right;
+}
+
+.layout-main .user-info span, .layout-main .user-info a {
+    margin-right: 5px;
+    display: inline-block;
+    color: #999999;
+    font-size: 12px;
+}
+
+.layout-main-head {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.layout-main-body {
+    background-color: #ffffff;
+    box-shadow: 0 0 30px #eee;
+    padding: 20px;
+}
+
+.layout-main-body-main {
+    width: 100%;
+    min-height: 400px;
+    overflow-x: auto;
+}
+
+.page-title {
+    margin-bottom: 6px;
+}
+
+.layui-breadcrumb > * {
+    font-size: 12px;
+}
+
+.list-img {
+    max-width: 45px;
+    max-height: 45px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.filter-form {
+    margin-bottom: 10px;
+}
+
+.filter-form .layui-input-inline {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.layui-form-label {
+    width: 120px;
+}
+
+.layui-input-block {
+    margin-left: 150px;
+}
+
+/* 输入框图标 */
+.text-box {
+    position: relative;
+}
+
+.text-box input {
+    padding-left: 38px;
+}
+
+.text-box .layui-icon {
+    width: 38px;
+    height: 38px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: center;
+    line-height: 38px;
+    font-size: 24px;
+    color: #999999;
+}
+
+/* end 输入框图标 */
+
+
+/* 重写 FormAutocomplete 样式  */
+.easy-form .select-input {
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.easy-form xm-select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* end 重写 FormAutocomplete 样式  */
+
+
+/* start 文件上传 */
+.upload-img-box {
+    box-sizing: border-box;
+    border: 1px dashed #e0e2e4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #cccccc;
+    font-size: 12px;
+}
+
+.upload-img-box .layui-icon {
+    font-size: 35px;
+    color: #cccccc;
+}
+
+.upload-img-box:hover, .upload-img-box:hover .layui-icon {
+    font-weight: bold;
+    color: #00b0e8;
+}
+
+/* end 文件上传 */
+
+.empty-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #dbdbdb;
+}
+
+.empty-data img {
+    width: 60px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.layui-badge {
+    height: auto;
+}

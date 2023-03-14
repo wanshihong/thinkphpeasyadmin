@@ -1,0 +1,20 @@
+{block name="main"}
+<form class="filter-form layui-form layui-inline">
+    {foreach $filters as $index=>$filter}
+    <div class="layui-input-inline">
+        {$filter}
+    </div>
+    {/foreach}
+
+    <!-- 搜索按钮 -->
+    <div class="layui-input-inline">
+        <button type="submit" class="layui-btn">
+            <i class="layui-icon layui-icon-search"></i>
+            搜索
+        </button>
+    </div>
+</form>
+{/block}
+
+{block name="style"}{/block}
+{block name="js"}{/block}

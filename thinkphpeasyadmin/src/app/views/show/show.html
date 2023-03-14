@@ -1,0 +1,33 @@
+{extend name="layout" /}
+
+
+
+
+
+{block name="body"}
+<table class="layui-table layui-form" lay-skin="row">
+
+    <thead>
+    <tr>
+        <td style="width: 15%">名称</td>
+        <td>值</td>
+    </tr>
+    </thead>
+    <!-- 主体 -->
+    <tbody>
+
+    {foreach $result->getColumns() as $index=>$item }
+    <tr>
+        <td class="align-middle text-sm text-gray-600">{$item->getLabel()}</td>
+        <td class="align-middle text-sm text-gray-600">{$item}</td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+
+<div>
+    {$action}
+</div>
+{/block}
+
+

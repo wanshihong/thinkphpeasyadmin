@@ -1,0 +1,10 @@
+{block name="main"}
+<select class="{$class}" {$attr} id="{$elem_id}" lay-search  placeholder="请选择{$label}" name="{$field}">
+    <option value="">请选择{$label}</option>
+    {foreach name="options" item="item"}
+    <option {if $item['key']==$value}selected{/if} value="{$item.key}">{$item.text}</option>
+    {/foreach}
+</select>
+{/block}
+{block name="style"}{/block}
+{block name="js"}{/block}

@@ -1,0 +1,24 @@
+<ul class="layout-left-menu layui-nav layui-nav-tree">
+    {foreach name="items" item="item"}
+    <li class="layui-nav-item {$item->getOption('class')}">
+        <a href="{if $item->getChildren() }javascript:{else}{$item->getUrl()}{/if}">
+            {if $item->getOption('icon')}<i class="{$item->getOption('icon')}"></i>{/if}
+            {$item->getName()}
+        </a>
+        {if $item->getChildren() }
+
+        <dl class="layui-nav-child">
+            {foreach name="$item->getChildren()" item="child"}
+            <dd class="{$child->getOption('class')}">
+                <a href="{$child->getUrl()}">
+                    {if $child->getOption('icon')}<i class="{$child->getOption('icon')}"></i>{/if}
+                    {$child->getName()}
+                </a>
+            </dd>
+            {/foreach}
+        </dl>
+
+        {/if}
+    </li>
+    {/foreach}
+</ul>
