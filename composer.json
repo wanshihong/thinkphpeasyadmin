@@ -20,6 +20,7 @@
         "ext-gd": "*",
         "topthink/framework": "^6.0.0",
         "topthink/think-view": "^2.0",
+        "topthink/think-filesystem": "^2.0",
         "topthink/think-captcha": "^3.0",
         "topthink/think-multi-app":"^v1.0.14"
     },
