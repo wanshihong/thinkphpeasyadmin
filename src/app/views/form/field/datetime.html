@@ -1,7 +1,7 @@
 {block name="main"}
 
 <input type="text" {$attr} data-render="{$render_class}" data-options="{$options}" id="{$elem_id}" autocomplete="off" class="layui-input {$class}" placeholder="请输入{$label}" name="{$field}"
-       value="{$value}" >
+       value="{$value|default=''}" >
 
 {/block}
 {block name="style"}{/block}

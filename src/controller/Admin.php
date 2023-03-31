@@ -24,7 +24,7 @@ class Admin
     protected string $pk = 'id';
 
     //配置是否使用软删除
-    protected string $softDeleteField='';//软删除字段
+    protected string $softDeleteField = '';//软删除字段
     protected int $softDeleteAfterVal = 1;//软删除后的值.  例如  is_delete=1 标识已经删除
     protected int $softDeleteBeforeVal = 0;//软删除前的值.  例如  is_delete=0 标识尚未删除
 
@@ -65,6 +65,10 @@ class Admin
     {
         if (empty($this->tableName)) {
             $controller = request()->controller();
+            $index = stripos($controller, '.');
+            if ($index !== false) {
+                $controller = substr($controller, $index+1);
+            }
             $controller = strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $controller));
             $this->tableName = $controller;
         }

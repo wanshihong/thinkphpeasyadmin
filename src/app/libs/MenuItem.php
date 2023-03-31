@@ -63,9 +63,8 @@ class MenuItem
      */
     public function checkNowUrl(): bool
     {
-        $nowUrl = (string)$this->formatName($this->url);
-        $targetUrl = (string)strtolower($this->formatName(request()->controller() . '/' . request()->action()));
-
+        $nowUrl = $this->formatName($this->url);
+        $targetUrl = strtolower($this->formatName("/" . request()->controller() . '/' . request()->action()));
         return stripos($nowUrl, $targetUrl) !== false;
     }
 

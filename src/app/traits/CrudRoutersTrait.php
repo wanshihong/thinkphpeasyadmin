@@ -274,6 +274,7 @@ trait CrudRoutersTrait
             }
         }
 
+        $defArr = [];
         //默认的查询
         if (empty($query)) {
             /** @noinspection PhpDynamicAsStaticMethodCallInspection */
@@ -286,7 +287,8 @@ trait CrudRoutersTrait
 
             //处理默认值
             if ($default) {
-                $query->where($pk, $default);
+                $defArr = explode(",",$default);
+                $query->where($pk,'in', $defArr);
             }
 
         }
@@ -297,6 +299,7 @@ trait CrudRoutersTrait
             array_push($result, [
                 'value' => $item[$pk],
                 'name' => $item[$property],
+                'selected'=>in_array($item[$pk],$defArr)
             ]);
         }
 

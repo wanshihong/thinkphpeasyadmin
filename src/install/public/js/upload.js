@@ -81,10 +81,10 @@ let MyUpload = {
         });
     },
 
-    onDel(index, inputId) {
+    onDel(elem,index, inputId) {
         console.log(index,inputId)
         event.stopPropagation();
-        let imgBox =  $('.upload-img-box');
+        let imgBox =  $(elem).closest('.upload-img-box');
         imgBox.each(function () {
             if ($(this).data('index') == index) {
                 $(this).html(`<i class="layui-icon layui-icon-upload-drag"></i> <span>点击上传</span>`)

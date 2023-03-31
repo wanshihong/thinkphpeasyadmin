@@ -22,7 +22,7 @@ class Login
         $rules = config('login.rules');
         if (empty($rules)) return true;
 
-        $url = strtolower($_SERVER['REQUEST_URI']);
+        $url = strtolower(request()->server('REQUEST_URI'));
 
         $match = [];
         foreach ($rules as $reg => $role) {
@@ -63,7 +63,7 @@ class Login
                 if (User::getInstance()->getUserId()) {
                     return $next($request);
                 } else {
-                    Cache::set('redirect.login.login_url', $_SERVER['REQUEST_URI']);
+                    Cache::set('redirect.login.login_url', request()->server('REQUEST_URI'));
                     return redirect(config('login.login_url'));
                 }
             default:

@@ -1,5 +1,19 @@
+
+<?php $value =  explode(",",$value); ?>
+
 {block name="main"}
-<img {$attr} id="{$elem_id}" class="list-img {$class}" src="{$value}" alt="" onerror="this.src='{$static_root}img/img_load_error.png'">
+<div class="list-img-box">
+    <?php foreach($value as $pic): ?>
+    <img {$attr} id="{$elem_id}" class="list-img {$class}" src="{$pic}" alt="" onerror="this.src='{$static_root}img/img_load_error.png'">
+    <?php endforeach; ?>
+</div>
 {/block}
-{block name="style"}{/block}
+{block name="style"}
+<style>
+    .list-img-box{
+        display: flex;
+        flex-direction: row;
+    }
+</style>
+{/block}
 {block name="js"}{/block}

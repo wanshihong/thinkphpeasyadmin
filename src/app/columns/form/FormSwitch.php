@@ -20,18 +20,6 @@ class FormSwitch extends BaseForm
 
 
     /**
-     * 格式化数据
-     * 格式化后存入数据库,或者操作数据库
-     * @param $val
-     * @return mixed
-     */
-    public function inFormat($val)
-    {
-        $ret = $val == 'on' ? $this->getOption('success', 1) : $this->getOption('error', 0);
-        return parent::inFormat($ret);
-    }
-
-    /**
      * 字段的模板路径
      * @var string
      */

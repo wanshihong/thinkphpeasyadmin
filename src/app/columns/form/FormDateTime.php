@@ -51,7 +51,6 @@ class FormDateTime extends BaseForm
         if ($ret === '') {
             return '';
         }
-
         $format = $this->getOption('format');
         if ($format === null) {
             return $ret;
@@ -62,6 +61,7 @@ class FormDateTime extends BaseForm
         } elseif (is_string($format)) {
             $ret = date($format, $ret);
         }
+
         return $ret;
     }
 

@@ -11,6 +11,9 @@
     {foreach name="__css__" item="file"}
     <link rel="stylesheet" href="{$file}">
     {/foreach}
+    <script>
+        const STATIC_ROOT = "{$static_root}";
+    </script>
     {block name="head_script"}{/block}
 </head>
 <body>

@@ -56,7 +56,7 @@ class Login extends Admin
 
             return $this->success(['url' => $retUrl]);
         } else {
-            $HTTP_REFERER = $_SERVER['HTTP_REFERER'] ?? '';
+            $HTTP_REFERER = request()->server('HTTP_REFERER','');
             if ($HTTP_REFERER) {
                 Cache::set('login_referer', $HTTP_REFERER, 86400);
             }

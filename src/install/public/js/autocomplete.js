@@ -2,9 +2,11 @@ function renderSelect2($, select, xmSelect) {
     let dataset = select.data();
     console.log(dataset);
     let id = select.attr('id');
+    let multiple = dataset.multiple;
+
     let selectInput = xmSelect.render({
         el: `#${id}`,
-        radio: true,
+        radio: multiple!==1,
         name: dataset.name,
         clickClose: true,
         filterable: true,
@@ -49,17 +51,17 @@ function renderSelect2($, select, xmSelect) {
                 layer.msg(data.msg, {icon: 2});
                 return;
             }
-            let row = data.data[0];
-            row.selected = true;
+            // let row = data.data[0];
+            // row.selected = true;
             selectInput.update({
-                data: [row],
+                data: data.data,
                 autoRow: true,
             });
         })
     }
 }
 
-layui.config({base: '{$static_root}layui-v2.5.7/lay/modules/'}).extend({
+layui.config({base: `${STATIC_ROOT}layui-v2.5.7/lay/modules/`}).extend({
     xmSelect: 'xm-select/xm-select'
 }).use(['xmSelect', 'jquery'], function () {
     let xmSelect = layui.xmSelect, $ = layui.jquery;

@@ -11,9 +11,13 @@ $multiple = $multiple ? $multiple : 1;
 
 $imgVal = explode(',',$value);
 
-function getImgVal($index,$arr){
+
+if(!function_exists('_uploadGetImgVal')){
+    function _uploadGetImgVal($index,$arr){
     return $arr[$index] ?? '';
 }
+}
+
 
 ?>
 
@@ -25,10 +29,10 @@ function getImgVal($index,$arr){
          data-url="{$url}" data-width="{$width}" data-height="{$height}"
          data-cropper="{$cropper}"
     >
-        {if getImgVal($i,$imgVal) }
-        <img src="<?php echo getImgVal($i,$imgVal);  ?>" class="upload-img-res"
+        {if _uploadGetImgVal($i,$imgVal) }
+        <img src="<?php echo _uploadGetImgVal($i,$imgVal);  ?>" class="upload-img-res"
              onerror="this.src='{$static_root}img/img_load_error.png'">
-        <i class="layui-icon layui-icon-close" onclick='MyUpload.onDel("{$i}","{$elem_id}_input")'></i>
+        <i class="layui-icon layui-icon-close" onclick='MyUpload.onDel(this,"{$i}","{$elem_id}_input")'></i>
         {else/}
         <i class="layui-icon layui-icon-upload-drag"></i>
         <span>点击上传</span>
