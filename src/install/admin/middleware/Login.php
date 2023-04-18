@@ -4,6 +4,8 @@
 namespace app\admin\middleware;
 
 
+use Closure;
+use easyadmin\app\libs\Menu;
 use easyadmin\app\libs\User;
 use think\facade\Cache;
 
@@ -23,12 +25,11 @@ class Login
         if (empty($rules)) return true;
 
         $url = strtolower(request()->server('REQUEST_URI'));
-
         $match = [];
         foreach ($rules as $reg => $role) {
             $reg = str_replace('/', '\/', $reg);
 
-            if (preg_match("/$reg/", $url)) {
+            if (preg_match("/$reg/i", $url)) {
                 $match[strlen($reg)] = $role;
             }
         }
@@ -39,7 +40,34 @@ class Login
     }
 
 
-    public function handle($request, \Closure $next)
+    public function hasMenuOutside(): bool
+    {
+        $menuConfig = [];
+        $menuConfigFile = Menu::getMenuConfPath();
+        if (is_file($menuConfigFile)) {
+            $temp = file_get_contents($menuConfigFile);
+            if ($temp) {
+                $menuConfig = json_decode($temp, true);
+            }
+        }
+        if (empty($menuConfig)) {
+            return false;
+        }
+        // 如果配置了菜单,访问菜单可访问以外的地址时,拒绝
+        $currUrl = strtolower(request()->server('REQUEST_URI'));
+        $inMenu = false;
+        foreach ($menuConfig as $url => $role) {
+            $reg = str_replace('/', '\/', $url);
+            if (preg_match("/$reg/i", $currUrl)) {
+                $inMenu = true;
+                break;
+            }
+        }
+
+        return !($inMenu === true);
+    }
+
+    public function handle($request, Closure $next)
     {
         // 没有开启登陆
         if (!config('login.enable_login')) {
@@ -61,11 +89,16 @@ class Login
                 return $next($request);
             case 'login': // 登录就可以访问
                 if (User::getInstance()->getUserId()) {
-                    return $next($request);
+                    if ($this->hasMenuOutside() === false) {
+                        return $next($request);
+                    } else {
+                        return redirect(config('login.no_access_url'));
+                    }
                 } else {
                     Cache::set('redirect.login.login_url', request()->server('REQUEST_URI'));
                     return redirect(config('login.login_url'));
                 }
+                break;
             default:
                 //判断是否有权限, 无权限调整到无权限页面
                 if (User::getInstance()->hasRole($needRole)) {

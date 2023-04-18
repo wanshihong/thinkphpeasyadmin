@@ -4,6 +4,7 @@
 namespace easyadmin\controller;
 
 
+use easyadmin\app\libs\Menu;
 use easyadmin\app\libs\User;
 use think\captcha\facade\Captcha;
 use think\Exception;
@@ -53,10 +54,9 @@ class Login extends Admin
             $HTTP_REFERER = Cache::get('redirect.login.login_url');
             $retUrl = $HTTP_REFERER ?: (string)url(config('login.home_url'));
 
-
             return $this->success(['url' => $retUrl]);
         } else {
-            $HTTP_REFERER = request()->server('HTTP_REFERER','');
+            $HTTP_REFERER = $_SERVER['HTTP_REFERER'] ?? '';
             if ($HTTP_REFERER) {
                 Cache::set('login_referer', $HTTP_REFERER, 86400);
             }

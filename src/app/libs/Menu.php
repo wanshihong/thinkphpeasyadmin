@@ -109,7 +109,52 @@ class Menu
             $item->setChildren($childless);
             array_push($items, $item);
         }
+        $this->saveMenuRuntime($items);
         return $items;
+    }
+
+    public static function getMenuConfPath()
+    {
+        $userId = User::getInstance()->getUserId();
+        return runtime_path() . 'menu' . $userId . '.json';
+    }
+
+    /**
+     * 把菜单写入到 runtime 目录
+     * 如果配置了菜单,访问菜单可访问以外的地址时,拒绝
+     * @param $menu
+     */
+    protected function saveMenuRuntime($menu)
+    {
+        function formatUrl($url): string
+        {
+            $arr = explode('/', $url);
+            array_pop($arr);
+            return implode('/', $arr) . '/*';
+        }
+
+        $ret = [];
+        foreach ($menu as $m) {
+            if ($m->getUrl() != 'javascript:') {
+                $url = formatUrl($m->getUrl());
+                $ret[$url] = User::getInstance()->getRoles();
+            }
+
+            if (empty($m->getChildren())) {
+                continue;
+            }
+            foreach ($m->getChildren() as $c) {
+                if ($c->getUrl() == 'javascript:') {
+                    continue;
+                }
+                $url = formatUrl($c->getUrl());
+                $ret[$url] = User::getInstance()->getRoles();
+            }
+        }
+        file_put_contents(
+            self::getMenuConfPath(),
+            json_encode($ret)
+        );
     }
 
     /**
