@@ -119,6 +119,13 @@ class Menu
         return runtime_path() . 'menu' . $userId . '.json';
     }
 
+    protected function formatUrl($url): string
+    {
+        $arr = explode('/', $url);
+        array_pop($arr);
+        return implode('/', $arr) . '/*';
+    }
+
     /**
      * 把菜单写入到 runtime 目录
      * 如果配置了菜单,访问菜单可访问以外的地址时,拒绝
@@ -126,17 +133,12 @@ class Menu
      */
     protected function saveMenuRuntime($menu)
     {
-        function formatUrl($url): string
-        {
-            $arr = explode('/', $url);
-            array_pop($arr);
-            return implode('/', $arr) . '/*';
-        }
+
 
         $ret = [];
         foreach ($menu as $m) {
             if ($m->getUrl() != 'javascript:') {
-                $url = formatUrl($m->getUrl());
+                $url = $this->formatUrl($m->getUrl());
                 $ret[$url] = User::getInstance()->getRoles();
             }
 
@@ -147,7 +149,7 @@ class Menu
                 if ($c->getUrl() == 'javascript:') {
                     continue;
                 }
-                $url = formatUrl($c->getUrl());
+                $url = $this->formatUrl($c->getUrl());
                 $ret[$url] = User::getInstance()->getRoles();
             }
         }
